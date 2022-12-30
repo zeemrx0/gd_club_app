@@ -25,16 +25,21 @@ class _EventListState extends State<EventList> {
   Widget build(BuildContext context) {
     final events = Provider.of<Events>(context);
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      itemCount: events.allEvents.length,
-      itemBuilder: (context, i) {
-        return EventItem(
-          events.allEvents[i],
-          isEdit: ModalRoute.of(context)!.settings.name ==
-              EventsManagingScreen.routeName,
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        Provider.of<Events>(context, listen: false).fetchEvents();
       },
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        itemCount: events.allEvents.length,
+        itemBuilder: (context, i) {
+          return EventItem(
+            events.allEvents[i],
+            isEdit: ModalRoute.of(context)!.settings.name ==
+                EventsManagingScreen.routeName,
+          );
+        },
+      ),
     );
   }
 }
