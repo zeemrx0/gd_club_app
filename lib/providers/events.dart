@@ -82,4 +82,13 @@ class Events with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void deleteEvent(String deletingEventId) async {
+    await db.collection('events').doc(deletingEventId).delete();
+    _list.removeWhere(
+      (event) => event.id == deletingEventId,
+    );
+
+    notifyListeners();
+  }
 }

@@ -56,6 +56,33 @@ class _EventEditScreenState extends State<EventEditScreen> {
     }
   }
 
+  void deleteEvent() async {
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Xóa sự kiện'),
+        content: const Text('Bạn chắc chắn muốn xóa sự kiện này?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('Hủy'),
+          ),
+          TextButton(
+            onPressed: () {
+              Provider.of<Events>(context, listen: false)
+                  .deleteEvent(_newEvent.id!);
+              Navigator.of(ctx).pop();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Xác nhận'),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   void didChangeDependencies() {
     if (ModalRoute.of(context)!.settings.arguments != null) {
@@ -72,6 +99,13 @@ class _EventEditScreenState extends State<EventEditScreen> {
       appBar: AppBar(
         title: Text(_newEvent.id == null ? 'Tạo sự kiện' : 'Chỉnh sửa sự kiện'),
         actions: [
+          if (_newEvent.id != null)
+            IconButton(
+              onPressed: () {
+                deleteEvent();
+              },
+              icon: const Icon(Icons.delete_forever),
+            ),
           IconButton(
             onPressed: () {
               _submitForm();
