@@ -15,14 +15,12 @@ class EventEditScreen extends StatefulWidget {
 }
 
 class _EventEditScreenState extends State<EventEditScreen> {
-  final _isCreate = true;
-
   DateTime _date = DateTime.now();
   DateTime _time = DateTime.now();
 
   final _formKey = GlobalKey<FormState>();
 
-  final _newEvent = Event(
+  Event _newEvent = Event(
     title: '',
     location: '',
     dateTime: DateTime.now(),
@@ -44,7 +42,14 @@ class _EventEditScreenState extends State<EventEditScreen> {
           _time.minute,
         );
 
-        Provider.of<Events>(context, listen: false).addEvent(_newEvent);
+        if (_newEvent.id != null) {
+          // New event's id exist -> Edit mode
+          Provider.of<Events>(context, listen: false)
+              .updateEvent(_newEvent.id!, _newEvent);
+        } else {
+          // Otherwise -> Create mode
+          Provider.of<Events>(context, listen: false).addEvent(_newEvent);
+        }
 
         Navigator.of(context).pop();
       }
@@ -52,10 +57,20 @@ class _EventEditScreenState extends State<EventEditScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      _newEvent = ModalRoute.of(context)!.settings.arguments as Event;
+      _date = _newEvent.dateTime;
+      _time = _newEvent.dateTime;
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isCreate ? 'Tạo sự kiện' : 'Chỉnh sửa sự kiện'),
+        title: Text(_newEvent.id == null ? 'Tạo sự kiện' : 'Chỉnh sửa sự kiện'),
         actions: [
           IconButton(
             onPressed: () {
@@ -88,6 +103,7 @@ class _EventEditScreenState extends State<EventEditScreen> {
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
+                initialValue: _newEvent.title,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '';
@@ -117,6 +133,7 @@ class _EventEditScreenState extends State<EventEditScreen> {
                     borderSide: BorderSide(width: 1, color: Colors.red),
                   ),
                 ),
+                initialValue: _newEvent.location,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '';
@@ -138,10 +155,18 @@ class _EventEditScreenState extends State<EventEditScreen> {
                   Flexible(
                     child: GestureDetector(
                       onTap: () async {
-                        DateTime? pickedDate = await DatePicker.showDatePicker(
-                          context,
-                          currentTime: _date,
-                          locale: LocaleType.vi,
+                        // DateTime? pickedDate = await DatePicker.showDatePicker(
+                        //   context,
+                        //   currentTime: _date,
+                        //   locale: LocaleType.vi,
+                        // );
+
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: _date,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2030, 12, 31),
+                          locale: const Locale('vi'),
                         );
 
                         setState(() {
@@ -213,6 +238,7 @@ class _EventEditScreenState extends State<EventEditScreen> {
                   ),
                 ),
                 maxLines: 6,
+                initialValue: _newEvent.description,
                 onSaved: (newValue) {
                   if (newValue != null) {
                     _newEvent.description = newValue;

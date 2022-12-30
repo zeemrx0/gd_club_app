@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
+import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:intl/intl.dart';
 
 class EventItem extends StatelessWidget {
-  final event;
+  final Event event;
+  final bool isEdit;
 
-  EventItem(this.event);
+  EventItem(this.event, {required this.isEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +29,13 @@ class EventItem extends StatelessWidget {
                 )
               : const SizedBox(),
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(EventDetailScreen.routeName, arguments: event);
+            if (isEdit) {
+              Navigator.of(context)
+                  .pushNamed(EventEditScreen.routeName, arguments: event);
+            } else {
+              Navigator.of(context)
+                  .pushNamed(EventDetailScreen.routeName, arguments: event);
+            }
           },
         ),
       ),

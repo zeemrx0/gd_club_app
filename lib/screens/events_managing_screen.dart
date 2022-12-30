@@ -6,15 +6,23 @@ import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_list.dart';
 
-class EventsScreen extends StatelessWidget {
-  static const routeName = "/events";
+class EventsManagingScreen extends StatelessWidget {
+  static const routeName = "/events-managing";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: EventList(),
       appBar: AppBar(
-        title: const Text('Sự kiện'),
+        title: const Text('Quản lý sự kiện'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(EventEditScreen.routeName);
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       drawer: AppDrawer(),
     );

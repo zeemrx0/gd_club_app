@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_club_app/screens/events_managing_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -31,6 +32,15 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(EventsScreen.routeName);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text("Quản lý sự kiện"),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(EventsManagingScreen.routeName);
             },
           )
         ],

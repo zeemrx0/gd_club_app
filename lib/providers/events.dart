@@ -54,4 +54,32 @@ class Events with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void updateEvent(String updatingEvenId, Event newEvent) async {
+    for (Event event in _list) {
+      if (event.id == updatingEvenId) {
+        event = Event(
+          title: newEvent.title,
+          location: newEvent.location,
+          dateTime: newEvent.dateTime,
+          organizerId: newEvent.organizerId,
+        );
+
+        event.id = updatingEvenId;
+
+        break;
+      }
+    }
+
+    final eventData = await db.collection('events').doc(updatingEvenId).set({
+      'title': newEvent.title,
+      'location': newEvent.location,
+      'dateTime': newEvent.dateTime,
+      'description': newEvent.description,
+      'organizerId': newEvent.organizerId,
+      '_createdAt': Timestamp.now(),
+    });
+
+    notifyListeners();
+  }
 }
