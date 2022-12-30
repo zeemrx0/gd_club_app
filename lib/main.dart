@@ -1,17 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
+import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Future<FirebaseApp> _appFuture = Firebase.initializeApp();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -20,15 +22,33 @@ class MyApp extends StatelessWidget {
           create: (context) => Events(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Sắc màu Gia Định',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: EventsScreen(),
-        routes: {
-          EventsScreen.routeName: (context) => EventsScreen(),
-          EventDetailScreen.routeName: (context) => EventDetailScreen(),
+      child: FutureBuilder(
+        future: _appFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Xảy ra lỗi rùi, thử lại nhaa :<'),
+            );
+          }
+
+          return MaterialApp(
+            title: 'Sắc màu Gia Định',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: EventsScreen(),
+            routes: {
+              EventsScreen.routeName: (context) => EventsScreen(),
+              EventDetailScreen.routeName: (context) => EventDetailScreen(),
+              EventEditScreen.routeName: (context) => EventEditScreen(),
+            },
+          );
         },
       ),
     );

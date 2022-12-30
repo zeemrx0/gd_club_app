@@ -17,7 +17,7 @@ class EventItem extends StatelessWidget {
         child: ListTile(
           title: Text(event.title),
           subtitle: Text(
-            '${DateFormat.jm().add_yMd().format(event.dateTime)} - ${event.address}',
+            '${DateFormat.jm().add_yMd().format(event.dateTime)} - ${event.location}',
           ),
           trailing: event.isRegistered
               ? const Icon(

@@ -1,29 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/event.dart';
 
 class Events with ChangeNotifier {
-  final List<Event> _list = [
-    Event(
-      id: '603e86ed-3912-4678-8ce0-c73663e81164',
-      title: 'Training arduino buổi 1',
-      address: '99B Võ Oanh',
-      dateTime: DateTime.parse('2022-12-24 11:00:00').toLocal(),
-      description: 'Kiến thức cơ bản về Arduino',
-      organizerId: '1',
-      isRegistered: true,
-    ),
-    Event(
-      id: '603e86ed-3912-4678-8ce0-c73663e81164',
-      title: 'Training Flutter cơ bản',
-      address: '99B Võ Oanh',
-      dateTime: DateTime.parse('2023-02-12 11:00:00').toLocal(),
-      description: 'Làm quiz app với Flutter',
-      organizerId: '1',
-      isRegistered: false,
-    ),
-  ];
+  final db = FirebaseFirestore.instance;
+
+  List<Event> _list = [];
 
   List<Event> get allEvents {
     return [..._list];
+  }
+
+  void fetchEvents() async {
+    final eventData = await db.collection('events').orderBy('_createdAt').get();
+
+    var eventList = [];
+
+    _list = [];
+
+    for (var event in eventData.docs) {
+      eventList.insert(
+        0,
+        Event(
+          id: event.id,
+          title: event.data()['title'],
+          location: event.data()['location'],
+          dateTime: DateTime.fromMicrosecondsSinceEpoch(
+              (event.data()['dateTime'] as Timestamp).microsecondsSinceEpoch),
+          description: event.data()['description'],
+          organizerId: event.data()['organizerId'],
+          isRegistered: false,
+        ),
+      );
+    }
+
+    _list = [...eventList];
+
+    notifyListeners();
+  }
+
+  void addEvent(Event event) async {
+    final eventData = await db.collection('events').add({
+      'title': event.title,
+      'location': event.location,
+      'dateTime': event.dateTime,
+      'description': event.description,
+      'organizerId': event.organizerId,
+      '_createdAt': Timestamp.now(),
+    });
+
+    event.id = eventData.id;
+    _list.add(event);
+
+    notifyListeners();
   }
 }

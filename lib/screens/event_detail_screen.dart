@@ -45,12 +45,12 @@ class EventDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    Text(event.address),
+                    Text(event.location),
                     const SizedBox(
                       height: 16.0,
                     ),
                     const Text(
-                      'Nội dung',
+                      'Mô tả',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
