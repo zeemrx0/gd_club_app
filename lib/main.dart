@@ -8,7 +8,7 @@ import 'package:gd_club_app/screens/events_managing_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
@@ -24,40 +24,37 @@ class MyApp extends StatelessWidget {
           create: (context) => Events(),
         ),
       ],
-      child: FutureBuilder(
-        future: _appFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      child: MaterialApp(
+        title: 'Sắc màu Gia Định',
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        supportedLocales: const [
+          Locale('vn'),
+          Locale('en', 'US'),
+        ],
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: FutureBuilder(
+          future: _appFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return EventsScreen();
+            }
 
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Xảy ra lỗi rùi, thử lại nhaa :<'),
-            );
-          }
+            if (snapshot.hasError) {
+              print(snapshot.error);
+            }
 
-          return MaterialApp(
-            title: 'Sắc màu Gia Định',
-            localizationsDelegates: [GlobalMaterialLocalizations.delegate],
-            supportedLocales: const [
-              Locale('vn'),
-              Locale('en', 'US'),
-            ],
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            home: EventsScreen(),
-            routes: {
-              EventsScreen.routeName: (context) => EventsScreen(),
-              EventsManagingScreen.routeName: (context) =>
-                  EventsManagingScreen(),
-              EventDetailScreen.routeName: (context) => EventDetailScreen(),
-              EventEditScreen.routeName: (context) => EventEditScreen(),
-            },
-          );
+            return const Center(
+              child: Text('Lỗi rùi :< Thử lại nhaa'),
+            );
+          },
+        ),
+        routes: {
+          EventsScreen.routeName: (context) => EventsScreen(),
+          EventsManagingScreen.routeName: (context) => EventsManagingScreen(),
+          EventDetailScreen.routeName: (context) => EventDetailScreen(),
+          EventEditScreen.routeName: (context) => EventEditScreen(),
         },
       ),
     );
