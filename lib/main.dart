@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/screens/auth_screen.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:gd_club_app/screens/events_managing_screen.dart';
@@ -38,11 +40,22 @@ class MyApp extends StatelessWidget {
           future: _appFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return EventsScreen();
+              return StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return EventsScreen();
+                  }
+
+                  return AuthScreen();
+                },
+              );
             }
 
             if (snapshot.hasError) {
-              print(snapshot.error);
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
 
             return const Center(

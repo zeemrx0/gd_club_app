@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -42,7 +43,23 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context)
                   .pushReplacementNamed(EventsManagingScreen.routeName);
             },
-          )
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.exit_to_app,
+              color: Colors.red,
+            ),
+            title: const Text(
+              "Đăng xuất",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+            },
+          ),
         ],
       ),
     );
