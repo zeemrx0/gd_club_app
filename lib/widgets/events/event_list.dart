@@ -23,7 +23,7 @@ class _EventListState extends State<EventList> {
 
   @override
   Widget build(BuildContext context) {
-    final events = Provider.of<Events>(context);
+    final events = Provider.of<Events>(context).allEvents;
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -31,12 +31,14 @@ class _EventListState extends State<EventList> {
       },
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        itemCount: events.allEvents.length,
+        itemCount: events.length,
         itemBuilder: (context, i) {
-          return EventItem(
-            events.allEvents[i],
-            isEdit: ModalRoute.of(context)!.settings.name ==
-                EventsManagingScreen.routeName,
+          return ChangeNotifierProvider.value(
+            value: events[i],
+            child: EventItem(
+              isEdit: ModalRoute.of(context)!.settings.name ==
+                  EventsManagingScreen.routeName,
+            ),
           );
         },
       ),

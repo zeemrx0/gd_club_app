@@ -5,15 +5,17 @@ import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EventItem extends StatelessWidget {
-  final Event event;
   final bool isEdit;
 
-  EventItem(this.event, {required this.isEdit});
+  EventItem({required this.isEdit});
 
   @override
   Widget build(BuildContext context) {
+    final event = Provider.of<Event>(context, listen: false);
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
@@ -22,12 +24,14 @@ class EventItem extends StatelessWidget {
           subtitle: Text(
             '${DateFormat.jm().add_yMd().format(event.dateTime)} - ${event.location}',
           ),
-          trailing: event.isRegistered
-              ? const Icon(
-                  Icons.check_circle,
-                  color: Colors.green,
-                )
-              : const SizedBox(),
+          trailing: Consumer<Event>(
+            builder: (context, value, child) => event.isRegistered
+                ? const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                  )
+                : const SizedBox(),
+          ),
           onTap: () {
             if (isEdit) {
               Navigator.of(context)
