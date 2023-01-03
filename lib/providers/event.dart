@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Event with ChangeNotifier {
@@ -19,4 +21,21 @@ class Event with ChangeNotifier {
     required this.organizerId,
     this.isRegistered = false,
   });
+
+  void toggleRegistered() {
+    User user = FirebaseAuth.instance.currentUser!;
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('registrations')
+        .doc(id)
+        .set({
+      'dateTime': isRegistered ? null : Timestamp.now(),
+    });
+
+    isRegistered = !isRegistered;
+
+    notifyListeners();
+  }
 }
