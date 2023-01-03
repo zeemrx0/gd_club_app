@@ -6,6 +6,7 @@ import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/auth_screen.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event_edit_screen.dart';
+import 'package:gd_club_app/screens/event_information_screen.dart';
 import 'package:gd_club_app/screens/events_managing_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +67,8 @@ class MyApp extends StatelessWidget {
         routes: {
           EventsScreen.routeName: (context) => EventsScreen(),
           EventsManagingScreen.routeName: (context) => EventsManagingScreen(),
+          EventInformationScreen.routeName: (context) =>
+              EventInformationScreen(),
           EventDetailScreen.routeName: (context) => EventDetailScreen(),
           EventEditScreen.routeName: (context) => EventEditScreen(),
         },

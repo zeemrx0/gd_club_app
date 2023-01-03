@@ -9,6 +9,7 @@ class Event with ChangeNotifier {
   DateTime dateTime;
   String? description;
   String organizerId;
+  int noRegisters;
 
   bool isRegistered;
 
@@ -19,6 +20,7 @@ class Event with ChangeNotifier {
     required this.dateTime,
     this.description,
     required this.organizerId,
+    this.noRegisters = 0,
     this.isRegistered = false,
   });
 
@@ -32,6 +34,16 @@ class Event with ChangeNotifier {
         .doc(id)
         .set({
       'dateTime': isRegistered ? null : Timestamp.now(),
+    });
+
+    if (isRegistered) {
+      noRegisters = noRegisters - 1;
+    } else {
+      noRegisters = noRegisters + 1;
+    }
+
+    FirebaseFirestore.instance.collection('events').doc(id).update({
+      'noRegisters': noRegisters,
     });
 
     isRegistered = !isRegistered;

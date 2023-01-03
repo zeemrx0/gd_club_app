@@ -28,7 +28,7 @@ class Events with ChangeNotifier {
     _list = [];
 
     for (var event in eventsData.docs) {
-      bool isRegisted = registrationsData.docs.indexWhere(
+      bool isRegistered = registrationsData.docs.indexWhere(
               (reg) => reg.id == event.id && reg.data()['dateTime'] != null) >
           -1;
       eventList.insert(
@@ -41,7 +41,8 @@ class Events with ChangeNotifier {
               (event.data()['dateTime'] as Timestamp).microsecondsSinceEpoch),
           description: event.data()['description'],
           organizerId: event.data()['organizerId'],
-          isRegistered: isRegisted,
+          noRegisters: event.data()['noRegisters'],
+          isRegistered: isRegistered,
         ),
       );
     }

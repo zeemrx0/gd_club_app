@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event_edit_screen.dart';
+import 'package:gd_club_app/screens/event_information_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class EventItem extends StatelessWidget {
             '${DateFormat.jm().add_yMd().format(event.dateTime)} - ${event.location}',
           ),
           trailing: Consumer<Event>(
-            builder: (context, value, child) => event.isRegistered
+            builder: (context, value, child) => event.isRegistered && !isEdit
                 ? const Icon(
                     Icons.check_circle,
                     color: Colors.green,
@@ -35,10 +36,10 @@ class EventItem extends StatelessWidget {
           onTap: () {
             if (isEdit) {
               Navigator.of(context)
-                  .pushNamed(EventEditScreen.routeName, arguments: event);
-            } else {
-              Navigator.of(context)
                   .pushNamed(EventDetailScreen.routeName, arguments: event);
+            } else {
+              Navigator.of(context).pushNamed(EventInformationScreen.routeName,
+                  arguments: event);
             }
           },
         ),
