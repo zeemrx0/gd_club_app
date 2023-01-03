@@ -25,9 +25,6 @@ class _AuthFormState extends State<AuthForm> {
       if (isValid) {
         _formKey.currentState!.save();
 
-        print(_email);
-        print(_password);
-
         try {
           if (_isLogin) {
             UserCredential userCredential = await FirebaseAuth.instance

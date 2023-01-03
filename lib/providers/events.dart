@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/event.dart';
 
@@ -12,13 +13,24 @@ class Events with ChangeNotifier {
   }
 
   void fetchEvents() async {
-    final eventData = await db.collection('events').orderBy('_createdAt').get();
+    final eventsData =
+        await db.collection('events').orderBy('_createdAt').get();
+
+    User user = FirebaseAuth.instance.currentUser!;
+    final registrationsData = await db
+        .collection('users')
+        .doc(user.uid)
+        .collection('registrations')
+        .get();
 
     var eventList = [];
 
     _list = [];
 
-    for (var event in eventData.docs) {
+    for (var event in eventsData.docs) {
+      bool isRegisted = registrationsData.docs.indexWhere(
+              (reg) => reg.id == event.id && reg.data()['dateTime'] != null) >
+          -1;
       eventList.insert(
         0,
         Event(
@@ -29,7 +41,7 @@ class Events with ChangeNotifier {
               (event.data()['dateTime'] as Timestamp).microsecondsSinceEpoch),
           description: event.data()['description'],
           organizerId: event.data()['organizerId'],
-          isRegistered: false,
+          isRegistered: isRegisted,
         ),
       );
     }
