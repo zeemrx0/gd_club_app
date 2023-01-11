@@ -12,7 +12,9 @@ class EventsManagingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: EventList(),
+      body: EventList(
+        isManaging: true,
+      ),
       appBar: AppBar(
         title: const Text('Quản lý sự kiện'),
         actions: [

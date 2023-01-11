@@ -9,6 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class EventList extends StatefulWidget {
+  final bool isManaging;
+
+  EventList({this.isManaging = false});
+
   @override
   State<EventList> createState() => _EventListState();
 }
@@ -16,14 +20,14 @@ class EventList extends StatefulWidget {
 class _EventListState extends State<EventList> {
   @override
   void initState() {
-    Provider.of<Events>(context, listen: false).fetchEvents();
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final events = Provider.of<Events>(context).allEvents;
+    final events = widget.isManaging
+        ? Provider.of<Events>(context).ownedEvents
+        : Provider.of<Events>(context).allEvents;
 
     return RefreshIndicator(
       onRefresh: () async {

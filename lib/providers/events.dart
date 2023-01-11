@@ -12,6 +12,11 @@ class Events with ChangeNotifier {
     return [..._list];
   }
 
+  List<Event> get ownedEvents {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    return [..._list.where((e) => e.organizerId == userId)];
+  }
+
   void fetchEvents() async {
     final eventsData =
         await db.collection('events').orderBy('_createdAt').get();
