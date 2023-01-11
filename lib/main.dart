@@ -10,6 +10,7 @@ import 'package:gd_club_app/screens/event_information_screen.dart';
 import 'package:gd_club_app/screens/events_managing_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
 import 'package:gd_club_app/screens/home_screen.dart';
+import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -45,14 +46,6 @@ class MyApp extends StatelessWidget {
               return StreamBuilder(
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (context, snapshot) {
-                  FirebaseAuth.instance.authStateChanges().listen((event) {
-                    if (event != null) {
-                      print("Logged in");
-                    } else {
-                      print("Logged out");
-                    }
-                  });
-
                   if (snapshot.hasData) {
                     return HomeScreen();
                   }
@@ -74,12 +67,16 @@ class MyApp extends StatelessWidget {
           },
         ),
         routes: {
-          EventsScreen.routeName: (context) => EventsScreen(),
-          EventsManagingScreen.routeName: (context) => EventsManagingScreen(),
+          EventsScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventsScreen()),
+          EventsManagingScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventsManagingScreen()),
           EventInformationScreen.routeName: (context) =>
-              EventInformationScreen(),
-          EventDetailScreen.routeName: (context) => EventDetailScreen(),
-          EventEditScreen.routeName: (context) => EventEditScreen(),
+              AuthStreamBuilder(child: EventInformationScreen()),
+          EventDetailScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventDetailScreen()),
+          EventEditScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventEditScreen()),
         },
       ),
     );
