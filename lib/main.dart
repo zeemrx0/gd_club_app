@@ -43,16 +43,7 @@ class MyApp extends StatelessWidget {
           future: _appFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return StreamBuilder(
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return HomeScreen();
-                  }
-
-                  return AuthScreen();
-                },
-              );
+              return AuthStreamBuilder(child: HomeScreen());
             }
 
             if (snapshot.hasError) {
