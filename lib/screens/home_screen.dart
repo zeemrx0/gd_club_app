@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
+import 'package:gd_club_app/widgets/events/event_list.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +12,26 @@ class HomeScreen extends StatelessWidget {
     Provider.of<Events>(context, listen: false).fetchEvents();
 
     return Scaffold(
-      body: Text('test'),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Sự kiện đã đăng kí',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Expanded(
+              child: EventList(
+                isRegistered: true,
+              ),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Sắc màu Gia Định'),
       ),

@@ -18,8 +18,8 @@ class EventItem extends StatelessWidget {
     final event = Provider.of<Event>(context);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
+        margin: const EdgeInsets.all(0),
         child: ListTile(
           title: Text(event.title),
           subtitle: Text(

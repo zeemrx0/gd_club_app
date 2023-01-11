@@ -17,6 +17,10 @@ class Events with ChangeNotifier {
     return [..._list.where((e) => e.organizerId == userId)];
   }
 
+  List<Event> get registeredEvents {
+    return [..._list.where((e) => e.isRegistered)];
+  }
+
   void fetchEvents() async {
     final eventsData =
         await db.collection('events').orderBy('_createdAt').get();
