@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/screens/event_qr_code_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class _EventInformationScreenState extends State<EventInformationScreen> {
             title: Text(value.title),
           ),
           body: Container(
-            margin: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 Card(
@@ -70,6 +71,20 @@ class _EventInformationScreenState extends State<EventInformationScreen> {
                     ),
                   ),
                 ),
+                if (value.isRegistered)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(40),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(EventQRCodeScreen.routeName);
+                    },
+                    child: const Text(
+                      'Check in',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 if (value.isRegistered)
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(

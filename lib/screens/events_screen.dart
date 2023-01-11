@@ -12,7 +12,10 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: EventList(),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: EventList(),
+      ),
       appBar: AppBar(
         title: const Text('Sự kiện'),
       ),

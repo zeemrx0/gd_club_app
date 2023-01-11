@@ -7,6 +7,7 @@ import 'package:gd_club_app/screens/auth_screen.dart';
 import 'package:gd_club_app/screens/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:gd_club_app/screens/event_information_screen.dart';
+import 'package:gd_club_app/screens/event_qr_code_screen.dart';
 import 'package:gd_club_app/screens/events_managing_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
 import 'package:gd_club_app/screens/home_screen.dart';
@@ -68,6 +69,8 @@ class MyApp extends StatelessWidget {
               AuthStreamBuilder(child: EventDetailScreen()),
           EventEditScreen.routeName: (context) =>
               AuthStreamBuilder(child: EventEditScreen()),
+          EventQRCodeScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventQRCodeScreen()),
         },
       ),
     );

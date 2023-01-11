@@ -26,22 +26,37 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         title: Text(event.title),
       ),
       body: Container(
-        margin: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(EventEditScreen.routeName, arguments: event);
-              },
-              child: const Text('Chỉnh sửa'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(EventEditScreen.routeName, arguments: event);
+                  },
+                  child: const Text('Check in'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(EventEditScreen.routeName, arguments: event);
+                  },
+                  child: const Text('Chỉnh sửa'),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 12,
             ),
             Card(
               margin: const EdgeInsets.only(bottom: 8.0),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

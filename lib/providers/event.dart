@@ -12,6 +12,7 @@ class Event with ChangeNotifier {
   int noRegisters;
 
   bool isRegistered;
+  bool isCheckedIn;
 
   Event({
     this.id,
@@ -22,6 +23,7 @@ class Event with ChangeNotifier {
     required this.organizerId,
     required this.noRegisters,
     this.isRegistered = false,
+    this.isCheckedIn = false,
   });
 
   void toggleRegistered() {
