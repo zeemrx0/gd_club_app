@@ -20,7 +20,7 @@ class Event with ChangeNotifier {
     required this.dateTime,
     this.description,
     required this.organizerId,
-    this.noRegisters = 0,
+    required this.noRegisters,
     this.isRegistered = false,
   });
 

@@ -9,6 +9,7 @@ import 'package:gd_club_app/screens/event_edit_screen.dart';
 import 'package:gd_club_app/screens/event_information_screen.dart';
 import 'package:gd_club_app/screens/events_managing_screen.dart';
 import 'package:gd_club_app/screens/events_screen.dart';
+import 'package:gd_club_app/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -44,8 +45,16 @@ class MyApp extends StatelessWidget {
               return StreamBuilder(
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (context, snapshot) {
+                  FirebaseAuth.instance.authStateChanges().listen((event) {
+                    if (event != null) {
+                      print("Logged in");
+                    } else {
+                      print("Logged out");
+                    }
+                  });
+
                   if (snapshot.hasData) {
-                    return EventsScreen();
+                    return HomeScreen();
                   }
 
                   return AuthScreen();

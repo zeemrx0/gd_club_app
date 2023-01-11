@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -24,7 +25,8 @@ class _EventEditScreenState extends State<EventEditScreen> {
     title: '',
     location: '',
     dateTime: DateTime.now(),
-    organizerId: '1',
+    organizerId: FirebaseAuth.instance.currentUser!.uid,
+    noRegisters: 0,
   );
 
   void _submitForm() {

@@ -60,6 +60,7 @@ class Events with ChangeNotifier {
       'description': event.description,
       'organizerId': event.organizerId,
       '_createdAt': Timestamp.now(),
+      'noRegisters': 0
     });
 
     event.id = eventData.id;
@@ -76,6 +77,7 @@ class Events with ChangeNotifier {
           location: newEvent.location,
           dateTime: newEvent.dateTime,
           organizerId: newEvent.organizerId,
+          noRegisters: newEvent.noRegisters,
         );
 
         event.id = updatingEvenId;
@@ -90,6 +92,7 @@ class Events with ChangeNotifier {
       'dateTime': newEvent.dateTime,
       'description': newEvent.description,
       'organizerId': newEvent.organizerId,
+      'noRegisters': newEvent.noRegisters,
       '_createdAt': Timestamp.now(),
     });
 
@@ -103,5 +106,9 @@ class Events with ChangeNotifier {
     );
 
     notifyListeners();
+  }
+
+  Event findEventById(String id) {
+    return _list[_list.indexWhere((event) => event.id == id)];
   }
 }

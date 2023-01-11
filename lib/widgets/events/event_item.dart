@@ -15,7 +15,7 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final event = Provider.of<Event>(context, listen: false);
+    final event = Provider.of<Event>(context);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -36,7 +36,7 @@ class EventItem extends StatelessWidget {
           onTap: () {
             if (isEdit) {
               Navigator.of(context)
-                  .pushNamed(EventDetailScreen.routeName, arguments: event);
+                  .pushNamed(EventDetailScreen.routeName, arguments: event.id);
             } else {
               Navigator.of(context).pushNamed(EventInformationScreen.routeName,
                   arguments: event);
