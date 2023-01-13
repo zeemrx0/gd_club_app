@@ -8,14 +8,14 @@ import 'package:gd_club_app/providers/events.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class EventEditScreen extends StatefulWidget {
-  static const routeName = '/event-edit-screen';
+class EditEventScreen extends StatefulWidget {
+  static const routeName = '/edit-event';
 
   @override
-  State<EventEditScreen> createState() => _EventEditScreenState();
+  State<EditEventScreen> createState() => _EditEventScreenState();
 }
 
-class _EventEditScreenState extends State<EventEditScreen> {
+class _EditEventScreenState extends State<EditEventScreen> {
   DateTime _date = DateTime.now();
   DateTime _time = DateTime.now();
 

@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class EventQRCodeScreen extends StatelessWidget {
-  static const routeName = "/qr-code";
+  static const routeName = "/event-qr-code";
 
   const EventQRCodeScreen({super.key});
 

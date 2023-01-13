@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/screens/event/event_edit_screen.dart';
+import 'package:gd_club_app/screens/event/edit_event_screen.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +88,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(
-                              EventEditScreen.routeName,
+                              EditEventScreen.routeName,
                               arguments: event);
                         },
                         child: const Padding(

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class AuthEditScreen extends StatelessWidget {
-  const AuthEditScreen({super.key});
+class EditAccountScreen extends StatelessWidget {
+  static const routeName = "/edit-account";
+
+  const EditAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

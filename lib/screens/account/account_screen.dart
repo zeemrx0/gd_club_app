@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/auth.dart';
+import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,10 @@ class AccountScreen extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(EditAccountScreen.routeName);
+                    },
                     icon: const Icon(Icons.edit),
                   )
                 ],

@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 
-import 'package:gd_club_app/screens/event/events_managing_screen.dart';
+import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/screens/event/events_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -43,7 +43,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text("Quản lý sự kiện"),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(EventsManagingScreen.routeName);
+                  .pushReplacementNamed(ManageEventsScreen.routeName);
             },
           ),
           const Divider(),
