@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_club_app/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({super.key});
@@ -27,12 +29,11 @@ class _AuthFormState extends State<AuthForm> {
 
         try {
           if (_isLogin) {
-            UserCredential userCredential = await FirebaseAuth.instance
-                .signInWithEmailAndPassword(email: _email, password: _password);
+            Provider.of<Auth>(context, listen: false)
+                .signInWithEmailAndPassword(_email, _password);
           } else {
-            UserCredential userCredential = await FirebaseAuth.instance
-                .createUserWithEmailAndPassword(
-                    email: _email, password: _password);
+            Provider.of<Auth>(context, listen: false)
+                .signUpWithEmailAndPassword(_email, _password);
           }
         } on PlatformException catch (e) {
           print(e);

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
-import 'package:gd_club_app/screens/event_detail_screen.dart';
-import 'package:gd_club_app/screens/event_edit_screen.dart';
-import 'package:gd_club_app/screens/event_information_screen.dart';
+import 'package:gd_club_app/screens/event/event_detail_screen.dart';
+import 'package:gd_club_app/screens/event/event_information_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

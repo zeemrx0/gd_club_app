@@ -4,7 +4,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/screens/events_managing_screen.dart';
+import 'package:gd_club_app/screens/event/events_managing_screen.dart';
+
 import 'package:gd_club_app/widgets/events/event_item.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

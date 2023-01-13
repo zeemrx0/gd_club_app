@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:gd_club_app/screens/events_managing_screen.dart';
-import 'package:gd_club_app/screens/events_screen.dart';
+import 'package:gd_club_app/screens/account/account_screen.dart';
+
+import 'package:gd_club_app/screens/event/events_managing_screen.dart';
+import 'package:gd_club_app/screens/event/events_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -42,6 +44,15 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(EventsManagingScreen.routeName);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text("Tài khoản"),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(AccountScreen.routeName);
             },
           ),
           const Divider(),
