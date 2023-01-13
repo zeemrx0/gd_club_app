@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event_edit_screen.dart';
+import 'package:gd_club_app/screens/event_qr_code_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -30,28 +31,28 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(EventEditScreen.routeName, arguments: event);
-                  },
-                  child: const Text('Check in'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(EventEditScreen.routeName, arguments: event);
-                  },
-                  child: const Text('Chỉnh sửa'),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 12,
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         Navigator.of(context).pushNamed(EventQRCodeScreen.routeName,
+            //             arguments: event);
+            //       },
+            //       child: const Text('Check in'),
+            //     ),
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         Navigator.of(context)
+            //             .pushNamed(EventEditScreen.routeName, arguments: event);
+            //       },
+            //       child: const Text('Chỉnh sửa'),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 12,
+            // ),
             Card(
               margin: const EdgeInsets.only(bottom: 8.0),
               child: Container(
@@ -74,6 +75,54 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Divider(),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              EventQRCodeScreen.routeName,
+                              arguments: event);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            'Check in',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Divider(),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              EventEditScreen.routeName,
+                              arguments: event);
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            'Chỉnh sửa',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.orange),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
