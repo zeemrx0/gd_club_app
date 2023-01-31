@@ -49,7 +49,9 @@ class Events with ChangeNotifier {
           dateTime: DateTime.fromMicrosecondsSinceEpoch(
               (event.data()['dateTime'] as Timestamp).microsecondsSinceEpoch),
           description: event.data()['description'],
+          imageUrls: event.data()['imageUrls'],
           organizerId: event.data()['organizerId'],
+          organizerName: event.data()['organizerName'],
           noRegisters: event.data()['noRegisters'],
           isRegistered: isRegistered,
         ),
@@ -85,7 +87,9 @@ class Events with ChangeNotifier {
           title: newEvent.title,
           location: newEvent.location,
           dateTime: newEvent.dateTime,
+          imageUrls: newEvent.imageUrls,
           organizerId: newEvent.organizerId,
+          organizerName: newEvent.organizerName,
           noRegisters: newEvent.noRegisters,
         );
 
@@ -98,6 +102,7 @@ class Events with ChangeNotifier {
     final eventData = await db.collection('events').doc(updatingEvenId).set({
       'title': newEvent.title,
       'location': newEvent.location,
+      'dateTime': newEvent.dateTime,
       'dateTime': newEvent.dateTime,
       'description': newEvent.description,
       'organizerId': newEvent.organizerId,

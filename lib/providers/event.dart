@@ -8,7 +8,9 @@ class Event with ChangeNotifier {
   String location;
   DateTime dateTime;
   String? description;
+  List<dynamic> imageUrls;
   String organizerId;
+  String organizerName;
   int noRegisters;
 
   bool isRegistered;
@@ -20,7 +22,9 @@ class Event with ChangeNotifier {
     required this.location,
     required this.dateTime,
     this.description,
+    this.imageUrls = const [],
     required this.organizerId,
+    required this.organizerName,
     required this.noRegisters,
     this.isRegistered = false,
     this.isCheckedIn = false,

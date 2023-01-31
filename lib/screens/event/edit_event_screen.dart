@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:intl/intl.dart';
@@ -21,11 +22,14 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
+  // final user = Provider.of<Auth>(context, listen: false).name;
+
   Event _newEvent = Event(
     title: '',
     location: '',
     dateTime: DateTime.now(),
-    organizerId: FirebaseAuth.instance.currentUser!.uid,
+    organizerId: '',
+    organizerName: '',
     noRegisters: 0,
   );
 
@@ -97,6 +101,11 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authData = Provider.of<Auth>(context, listen: false);
+
+    _newEvent.organizerId = authData.id!;
+    _newEvent.organizerName = authData.name!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_newEvent.id == null ? 'Tạo sự kiện' : 'Chỉnh sửa sự kiện'),

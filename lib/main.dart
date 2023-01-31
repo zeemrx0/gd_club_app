@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
+import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/screens/auth_screen.dart';
 import 'package:gd_club_app/screens/event/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
               AuthStreamBuilder(child: EventQRCodeScreen()),
           AccountScreen.routeName: (context) =>
               AuthStreamBuilder(child: AccountScreen()),
+          EditAccountScreen.routeName: (context) => EditAccountScreen(),
         },
       ),
     );

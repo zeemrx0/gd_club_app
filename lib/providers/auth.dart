@@ -15,6 +15,10 @@ class Auth with ChangeNotifier {
   String? _name;
   String? _imageUrl;
 
+  String? get id {
+    return _uid;
+  }
+
   String? get name {
     return _name;
   }
