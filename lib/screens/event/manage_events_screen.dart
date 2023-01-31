@@ -13,10 +13,18 @@ class ManageEventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: EventList(
-          isManaging: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/bg.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: EventList(
+            isManaging: true,
+          ),
         ),
       ),
       appBar: AppBar(
