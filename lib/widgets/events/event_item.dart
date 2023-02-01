@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/screens/event/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_information_screen.dart';
@@ -39,28 +40,7 @@ class EventItem extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
           child: Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromARGB(102, 255, 255, 255),
-                  Color.fromARGB(26, 255, 255, 255),
-                ],
-              ),
-              border: const GradientBoxBorder(
-                width: 2,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(102, 255, 255, 255),
-                    Color.fromARGB(26, 255, 255, 255),
-                  ],
-                ),
-              ),
-            ),
+            decoration: CustomDecoration().glass,
             child: Row(
               children: [
                 SizedBox(
