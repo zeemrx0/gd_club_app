@@ -25,10 +25,6 @@ class Auth with ChangeNotifier {
 
   void fetchUserData() async {
     _user = await Users.getUser(FirebaseAuth.instance.currentUser!.uid);
-
-    print(_user!.id);
-    print(_user!.name);
-    print(_user!.imageUrl);
   }
 
   void signInWithEmailAndPassword(String email, String password) async {

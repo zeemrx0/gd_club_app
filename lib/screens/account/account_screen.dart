@@ -15,8 +15,6 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<Auth>(context, listen: false).user;
 
-    print(user!.id);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tài khoản"),
@@ -71,7 +69,7 @@ class AccountScreen extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 32,
-                                backgroundImage: user.imageUrl != null
+                                backgroundImage: user!.imageUrl != null
                                     ? NetworkImage(user.imageUrl!)
                                     : null,
                               ),

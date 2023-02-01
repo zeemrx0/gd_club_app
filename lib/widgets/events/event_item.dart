@@ -63,20 +63,21 @@ class EventItem extends StatelessWidget {
             ),
             child: Row(
               children: [
-                if (event.imageUrls.length >= 1)
-                  SizedBox(
-                    width: 66,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: AspectRatio(
-                        aspectRatio: 1 / 1,
-                        child: Image.network(
-                          event.imageUrls[0],
-                          fit: BoxFit.cover,
-                        ),
+                SizedBox(
+                  width: 66,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: Image.network(
+                        (event.imageUrls.isNotEmpty)
+                            ? event.imageUrls[0]
+                            : "https://img.freepik.com/free-vector/time-management-calendar-method-appointment-planning-business-organizer-people-drawing-mark-work-schedule-cartoon-characters-colleagues-teamwork_335657-2096.jpg?w=2000",
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
+                ),
                 const SizedBox(
                   width: 8,
                 ),

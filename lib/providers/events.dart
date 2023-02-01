@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/providers/Users.dart';
 import 'package:gd_club_app/providers/event.dart';
 
 class Events with ChangeNotifier {
@@ -51,7 +52,8 @@ class Events with ChangeNotifier {
           description: event.data()['description'],
           imageUrls: event.data()['imageUrls'],
           organizerId: event.data()['organizerId'],
-          organizerName: event.data()['organizerName'],
+          organizerName:
+              (await Users.getUser(event.data()['organizerId'])).name,
           noRegisters: event.data()['noRegisters'],
           isRegistered: isRegistered,
         ),
@@ -68,14 +70,16 @@ class Events with ChangeNotifier {
       'title': event.title,
       'location': event.location,
       'dateTime': event.dateTime,
+      'imageUrls': [],
       'description': event.description,
       'organizerId': event.organizerId,
+      'organizerName': event.organizerName,
       '_createdAt': Timestamp.now(),
       'noRegisters': 0
     });
 
     event.id = eventData.id;
-    _list.add(event);
+    _list.insert(0, event);
 
     notifyListeners();
   }

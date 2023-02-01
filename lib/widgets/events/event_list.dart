@@ -45,11 +45,16 @@ class _EventListState extends State<EventList> {
       child: ListView.builder(
         itemCount: events.length,
         itemBuilder: (context, i) {
-          return ChangeNotifierProvider.value(
-            value: events[i],
-            child: EventItem(
-              isEdit: ModalRoute.of(context)!.settings.name ==
-                  ManageEventsScreen.routeName,
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 4,
+            ),
+            child: ChangeNotifierProvider.value(
+              value: events[i],
+              child: EventItem(
+                isEdit: ModalRoute.of(context)!.settings.name ==
+                    ManageEventsScreen.routeName,
+              ),
             ),
           );
         },
