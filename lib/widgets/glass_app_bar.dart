@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/materials/custom_decoration.dart';
+import 'package:gd_club_app/widgets/glass_card.dart';
 
 class GlassAppBar extends StatelessWidget {
   final List<Widget> actions;
@@ -24,23 +25,38 @@ class GlassAppBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: Container(
-                  decoration: CustomDecoration(
-                    borderRadius: 8,
-                  ).glass,
-                  child: const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.white,
+              if (!Navigator.of(context).canPop())
+                GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: GlassCard(
+                    borderRadius: BorderRadius.circular(8),
+                    child: const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
+              if (Navigator.of(context).canPop())
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: GlassCard(
+                    borderRadius: BorderRadius.circular(8),
+                    child: const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               title,
               Container(
                 constraints: const BoxConstraints(
@@ -48,7 +64,16 @@ class GlassAppBar extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    ...this.actions,
+                    ...actions.map(
+                      (action) => Row(
+                        children: [
+                          const SizedBox(
+                            width: 6,
+                          ),
+                          action,
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               )

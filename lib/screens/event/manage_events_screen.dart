@@ -8,6 +8,7 @@ import 'package:gd_club_app/screens/event/edit_event_screen.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_list.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
+import 'package:gd_club_app/widgets/glass_card.dart';
 
 class ManageEventsScreen extends StatelessWidget {
   static const routeName = "/manage-events";
@@ -43,10 +44,7 @@ class ManageEventsScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pushNamed(EditEventScreen.routeName);
                   },
-                  child: Container(
-                    decoration: CustomDecoration(
-                      borderRadius: 8,
-                    ).glass,
+                  child: GlassCard(
                     child: const Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(

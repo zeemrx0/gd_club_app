@@ -5,6 +5,7 @@ import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
+import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:provider/provider.dart';
 
@@ -37,58 +38,53 @@ class AccountScreen extends StatelessWidget {
             GlassAppBar(),
             Padding(
               padding: const EdgeInsets.all(12),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: CustomDecoration().glass,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 32,
-                                    backgroundImage: user!.imageUrl != null
-                                        ? NetworkImage(user.imageUrl!)
-                                        : null,
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
-                                  Text(
-                                    user.name,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(EditAccountScreen.routeName);
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
+              child: GlassCard(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 32,
+                                  backgroundImage: user!.imageUrl != null
+                                      ? NetworkImage(user.imageUrl!)
+                                      : null,
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Text(
+                                  user.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(EditAccountScreen.routeName);
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
