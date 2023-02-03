@@ -7,12 +7,12 @@ import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/screens/auth_screen.dart';
-import 'package:gd_club_app/screens/event/event_detail_screen.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
-import 'package:gd_club_app/screens/event/event_information_screen.dart';
+import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
+import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
-import 'package:gd_club_app/screens/event/events_screen.dart';
+
 import 'package:gd_club_app/screens/home_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
 import 'package:provider/provider.dart';
@@ -65,14 +65,12 @@ class MyApp extends StatelessWidget {
           },
         ),
         routes: {
-          EventsScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventsScreen()),
           ManageEventsScreen.routeName: (context) =>
               AuthStreamBuilder(child: ManageEventsScreen()),
-          EventInformationScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventInformationScreen()),
-          EventDetailScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventDetailScreen()),
+          EventRegistrationInformationScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventRegistrationInformationScreen()),
+          EventManagingDetailScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventManagingDetailScreen()),
           EditEventScreen.routeName: (context) =>
               AuthStreamBuilder(child: EditEventScreen()),
           EventQRCodeScreen.routeName: (context) =>

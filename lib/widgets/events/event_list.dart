@@ -38,10 +38,9 @@ class _EventListState extends State<EventList> {
       events = Provider.of<Events>(context).allEvents;
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        Provider.of<Events>(context, listen: false).fetchEvents();
-      },
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
       child: ListView.builder(
         itemCount: events.length,
         itemBuilder: (context, i) {
