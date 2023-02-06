@@ -1,0 +1,108 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
+import 'package:gd_club_app/widgets/glass_card.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+class EventCard extends StatelessWidget {
+  const EventCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final event = Provider.of<Event>(context);
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          EventRegistrationInformationScreen.routeName,
+          arguments: event,
+        );
+      },
+      child: GlassCard(
+        child: Container(
+          width: 156,
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: AspectRatio(
+                  aspectRatio: 1 / 1,
+                  child: (event.imageUrls.isNotEmpty)
+                      ? Image.network(
+                          event.imageUrls[0],
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          "images/event_illustration.jpeg",
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      event.title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      event.organizerName,
+                      style: TextStyle(
+                        color: Colors.grey[300],
+                        fontSize: 12,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      DateFormat.jm().add_yMd().format(event.dateTime),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      event.location,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

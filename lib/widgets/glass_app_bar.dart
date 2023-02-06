@@ -8,7 +8,7 @@ class GlassAppBar extends StatelessWidget {
   final List<Widget> actions;
   final Widget title;
 
-  const GlassAppBar({
+  GlassAppBar({
     this.title = const Text(""),
     this.actions = const [],
   });

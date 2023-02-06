@@ -46,12 +46,15 @@ class EventItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: AspectRatio(
                     aspectRatio: 1 / 1,
-                    child: Image.network(
-                      (event.imageUrls.isNotEmpty)
-                          ? event.imageUrls[0]
-                          : "https://img.freepik.com/free-vector/time-management-calendar-method-appointment-planning-business-organizer-people-drawing-mark-work-schedule-cartoon-characters-colleagues-teamwork_335657-2096.jpg?w=2000",
-                      fit: BoxFit.cover,
-                    ),
+                    child: (event.imageUrls.isNotEmpty)
+                        ? Image.network(
+                            event.imageUrls[0],
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            "images/event_illustration.jpeg",
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),
