@@ -16,11 +16,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      Provider.of<Events>(context, listen: false).fetchEvents();
+      _isInit = false;
+    }
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Provider.of<Events>(context, listen: false).fetchEvents();
+    print("Rebuild");
+    var allEvents = Provider.of<Events>(context).allEvents;
+    var trendingEvents =
+        allEvents.length >= 6 ? allEvents.sublist(0, 5) : allEvents;
 
-    var events = Provider.of<Events>(context).allEvents;
+    var registeredEvents = Provider.of<Events>(context).registeredEvents;
+    if (registeredEvents.length >= 2) {
+      registeredEvents = registeredEvents.sublist(0, 1);
+    }
 
     return Scaffold(
       drawer: Theme(
@@ -57,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       horizontal: 12,
                     ),
                     child: Text(
-                      'Nhắc nhở',
+                      'Đã đăng ký',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -74,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Column(
                       children: [
-                        ...events.map(
+                        ...registeredEvents.map(
                           (event) => Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: 4,
@@ -93,7 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Padding(
+
+                  // Trending events
+                  const Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 12,
                     ),
@@ -113,22 +133,74 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                     ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 248,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ...trendingEvents.map(
+                            (event) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4,
+                              ),
+                              child: ChangeNotifierProvider.value(
+                                value: event,
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    right: 8,
+                                  ),
+                                  child: EventCard(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                    ),
+                    child: Text(
+                      'Có thể bạn sẽ thích',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                    ),
                     child: Column(
                       children: [
-                        ...events.map(
+                        ...allEvents.map(
                           (event) => Padding(
                             padding: const EdgeInsets.symmetric(
                               vertical: 4,
                             ),
                             child: ChangeNotifierProvider.value(
                               value: event,
-                              child: EventCard(),
+                              child: EventItem(
+                                isEdit: false,
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
