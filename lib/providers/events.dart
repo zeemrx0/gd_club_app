@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/Users.dart';
 import 'package:gd_club_app/providers/event.dart';
+import 'package:uuid/uuid.dart';
 
 class Events with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -65,12 +69,28 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  void addEvent(Event event) async {
+  void addEvent(Event event, File? image) async {
+    final imageId = Uuid().v4();
+
+    final imageUrls = [];
+    if (image != null) {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('event_images')
+          .child('$imageId.jpg');
+
+      await ref.putFile(image);
+
+      final url = await ref.getDownloadURL();
+
+      imageUrls.add(url);
+    }
+
     final eventData = await db.collection('events').add({
       'title': event.title,
       'location': event.location,
       'dateTime': event.dateTime,
-      'imageUrls': [],
+      'imageUrls': imageUrls,
       'description': event.description,
       'organizerId': event.organizerId,
       'organizerName': event.organizerName,
