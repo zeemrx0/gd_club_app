@@ -1,20 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 
 import 'package:gd_club_app/widgets/events/event_item.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 
 class EventList extends StatefulWidget {
   final bool isManaging;
   final bool isRegistered;
 
-  EventList({this.isManaging = false, this.isRegistered = false});
+  const EventList(
+      {super.key, this.isManaging = false, this.isRegistered = false});
 
   @override
   State<EventList> createState() => _EventListState();

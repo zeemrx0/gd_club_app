@@ -1,18 +1,13 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
-import 'package:gradient_borders/gradient_borders.dart';
 import 'package:provider/provider.dart';
 
 class AccountScreen extends StatelessWidget {
-  static const routeName = "/account";
-
-  const AccountScreen({super.key});
+  static const routeName = '/account';
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +18,19 @@ class AccountScreen extends StatelessWidget {
         data: Theme.of(context).copyWith(
           canvasColor: Colors.transparent,
         ),
-        child: AppDrawer(),
+        child: const AppDrawer(),
       ),
       body: Container(
         height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/bg.jpg"),
+            image: AssetImage('images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: [
-            GlassAppBar(),
+            const GlassAppBar(),
             Padding(
               padding: const EdgeInsets.all(12),
               child: GlassCard(

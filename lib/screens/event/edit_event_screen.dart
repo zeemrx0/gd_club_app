@@ -1,13 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
@@ -30,8 +23,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // final user = Provider.of<Auth>(context, listen: false).name;
-
   Event _newEvent = Event(
     title: '',
     location: '',
@@ -43,7 +34,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   void _submitForm() {
     if (_formKey.currentState != null) {
-      bool isValid = _formKey.currentState!.validate();
+      final bool isValid = _formKey.currentState!.validate();
 
       if (isValid) {
         _formKey.currentState!.save();
@@ -71,7 +62,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     }
   }
 
-  void deleteEvent() async {
+  Future<void> deleteEvent() async {
     await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -101,7 +92,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   final _imagePicker = ImagePicker();
   File? _eventImage;
 
-  void _pickImage() async {
+  Future<void> _pickImage() async {
     try {
       final pickedImageFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
@@ -112,9 +103,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       setState(() {
         _eventImage = File(pickedImageFile!.path);
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
   @override
@@ -138,7 +127,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/bg.jpg"),
+            image: AssetImage('images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -151,8 +140,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     onTap: () {
                       deleteEvent();
                     },
-                    child: GlassCard(
-                      child: const Padding(
+                    child: const GlassCard(
+                      child: Padding(
                         padding: EdgeInsets.all(4),
                         child: Icon(
                           Icons.delete_forever,
@@ -165,8 +154,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   onTap: () {
                     _submitForm();
                   },
-                  child: GlassCard(
-                    child: const Padding(
+                  child: const GlassCard(
+                    child: Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(
                         Icons.check,
@@ -185,7 +174,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: Column(
                     children: [
                       // Images
-                      ClipRRect(
+                      GlassCard(
                         borderRadius: BorderRadius.circular(
                           10,
                         ),
@@ -193,19 +182,23 @@ class _EditEventScreenState extends State<EditEventScreen> {
                           onTap: () {
                             _pickImage();
                           },
+                          behavior: HitTestBehavior.translucent,
                           child: AspectRatio(
                             aspectRatio: 1 / 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                              ),
-                              child: _eventImage != null
-                                  ? Image.file(
-                                      _eventImage!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
-                            ),
+                            child: _eventImage != null
+                                ? Image.file(
+                                    _eventImage!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Center(
+                                    child: Text(
+                                      'Thêm hình ảnh',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
@@ -226,13 +219,12 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                     isDense: true,
                                     hintText: 'Tên sự kiện',
                                     border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(
+                                    contentPadding: const EdgeInsets.only(
                                       bottom: 4,
                                     ),
-                                    errorStyle: TextStyle(height: 0),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.red),
+                                    errorStyle: const TextStyle(height: 0),
+                                    errorBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
                                     ),
                                     hintStyle: TextStyle(
                                       color: Colors.grey[300],
@@ -269,9 +261,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                       bottom: 4,
                                     ),
                                     errorStyle: const TextStyle(height: 0),
-                                    errorBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.red),
+                                    errorBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
                                     ),
                                     hintStyle: TextStyle(
                                       color: Colors.grey[300],
@@ -302,7 +293,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                     Flexible(
                                       child: GestureDetector(
                                         onTap: () async {
-                                          DateTime? pickedDate =
+                                          final DateTime? pickedDate =
                                               await showDatePicker(
                                             context: context,
                                             initialDate: _date,
@@ -330,7 +321,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                               ),
                                               Text(
                                                 DateFormat.yMd().format(_date),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -345,7 +336,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                     Flexible(
                                       child: GestureDetector(
                                         onTap: () async {
-                                          DateTime? pickedTime =
+                                          final DateTime? pickedTime =
                                               await DatePicker.showTimePicker(
                                             context,
                                             currentTime: _time,
@@ -373,7 +364,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                               // Text(_timeOfDay.toString().substring(10, 15)),
                                               Text(
                                                 DateFormat.Hm().format(_time),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -392,7 +383,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
                                       color: Colors.grey[400]!,
-                                      width: 1,
                                     ),
                                   ),
                                   child: TextFormField(
@@ -407,7 +397,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                     minLines: 1,

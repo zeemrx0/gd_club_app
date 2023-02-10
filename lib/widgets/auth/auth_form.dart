@@ -1,14 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:provider/provider.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
-
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
@@ -20,9 +15,9 @@ class _AuthFormState extends State<AuthForm> {
   String _email = '';
   String _password = '';
 
-  void _submitForm() async {
+  Future<void> _submitForm() async {
     if (_formKey.currentState != null) {
-      bool isValid = _formKey.currentState!.validate();
+      final bool isValid = _formKey.currentState!.validate();
 
       if (isValid) {
         _formKey.currentState!.save();
@@ -36,9 +31,9 @@ class _AuthFormState extends State<AuthForm> {
                 .signUpWithEmailAndPassword(_email, _password);
           }
         } on PlatformException catch (e) {
-          print(e);
+          // print(e);
         } catch (e) {
-          print(e);
+          // print(e);
         }
       }
     }
