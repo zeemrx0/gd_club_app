@@ -1,14 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +24,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // final user = Provider.of<Auth>(context, listen: false).name;
-
   Event _newEvent = Event(
     title: '',
     location: '',
@@ -38,7 +35,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   void _submitForm() {
     if (_formKey.currentState != null) {
-      bool isValid = _formKey.currentState!.validate();
+      final bool isValid = _formKey.currentState!.validate();
 
       if (isValid) {
         _formKey.currentState!.save();
@@ -57,7 +54,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
               .updateEvent(_newEvent.id!, _newEvent);
         } else {
           // Otherwise -> Create mode
-          Provider.of<Events>(context, listen: false).addEvent(_newEvent);
+          Provider.of<Events>(context, listen: false)
+              .addEvent(_newEvent, _eventImage);
         }
 
         Navigator.of(context).pop();
@@ -65,7 +63,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     }
   }
 
-  void deleteEvent() async {
+  Future<void> deleteEvent() async {
     await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -92,6 +90,23 @@ class _EditEventScreenState extends State<EditEventScreen> {
     );
   }
 
+  final _imagePicker = ImagePicker();
+  File? _eventImage;
+
+  Future<void> _pickImage() async {
+    try {
+      final pickedImageFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1080,
+        maxHeight: 1080,
+      );
+
+      setState(() {
+        _eventImage = File(pickedImageFile!.path);
+      });
+    } catch (e) {}
+  }
+
   @override
   void didChangeDependencies() {
     if (ModalRoute.of(context)!.settings.arguments != null) {
@@ -113,7 +128,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/bg.jpg"),
+            image: AssetImage('images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -126,8 +141,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     onTap: () {
                       deleteEvent();
                     },
-                    child: GlassCard(
-                      child: const Padding(
+                    child: const GlassCard(
+                      child: Padding(
                         padding: EdgeInsets.all(4),
                         child: Icon(
                           Icons.delete_forever,
@@ -140,8 +155,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   onTap: () {
                     _submitForm();
                   },
-                  child: GlassCard(
-                    child: const Padding(
+                  child: const GlassCard(
+                    child: Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(
                         Icons.check,
@@ -152,182 +167,259 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              child: GlassCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            hintText: 'Tên sự kiện',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.only(
-                              bottom: 4,
-                            ),
-                            errorStyle: TextStyle(height: 0),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.red),
-                            ),
-                          ),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          initialValue: _newEvent.title,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-
-                            return null;
-                          },
-                          onSaved: (newValue) {
-                            if (newValue != null) {
-                              _newEvent.title = newValue;
-                            }
-                          },
+            Expanded(
+              child: ListView(children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                  child: Column(
+                    children: [
+                      // Images
+                      GlassCard(
+                        borderRadius: BorderRadius.circular(
+                          10,
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            hintText: 'Địa điểm',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.only(
-                              bottom: 4,
-                            ),
-                            errorStyle: TextStyle(height: 0),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.red),
-                            ),
-                          ),
-                          initialValue: _newEvent.location,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-
-                            return null;
+                        child: GestureDetector(
+                          onTap: () {
+                            _pickImage();
                           },
-                          onSaved: (newValue) {
-                            if (newValue != null) {
-                              _newEvent.location = newValue;
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  // DateTime? pickedDate = await DatePicker.showDatePicker(
-                                  //   context,
-                                  //   currentTime: _date,
-                                  //   locale: LocaleType.vi,
-                                  // );
-
-                                  DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: _date,
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime(2030, 12, 31),
-                                    locale: const Locale('vi'),
-                                  );
-
-                                  setState(() {
-                                    _date = pickedDate ?? _date;
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 4,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.date_range),
-                                      const SizedBox(
-                                        width: 8,
+                          behavior: HitTestBehavior.translucent,
+                          child: AspectRatio(
+                            aspectRatio: 1 / 1,
+                            child: _eventImage != null
+                                ? Image.file(
+                                    _eventImage!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Center(
+                                    child: Text(
+                                      'Thêm hình ảnh',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 16,
                                       ),
-                                      Text(DateFormat.yMd().format(_date)),
-                                    ],
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 16,
+                      ),
+
+                      GlassCard(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: 'Tên sự kiện',
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                      bottom: 4,
+                                    ),
+                                    errorStyle: const TextStyle(height: 0),
+                                    errorBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
+                                    ),
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[300],
+                                    ),
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  initialValue: _newEvent.title,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return '';
+                                    }
+
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    if (newValue != null) {
+                                      _newEvent.title = newValue;
+                                    }
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: 'Địa điểm',
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                      bottom: 4,
+                                    ),
+                                    errorStyle: const TextStyle(height: 0),
+                                    errorBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
+                                    ),
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[300],
+                                    ),
+                                  ),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  initialValue: _newEvent.location,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return '';
+                                    }
+
+                                    return null;
+                                  },
+                                  onSaved: (newValue) {
+                                    if (newValue != null) {
+                                      _newEvent.location = newValue;
+                                    }
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final DateTime? pickedDate =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: _date,
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime(2030, 12, 31),
+                                            locale: const Locale('vi'),
+                                          );
+
+                                          setState(() {
+                                            _date = pickedDate ?? _date;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.date_range,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                DateFormat.yMd().format(_date),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Flexible(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          final DateTime? pickedTime =
+                                              await DatePicker.showTimePicker(
+                                            context,
+                                            currentTime: _time,
+                                            showSecondsColumn: false,
+                                            locale: LocaleType.vi,
+                                          );
+
+                                          setState(() {
+                                            _time = pickedTime ?? _time;
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.access_time,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              // Text(_timeOfDay.toString().substring(10, 15)),
+                                              Text(
+                                                DateFormat.Hm().format(_time),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(
+                                      color: Colors.grey[400]!,
+                                    ),
+                                  ),
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      hintText: 'Mô tả',
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8,
+                                        horizontal: 12,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    minLines: 1,
+                                    maxLines: 100,
+                                    initialValue: _newEvent.description,
+                                    onSaved: (newValue) {
+                                      if (newValue != null) {
+                                        _newEvent.description = newValue;
+                                      }
+                                    },
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            Flexible(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  DateTime? pickedTime =
-                                      await DatePicker.showTimePicker(
-                                    context,
-                                    currentTime: _time,
-                                    showSecondsColumn: false,
-                                    locale: LocaleType.vi,
-                                  );
-
-                                  setState(() {
-                                    _time = pickedTime ?? _time;
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 4,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.access_time),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      // Text(_timeOfDay.toString().substring(10, 15)),
-                                      Text(DateFormat.Hm().format(_time)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: 'Mô tả',
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 12,
+                              ],
                             ),
                           ),
-                          maxLines: 6,
-                          initialValue: _newEvent.description,
-                          onSaved: (newValue) {
-                            if (newValue != null) {
-                              _newEvent.description = newValue;
-                            }
-                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              ]),
             ),
           ],
         ),

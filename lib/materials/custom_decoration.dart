@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 
@@ -15,7 +13,7 @@ class CustomDecoration {
         end: Alignment.bottomRight,
         colors: [
           Colors.white.withOpacity(opacity),
-          Colors.white.withOpacity(0.1),
+          Colors.white.withOpacity(0.05),
         ],
       ),
       border: GradientBoxBorder(
@@ -34,6 +32,6 @@ class CustomDecoration {
 
   CustomDecoration({
     this.borderRadius,
-    this.opacity = 0.3,
+    this.opacity = 0.2,
   });
 }

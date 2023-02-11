@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/Users.dart';
 import 'package:gd_club_app/providers/event.dart';
+import 'package:uuid/uuid.dart';
 
 class Events with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -14,7 +18,7 @@ class Events with ChangeNotifier {
   }
 
   List<Event> get ownedEvents {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
     return [..._list.where((e) => e.organizerId == userId)];
   }
 
@@ -22,39 +26,41 @@ class Events with ChangeNotifier {
     return [..._list.where((e) => e.isRegistered)];
   }
 
-  void fetchEvents() async {
+  Future<void> fetchEvents() async {
     final eventsData =
         await db.collection('events').orderBy('_createdAt').get();
 
-    User user = FirebaseAuth.instance.currentUser!;
+    final User user = FirebaseAuth.instance.currentUser!;
     final registrationsData = await db
         .collection('users')
         .doc(user.uid)
         .collection('registrations')
         .get();
 
-    var eventList = [];
+    final List<Event> eventList = [];
 
     _list = [];
 
-    for (var event in eventsData.docs) {
-      bool isRegistered = registrationsData.docs.indexWhere(
+    for (final event in eventsData.docs) {
+      final bool isRegistered = registrationsData.docs.indexWhere(
               (reg) => reg.id == event.id && reg.data()['dateTime'] != null) >
           -1;
       eventList.insert(
         0,
         Event(
           id: event.id,
-          title: event.data()['title'],
-          location: event.data()['location'],
+          title: event.data()['title'] as String,
+          location: event.data()['location'] as String,
           dateTime: DateTime.fromMicrosecondsSinceEpoch(
               (event.data()['dateTime'] as Timestamp).microsecondsSinceEpoch),
-          description: event.data()['description'],
-          imageUrls: event.data()['imageUrls'],
-          organizerId: event.data()['organizerId'],
+          description: event.data()['description'] as String,
+          imageUrls: (event.data()['imageUrls'] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+          organizerId: event.data()['organizerId'] as String,
           organizerName:
-              (await Users.getUser(event.data()['organizerId'])).name,
-          noRegisters: event.data()['noRegisters'],
+              (await Users.getUser(event.data()['organizerId'] as String)).name,
+          noRegisters: event.data()['noRegisters'] as int,
           isRegistered: isRegistered,
         ),
       );
@@ -65,12 +71,28 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  void addEvent(Event event) async {
+  Future<void> addEvent(Event event, File? image) async {
+    final String imageId = const Uuid().v4();
+
+    final List<String> imageUrls = [];
+    if (image != null) {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('event_images')
+          .child('$imageId.jpg');
+
+      await ref.putFile(image);
+
+      final url = await ref.getDownloadURL();
+
+      imageUrls.add(url);
+    }
+
     final eventData = await db.collection('events').add({
       'title': event.title,
       'location': event.location,
       'dateTime': event.dateTime,
-      'imageUrls': [],
+      'imageUrls': imageUrls,
       'description': event.description,
       'organizerId': event.organizerId,
       'organizerName': event.organizerName,
@@ -84,7 +106,7 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateEvent(String updatingEvenId, Event newEvent) async {
+  Future<void> updateEvent(String updatingEvenId, Event newEvent) async {
     for (Event event in _list) {
       if (event.id == updatingEvenId) {
         event = Event(
@@ -104,7 +126,7 @@ class Events with ChangeNotifier {
       }
     }
 
-    final eventData = await db.collection('events').doc(updatingEvenId).set({
+    await db.collection('events').doc(updatingEvenId).set({
       'title': newEvent.title,
       'location': newEvent.location,
       'dateTime': newEvent.dateTime,
@@ -118,7 +140,7 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteEvent(String deletingEventId) async {
+  Future<void> deleteEvent(String deletingEventId) async {
     await db.collection('events').doc(deletingEventId).delete();
     _list.removeWhere(
       (event) => event.id == deletingEventId,
@@ -129,5 +151,13 @@ class Events with ChangeNotifier {
 
   Event findEventById(String id) {
     return _list[_list.indexWhere((event) => event.id == id)];
+  }
+
+  void toggleEventRegisteredStatus(String id) {
+    final event = _list.firstWhere((event) => event.id == id);
+
+    event.toggleRegistered();
+
+    notifyListeners();
   }
 }

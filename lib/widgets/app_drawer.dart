@@ -1,12 +1,6 @@
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
-
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
 
@@ -35,7 +29,7 @@ class AppDrawer extends StatelessWidget {
                 color: Colors.white,
               ),
               title: const Text(
-                "Trang chủ",
+                'Trang chủ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -52,7 +46,7 @@ class AppDrawer extends StatelessWidget {
                 color: Colors.white,
               ),
               title: const Text(
-                "Quản lý sự kiện",
+                'Quản lý sự kiện',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -70,7 +64,7 @@ class AppDrawer extends StatelessWidget {
                 color: Colors.white,
               ),
               title: const Text(
-                "Tài khoản",
+                'Tài khoản',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -88,7 +82,7 @@ class AppDrawer extends StatelessWidget {
                 color: Colors.red[300],
               ),
               title: Text(
-                "Đăng xuất",
+                'Đăng xuất',
                 style: TextStyle(
                   color: Colors.red[300],
                   fontSize: 16,

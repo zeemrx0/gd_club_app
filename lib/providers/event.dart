@@ -8,7 +8,7 @@ class Event with ChangeNotifier {
   String location;
   DateTime dateTime;
   String? description;
-  List<dynamic> imageUrls;
+  List<String> imageUrls;
   String organizerId;
   String organizerName;
   int noRegisters;
@@ -31,7 +31,7 @@ class Event with ChangeNotifier {
   });
 
   void toggleRegistered() {
-    User user = FirebaseAuth.instance.currentUser!;
+    final User user = FirebaseAuth.instance.currentUser!;
 
     FirebaseFirestore.instance
         .collection('users')

@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
-
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_list.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
 
 class ManageEventsScreen extends StatelessWidget {
-  static const routeName = "/manage-events";
+  static const routeName = '/manage-events';
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +20,7 @@ class ManageEventsScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/bg.jpg"),
+            image: AssetImage('images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -44,8 +39,8 @@ class ManageEventsScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pushNamed(EditEventScreen.routeName);
                   },
-                  child: GlassCard(
-                    child: const Padding(
+                  child: const GlassCard(
+                    child: Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(
                         Icons.add,
@@ -56,9 +51,9 @@ class ManageEventsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: 12,
                 ),
                 child: EventList(

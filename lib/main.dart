@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -6,13 +5,11 @@ import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
-import 'package:gd_club_app/screens/auth_screen.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
-import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
+import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
-
 import 'package:gd_club_app/screens/home_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
 import 'package:provider/provider.dart';
@@ -74,10 +71,10 @@ class MyApp extends StatelessWidget {
           EditEventScreen.routeName: (context) =>
               AuthStreamBuilder(child: EditEventScreen()),
           EventQRCodeScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventQRCodeScreen()),
+              const AuthStreamBuilder(child: EventQRCodeScreen()),
           AccountScreen.routeName: (context) =>
               AuthStreamBuilder(child: AccountScreen()),
-          EditAccountScreen.routeName: (context) => EditAccountScreen(),
+          EditAccountScreen.routeName: (context) => const EditAccountScreen(),
         },
       ),
     );

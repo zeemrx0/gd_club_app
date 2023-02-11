@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
@@ -28,7 +26,7 @@ class EventCard extends StatelessWidget {
           child: Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(8),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: (event.imageUrls.isNotEmpty)
@@ -37,7 +35,7 @@ class EventCard extends StatelessWidget {
                           fit: BoxFit.cover,
                         )
                       : Image.asset(
-                          "images/event_illustration.jpeg",
+                          'images/event_illustration.jpeg',
                           fit: BoxFit.cover,
                         ),
                 ),

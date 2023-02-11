@@ -1,16 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
-import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
-import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class EventManagingDetailScreen extends StatefulWidget {
@@ -32,7 +24,7 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/bg.jpg"),
+            image: AssetImage('images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
