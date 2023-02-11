@@ -13,18 +13,10 @@ class Auth with ChangeNotifier {
   // DateTime? _expiryTime;
   // Timer? _authTimer;
 
-  app_user.User? _user;
-
-  app_user.User? get user {
-    return _user;
-  }
-
-  void setUser(app_user.User user) {
-    _user = user;
-  }
+  app_user.User? user;
 
   Future<void> fetchUserData() async {
-    _user = await Users.getUser(FirebaseAuth.instance.currentUser!.uid);
+    user = await Users.getUser(FirebaseAuth.instance.currentUser!.uid);
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {

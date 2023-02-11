@@ -15,7 +15,7 @@ class ManageEventsScreen extends StatelessWidget {
         data: Theme.of(context).copyWith(
           canvasColor: Colors.transparent,
         ),
-        child: const AppDrawer(),
+        child: AppDrawer(),
       ),
       body: Container(
         decoration: const BoxDecoration(

@@ -30,7 +30,7 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
         ),
         child: Column(
           children: [
-            const GlassAppBar(),
+            GlassAppBar(),
             Container(
               margin: const EdgeInsets.symmetric(
                 horizontal: 12,
