@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/Users.dart';
+import 'package:gd_club_app/providers/accounts.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:uuid/uuid.dart';
 
@@ -58,8 +58,10 @@ class Events with ChangeNotifier {
               .map((e) => e.toString())
               .toList(),
           organizerId: event.data()['organizerId'] as String,
-          organizerName:
-              (await Users.getUser(event.data()['organizerId'] as String)).name,
+          organizerName: (await Accounts.getAccount(
+                  event.data()['organizerId'] as String,
+                  FirebaseAuth.instance.currentUser!.email!))
+              .name,
           noRegisters: event.data()['noRegisters'] as int,
           isRegistered: isRegistered,
         ),

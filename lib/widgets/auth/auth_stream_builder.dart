@@ -15,7 +15,7 @@ class AuthStreamBuilder extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          Provider.of<Auth>(context, listen: false).fetchUserData();
+          Provider.of<Auth>(context, listen: false).fetchAccountData();
 
           return child;
         }

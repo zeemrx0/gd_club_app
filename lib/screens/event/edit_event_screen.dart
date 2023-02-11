@@ -121,8 +121,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
   Widget build(BuildContext context) {
     final authData = Provider.of<Auth>(context, listen: false);
 
-    _newEvent.organizerId = authData.user!.id;
-    _newEvent.organizerName = authData.user!.name;
+    _newEvent.organizerId = authData.account!.id;
+    _newEvent.organizerName = authData.account!.name;
 
     return Scaffold(
       body: Container(

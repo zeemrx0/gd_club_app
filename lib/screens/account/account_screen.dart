@@ -11,7 +11,7 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Auth>(context, listen: false).user;
+    final account = Provider.of<Auth>(context, listen: false).account;
 
     return Scaffold(
       drawer: Theme(
@@ -48,15 +48,15 @@ class AccountScreen extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 32,
-                                  backgroundImage: user!.imageUrl != null
-                                      ? NetworkImage(user.imageUrl!)
+                                  backgroundImage: account!.imageUrl != null
+                                      ? NetworkImage(account.imageUrl!)
                                       : null,
                                 ),
                                 const SizedBox(
                                   width: 16,
                                 ),
                                 Text(
-                                  user.name,
+                                  account.name,
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,

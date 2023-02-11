@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/providers/role.dart';
 
 class Event with ChangeNotifier {
   String? id;
@@ -12,6 +13,8 @@ class Event with ChangeNotifier {
   String organizerId;
   String organizerName;
   int noRegisters;
+
+  List<Role> allowedRoles;
 
   bool isRegistered;
   bool isCheckedIn;
@@ -26,6 +29,7 @@ class Event with ChangeNotifier {
     required this.organizerId,
     required this.organizerName,
     required this.noRegisters,
+    this.allowedRoles = const [],
     this.isRegistered = false,
     this.isCheckedIn = false,
   });
