@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_card.dart';
 import 'package:gd_club_app/widgets/events/event_item.dart';
-import 'package:gd_club_app/widgets/events/trending_event_list.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
-import 'package:gd_club_app/widgets/app_drawer.dart';
-import 'package:gd_club_app/widgets/events/event_list.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,12 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuild");
-    var allEvents = Provider.of<Events>(context).allEvents;
-    var trendingEvents =
+    final allEvents = Provider.of<Events>(context).allEvents;
+
+    final trendingEvents =
         allEvents.length >= 6 ? allEvents.sublist(0, 5) : allEvents;
 
     var registeredEvents = Provider.of<Events>(context).registeredEvents;
+
     if (registeredEvents.length >= 2) {
       registeredEvents = registeredEvents.sublist(0, 1);
     }
@@ -45,21 +42,21 @@ class _HomeScreenState extends State<HomeScreen> {
         data: Theme.of(context).copyWith(
           canvasColor: Colors.transparent,
         ),
-        child: AppDrawer(),
+        child: const AppDrawer(),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/bg.jpg"),
+            image: AssetImage('images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: [
-            GlassAppBar(
-              title: const Text(
+            const GlassAppBar(
+              title: Text(
                 'Sắc màu Gia Định',
                 style: TextStyle(
                   color: Colors.white,
@@ -99,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: ChangeNotifierProvider.value(
                               value: event,
-                              child: EventItem(
+                              child: const EventItem(
                                 isEdit: false,
                               ),
                             ),
@@ -150,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   margin: const EdgeInsets.only(
                                     right: 8,
                                   ),
-                                  child: EventCard(),
+                                  child: const EventCard(),
                                 ),
                               ),
                             ),
@@ -192,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: ChangeNotifierProvider.value(
                               value: event,
-                              child: EventItem(
+                              child: const EventItem(
                                 isEdit: false,
                               ),
                             ),

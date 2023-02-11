@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gd_club_app/materials/custom_decoration.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
 
 class GlassAppBar extends StatelessWidget {
   final List<Widget> actions;
   final Widget title;
 
-  GlassAppBar({
-    this.title = const Text(""),
+  const GlassAppBar({
+    this.title = const Text(''),
     this.actions = const [],
   });
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
@@ -26,70 +25,128 @@ class _EventRegistrationInformationScreenState
     return ChangeNotifierProvider.value(
       value: event,
       child: Consumer<Event>(
-        builder: (context, value, child) => Scaffold(
-          // appBar: AppBar(
-          //   title: Text(value.title),
-          // ),
+        builder: (context, eventValue, child) => Scaffold(
           body: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("images/bg.jpg"),
+                image: AssetImage('images/bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
             child: Column(
               children: [
-                GlassAppBar(),
+                const GlassAppBar(),
                 Container(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 12,
                   ),
                   child: Column(
                     children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: AspectRatio(
+                          aspectRatio: 1 / 1,
+                          child: eventValue.imageUrls.isNotEmpty
+                              ? Image.network(
+                                  eventValue.imageUrls[0],
+                                  fit: BoxFit.cover,
+                                )
+                              : GlassCard(
+                                  child: Center(
+                                    child: Text(
+                                      'Chưa có hình ảnh',
+                                      style: TextStyle(
+                                        color: Colors.grey[400],
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
                       GlassCard(
                         child: Container(
                           width: double.infinity,
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(12),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 'Thời gian',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(
                                 height: 8,
                               ),
-                              Text(DateFormat.jm()
-                                  .add_yMd()
-                                  .format(value.dateTime)),
+                              Text(
+                                DateFormat.jm()
+                                    .add_yMd()
+                                    .format(eventValue.dateTime),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
                               const SizedBox(
                                 height: 16.0,
                               ),
                               const Text(
                                 'Địa điểm',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(
                                 height: 8,
                               ),
-                              Text(value.location),
+                              Text(
+                                eventValue.location,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
                               const SizedBox(
                                 height: 16.0,
                               ),
                               const Text(
                                 'Mô tả',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(
                                 height: 8,
                               ),
-                              Text(value.description ?? ''),
+                              Text(
+                                (eventValue.description != null &&
+                                        eventValue.description != '')
+                                    ? eventValue.description!
+                                    : '(Không có mô tả)',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      if (value.isRegistered)
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      if (eventValue.isRegistered)
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(40),
@@ -103,7 +160,7 @@ class _EventRegistrationInformationScreenState
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                      if (value.isRegistered)
+                      if (eventValue.isRegistered)
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(40),
@@ -111,14 +168,15 @@ class _EventRegistrationInformationScreenState
                             foregroundColor: Colors.white,
                           ),
                           onPressed: () {
-                            value.toggleRegistered();
+                            Provider.of<Events>(context, listen: false)
+                                .toggleEventRegisteredStatus(eventValue.id!);
                           },
                           child: const Text(
                             'Hủy đăng kí',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                      if (!value.isRegistered)
+                      if (!eventValue.isRegistered)
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(40),
@@ -126,7 +184,8 @@ class _EventRegistrationInformationScreenState
                             foregroundColor: Colors.white,
                           ),
                           onPressed: () {
-                            value.toggleRegistered();
+                            Provider.of<Events>(context, listen: false)
+                                .toggleEventRegisteredStatus(eventValue.id!);
                           },
                           child: const Text(
                             'Đăng kí',
