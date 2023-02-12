@@ -70,6 +70,8 @@ class MyApp extends StatelessWidget {
           },
         ),
         routes: {
+          HomeScreen.routeName: (context) =>
+              AuthStreamBuilder(child: HomeScreen()),
           ManageEventsScreen.routeName: (context) =>
               AuthStreamBuilder(child: ManageEventsScreen()),
           EventRegistrationInformationScreen.routeName: (context) =>

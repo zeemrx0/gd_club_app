@@ -8,6 +8,7 @@ import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -137,22 +138,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          // ...trendingEvents.map(
-                          //   (event) => Padding(
-                          //     padding: const EdgeInsets.symmetric(
-                          //       vertical: 4,
-                          //     ),
-                          //     child: ChangeNotifierProvider.value(
-                          //       value: event,
-                          //       child: Container(
-                          //         margin: const EdgeInsets.only(
-                          //           right: 8,
-                          //         ),
-                          //         child: const EventCard(),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                          ...trendingEvents.map(
+                            (event) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4,
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  right: 8,
+                                ),
+                                child: EventCard(
+                                  event: event,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

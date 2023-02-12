@@ -3,20 +3,19 @@ import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key});
+  final Event event;
+
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
-    final event = Provider.of<Event>(context);
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
           EventRegistrationInformationScreen.routeName,
-          arguments: event,
+          arguments: event.id,
         );
       },
       child: GlassCard(
