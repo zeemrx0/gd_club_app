@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Registrations>(context).fetchRegistrations();
-    Provider.of<Events>(context).fetchEvents();
+    Provider.of<Registrations>(context, listen: false).fetchRegistrations();
+    Provider.of<Events>(context, listen: false).fetchEvents();
 
     final allEvents = Provider.of<Events>(context).allEvents;
 
