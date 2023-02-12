@@ -48,8 +48,8 @@ class AccountScreen extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 32,
-                                  backgroundImage: account!.imageUrl != null
-                                      ? NetworkImage(account.imageUrl!)
+                                  backgroundImage: account!.avatarUrl != null
+                                      ? NetworkImage(account.avatarUrl!)
                                       : null,
                                 ),
                                 const SizedBox(

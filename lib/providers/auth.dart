@@ -17,7 +17,8 @@ class Auth with ChangeNotifier {
   Account? account;
 
   Future<void> fetchAccountData() async {
-    account = await Accounts.getAccount(FirebaseAuth.instance.currentUser!.uid,
+    account = await Accounts().getAccount(
+        FirebaseAuth.instance.currentUser!.uid,
         FirebaseAuth.instance.currentUser!.email!);
   }
 

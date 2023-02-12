@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/accounts.dart';
 import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/providers/organizations.dart';
+import 'package:gd_club_app/providers/registrations.dart';
 import 'package:uuid/uuid.dart';
 
 class Events with ChangeNotifier {
@@ -17,53 +19,54 @@ class Events with ChangeNotifier {
     return [..._list];
   }
 
-  List<Event> get ownedEvents {
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
-    return [..._list.where((e) => e.organizerId == userId)];
-  }
-
   List<Event> get registeredEvents {
-    return [..._list.where((e) => e.isRegistered)];
+    final User user = FirebaseAuth.instance.currentUser!;
+
+    final registrations = Registrations().getAllRegistrationsOfAUser(user.uid);
+
+    return allEvents.where((event) {
+      final bool isEventRegisterd = registrations.indexWhere(
+            (registration) => registration.eventId == event.id,
+          ) >=
+          0;
+
+      return isEventRegisterd;
+    }).toList();
   }
 
   Future<void> fetchEvents() async {
-    final eventsData =
-        await db.collection('events').orderBy('_createdAt').get();
-
     final User user = FirebaseAuth.instance.currentUser!;
-    final registrationsData = await db
-        .collection('users')
-        .doc(user.uid)
-        .collection('registrations')
-        .get();
+
+    final eventsData = await db.collection('events').get();
 
     final List<Event> eventList = [];
 
-    _list = [];
+    for (final eventData in eventsData.docs) {
+      final registrations = Registrations().getAllRegistrations();
 
-    for (final event in eventsData.docs) {
-      final bool isRegistered = registrationsData.docs.indexWhere(
-              (reg) => reg.id == event.id && reg.data()['dateTime'] != null) >
-          -1;
+      final event = eventData.data();
+
       eventList.insert(
         0,
         Event(
-          id: event.id,
-          title: event.data()['title'] as String,
-          location: event.data()['location'] as String,
+          id: eventData.id,
+          title: event['title'] as String,
+          location: event['location'] as String,
           dateTime: DateTime.fromMicrosecondsSinceEpoch(
-              (event.data()['dateTime'] as Timestamp).microsecondsSinceEpoch),
-          description: event.data()['description'] as String,
-          imageUrls: (event.data()['imageUrls'] as List<dynamic>)
+              (event['dateTime'] as Timestamp).microsecondsSinceEpoch),
+          description: event['description'] as String,
+          imageUrls: (event['imageUrls'] as List<dynamic>)
               .map((e) => e.toString())
               .toList(),
-          organizerId: event.data()['organizerId'] as String,
-          organizerName: (await Accounts.getAccount(
-                  event.data()['organizerId'] as String,
-                  FirebaseAuth.instance.currentUser!.email!))
+          organizationId: event['organizationId'] as String,
+          organizationName: (await Organizations()
+                  .getOrganization(event['organizationId'] as String))
               .name,
-          noRegisters: event.data()['noRegisters'] as int,
-          isRegistered: isRegistered,
+          registrations: registrations,
+          isRegistered: registrations.indexWhere(
+                (registration) => registration.registrantId == user.uid,
+              ) >=
+              0,
         ),
       );
     }
@@ -96,8 +99,7 @@ class Events with ChangeNotifier {
       'dateTime': event.dateTime,
       'imageUrls': imageUrls,
       'description': event.description,
-      'organizerId': event.organizerId,
-      'organizerName': event.organizerName,
+      'organizationId': event.organizationId,
       '_createdAt': Timestamp.now(),
       'noRegisters': 0
     });
@@ -117,9 +119,9 @@ class Events with ChangeNotifier {
           dateTime: newEvent.dateTime,
           imageUrls: newEvent.imageUrls,
           description: newEvent.description,
-          organizerId: newEvent.organizerId,
-          organizerName: newEvent.organizerName,
-          noRegisters: newEvent.noRegisters,
+          organizationId: newEvent.organizationId,
+          organizationName: newEvent.organizationName,
+          registrations: [],
         );
 
         event.id = updatingEvenId;
@@ -134,8 +136,7 @@ class Events with ChangeNotifier {
       'dateTime': newEvent.dateTime,
       'imageUrls': newEvent.imageUrls,
       'description': newEvent.description,
-      'organizerId': newEvent.organizerId,
-      'noRegisters': newEvent.noRegisters,
+      'organizationId': newEvent.organizationId,
       '_createdAt': Timestamp.now(),
     });
 

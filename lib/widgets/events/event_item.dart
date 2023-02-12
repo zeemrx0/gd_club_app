@@ -70,7 +70,7 @@ class EventItem extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    event.organizerName,
+                    event.organizationName,
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 12,
