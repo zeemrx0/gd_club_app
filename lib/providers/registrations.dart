@@ -37,4 +37,30 @@ class Registrations with ChangeNotifier {
         )
         .toList();
   }
+
+  Future<void> addRegistration(
+      {required String eventId, required String registrantId}) async {
+    await FirebaseFirestore.instance.collection('registrations').add(
+      {
+        'eventId': eventId,
+        'registrantId': registrantId,
+      },
+    );
+  }
+
+  void removeRegistration(
+      {required String eventId, required String registrantId}) async {
+    final registrations = await FirebaseFirestore.instance
+        .collection('registrations')
+        .where(
+          'registrantId',
+          isEqualTo: registrantId,
+        )
+        .where('eventId', isEqualTo: eventId)
+        .get();
+
+    for (final registration in registrations.docs) {
+      registration.reference.delete();
+    }
+  }
 }

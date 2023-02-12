@@ -44,6 +44,10 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
+  Event getEventById(String id) {
+    return _list.firstWhere((event) => event.id == id);
+  }
+
   Future<void> fetchEvents() async {
     final User user = FirebaseAuth.instance.currentUser!;
 
@@ -167,10 +171,24 @@ class Events with ChangeNotifier {
     return _list[_list.indexWhere((event) => event.id == id)];
   }
 
-  void toggleEventRegisteredStatus(String id) {
+  Future<void> toggleEventRegisteredStatus(String id) async {
     final event = _list.firstWhere((event) => event.id == id);
 
-    event.toggleRegistered();
+    final User user = FirebaseAuth.instance.currentUser!;
+
+    if (!event.isRegistered) {
+      // If you have not registered the event
+      // then add a registration
+
+      _registrationsProvider!
+          .addRegistration(eventId: event.id!, registrantId: user.uid);
+    } else {
+      // If you have already registered the event
+      // then delete the registration
+
+      _registrationsProvider!
+          .removeRegistration(eventId: event.id!, registrantId: user.uid);
+    }
 
     notifyListeners();
   }

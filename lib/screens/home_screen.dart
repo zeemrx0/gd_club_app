@@ -18,8 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      Provider.of<Registrations>(context, listen: false).fetchRegistrations();
-      Provider.of<Events>(context, listen: false).fetchEvents();
       _isInit = false;
     }
 
@@ -28,6 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<Registrations>(context).fetchRegistrations();
+    Provider.of<Events>(context).fetchEvents();
+
     final allEvents = Provider.of<Events>(context).allEvents;
 
     final trendingEvents =
@@ -96,11 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 4,
                             ),
-                            child: ChangeNotifierProvider.value(
-                              value: event,
-                              child: const EventItem(
-                                isEdit: false,
-                              ),
+                            child: EventItem(
+                              isEdit: false,
+                              event: event,
                             ),
                           ),
                         ),
@@ -138,22 +137,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          ...trendingEvents.map(
-                            (event) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4,
-                              ),
-                              child: ChangeNotifierProvider.value(
-                                value: event,
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 8,
-                                  ),
-                                  child: const EventCard(),
-                                ),
-                              ),
-                            ),
-                          ),
+                          // ...trendingEvents.map(
+                          //   (event) => Padding(
+                          //     padding: const EdgeInsets.symmetric(
+                          //       vertical: 4,
+                          //     ),
+                          //     child: ChangeNotifierProvider.value(
+                          //       value: event,
+                          //       child: Container(
+                          //         margin: const EdgeInsets.only(
+                          //           right: 8,
+                          //         ),
+                          //         child: const EventCard(),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -189,11 +188,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 4,
                             ),
-                            child: ChangeNotifierProvider.value(
-                              value: event,
-                              child: const EventItem(
-                                isEdit: false,
-                              ),
+                            child: EventItem(
+                              isEdit: false,
+                              event: event,
                             ),
                           ),
                         ),

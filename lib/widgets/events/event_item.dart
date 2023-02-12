@@ -4,17 +4,15 @@ import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class EventItem extends StatelessWidget {
   final bool isEdit;
+  final Event event;
 
-  const EventItem({super.key, required this.isEdit});
+  const EventItem({super.key, required this.isEdit, required this.event});
 
   @override
   Widget build(BuildContext context) {
-    final event = Provider.of<Event>(context);
-
     return GestureDetector(
       onTap: () {
         if (isEdit) {
@@ -25,7 +23,7 @@ class EventItem extends StatelessWidget {
         } else {
           Navigator.of(context).pushNamed(
             EventRegistrationInformationScreen.routeName,
-            arguments: event,
+            arguments: event.id,
           );
         }
       },
