@@ -31,10 +31,14 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Events(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => Registrations(),
+        ),
+        ChangeNotifierProxyProvider<Registrations, Events>(
+          create: (context) => Events(null),
+          update: (context, registrationsProvider, previousEvents) =>
+              previousEvents != null
+                  ? (previousEvents..update(registrationsProvider))
+                  : Events(registrationsProvider),
         ),
       ],
       child: MaterialApp(

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/accounts.dart';
 import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
@@ -14,6 +13,9 @@ class Events with ChangeNotifier {
   final db = FirebaseFirestore.instance;
 
   List<Event> _list = [];
+  Registrations? _registrationsProvider;
+
+  Events(this._registrationsProvider);
 
   List<Event> get allEvents {
     return [..._list];
@@ -22,7 +24,8 @@ class Events with ChangeNotifier {
   List<Event> get registeredEvents {
     final User user = FirebaseAuth.instance.currentUser!;
 
-    final registrations = Registrations().getAllRegistrationsOfAUser(user.uid);
+    final registrations =
+        _registrationsProvider!.getAllRegistrationsOfAUser(user.uid);
 
     return allEvents.where((event) {
       final bool isEventRegisterd = registrations.indexWhere(
@@ -34,15 +37,23 @@ class Events with ChangeNotifier {
     }).toList();
   }
 
+  // ignore: use_setters_to_change_properties
+  void update(Registrations registrationsProvider) {
+    _registrationsProvider = registrationsProvider;
+
+    notifyListeners();
+  }
+
   Future<void> fetchEvents() async {
     final User user = FirebaseAuth.instance.currentUser!;
 
-    final eventsData = await db.collection('events').get();
+    final eventsData =
+        await db.collection('events').orderBy('_createdAt').get();
 
     final List<Event> eventList = [];
 
     for (final eventData in eventsData.docs) {
-      final registrations = Registrations().getAllRegistrations();
+      final registrations = _registrationsProvider!.getAllRegistrations();
 
       final event = eventData.data();
 

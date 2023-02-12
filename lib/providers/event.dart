@@ -39,7 +39,7 @@ class Event with ChangeNotifier {
     this.isCheckedIn = false,
   });
 
-  void toggleRegistered() async {
+  Future<void> toggleRegistered() async {
     final User user = FirebaseAuth.instance.currentUser!;
 
     if (!isRegistered) {

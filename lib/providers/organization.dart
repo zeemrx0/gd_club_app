@@ -1,4 +1,3 @@
-import 'package:gd_club_app/providers/account.dart';
 import 'package:gd_club_app/providers/role.dart';
 
 class Organization implements Role {
@@ -15,5 +14,10 @@ class Organization implements Role {
   @override
   String get title {
     return name;
+  }
+
+  @override
+  bool get isManager {
+    return false;
   }
 }

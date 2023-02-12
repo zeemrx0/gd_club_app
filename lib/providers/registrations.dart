@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/registration.dart';
 
 class Registrations with ChangeNotifier {
-  List<Registration> _list = [];
-
   final db = FirebaseFirestore.instance;
+
+  List<Registration> _list = [];
 
   Future<void> fetchRegistrations() async {
     final registrationsData = await db.collection('registrations').get();
 
+    final List<Registration> registrationList = [];
+
     for (final registration in registrationsData.docs) {
-      _list.add(
+      registrationList.add(
         Registration(
           eventId: registration.data()['eventId'] as String,
           registrantId: registration.data()['registrantId'] as String,
         ),
       );
     }
+
+    _list = [...registrationList];
 
     notifyListeners();
   }
