@@ -1,14 +1,12 @@
 import 'package:gd_club_app/providers/account.dart';
 import 'package:gd_club_app/providers/role.dart';
 
-class Organization extends Account implements Role {
-  final organizationRoles;
+class Organization implements Role {
+  final String name;
+  final List<Role> organizationRoles;
 
   Organization({
-    required super.id,
-    required super.email,
-    required super.name,
-    super.imageUrl,
+    required this.name,
     this.organizationRoles = const [],
   });
 
