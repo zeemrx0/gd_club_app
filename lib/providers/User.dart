@@ -8,7 +8,7 @@ class User extends Account {
     required super.id,
     required super.email,
     required super.name,
-    super.imageUrl,
+    super.avatarUrl,
     this.roles = const [],
   });
 }

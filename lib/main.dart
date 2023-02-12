@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
@@ -30,7 +31,14 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Events(),
+          create: (context) => Registrations(),
+        ),
+        ChangeNotifierProxyProvider<Registrations, Events>(
+          create: (context) => Events(null),
+          update: (context, registrationsProvider, previousEvents) =>
+              previousEvents != null
+                  ? (previousEvents..update(registrationsProvider))
+                  : Events(registrationsProvider),
         ),
       ],
       child: MaterialApp(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/providers/registration.dart';
 import 'package:gd_club_app/providers/role.dart';
 
 class Event with ChangeNotifier {
@@ -10,11 +11,15 @@ class Event with ChangeNotifier {
   DateTime dateTime;
   String? description;
   List<String> imageUrls;
-  String organizerId;
-  String organizerName;
-  int noRegisters;
+  String organizationId;
+  String organizationName;
+  List<Registration> registrations;
 
   List<Role> allowedRoles;
+
+  int get numberOfRegistrations {
+    return registrations.length;
+  }
 
   bool isRegistered;
   bool isCheckedIn;
@@ -26,37 +31,52 @@ class Event with ChangeNotifier {
     required this.dateTime,
     this.description,
     this.imageUrls = const [],
-    required this.organizerId,
-    required this.organizerName,
-    required this.noRegisters,
+    required this.organizationId,
+    required this.organizationName,
+    required this.registrations,
     this.allowedRoles = const [],
     this.isRegistered = false,
     this.isCheckedIn = false,
   });
 
-  void toggleRegistered() {
+  Future<void> toggleRegistered() async {
     final User user = FirebaseAuth.instance.currentUser!;
 
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('registrations')
-        .doc(id)
-        .set({
-      'dateTime': isRegistered ? null : Timestamp.now(),
-    });
+    if (!isRegistered) {
+      // If you have not registered the event
+      // then add a registration
 
-    if (isRegistered) {
-      noRegisters = noRegisters - 1;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('registrations')
+          .add(
+        {
+          'eventId': id,
+          'registrantId': user.uid,
+        },
+      );
+
+      isRegistered = true;
     } else {
-      noRegisters = noRegisters + 1;
+      // If you have already registered the event
+      // then delete the registration
+
+      final registrations = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('registrations')
+          .where(
+            'registrantId',
+            isEqualTo: user.uid,
+          )
+          .where('eventId', isEqualTo: id)
+          .get();
+
+      for (final registration in registrations.docs) {
+        registration.reference.delete();
+      }
     }
-
-    FirebaseFirestore.instance.collection('events').doc(id).update({
-      'noRegisters': noRegisters,
-    });
-
-    isRegistered = !isRegistered;
 
     notifyListeners();
   }

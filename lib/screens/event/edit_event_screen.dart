@@ -28,9 +28,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
     title: '',
     location: '',
     dateTime: DateTime.now(),
-    organizerId: '',
-    organizerName: '',
-    noRegisters: 0,
+    organizationId: '',
+    organizationName: '',
+    registrations: [],
   );
 
   void _submitForm() {
@@ -121,8 +121,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
   Widget build(BuildContext context) {
     final authData = Provider.of<Auth>(context, listen: false);
 
-    _newEvent.organizerId = authData.account!.id;
-    _newEvent.organizerName = authData.account!.name;
+    _newEvent.organizationId = authData.account!.id;
+    _newEvent.organizationName = authData.account!.name;
 
     return Scaffold(
       body: Container(

@@ -62,7 +62,7 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
                                     width: 8,
                                   ),
                                   Text(
-                                    '${event.noRegisters}',
+                                    '${event.numberOfRegistrations}',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

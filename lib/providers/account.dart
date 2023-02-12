@@ -2,12 +2,12 @@ class Account {
   String id;
   String email;
   String name;
-  String? imageUrl;
+  String? avatarUrl;
 
   Account({
     required this.id,
     required this.email,
     required this.name,
-    this.imageUrl,
+    this.avatarUrl,
   });
 }

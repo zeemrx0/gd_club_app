@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_card.dart';
 import 'package:gd_club_app/widgets/events/event_item.dart';
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
+      Provider.of<Registrations>(context, listen: false).fetchRegistrations();
       Provider.of<Events>(context, listen: false).fetchEvents();
       _isInit = false;
     }

@@ -29,7 +29,8 @@ class _EventListState extends State<EventList> {
     var events = List<Event>.empty();
 
     if (widget.isManaging) {
-      events = Provider.of<Events>(context).ownedEvents;
+      // events = Provider.of<Events>(context).ownedEvents;
+      events = Provider.of<Events>(context).allEvents;
     } else if (widget.isRegistered) {
       events = Provider.of<Events>(context).registeredEvents;
     } else {
