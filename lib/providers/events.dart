@@ -37,6 +37,10 @@ class Events with ChangeNotifier {
     }).toList();
   }
 
+  List<Event> get managedEvents {
+    return [..._list];
+  }
+
   // ignore: use_setters_to_change_properties
   void update(Registrations registrationsProvider) {
     _registrationsProvider = registrationsProvider;
@@ -116,7 +120,6 @@ class Events with ChangeNotifier {
       'description': event.description,
       'organizationId': event.organizationId,
       '_createdAt': Timestamp.now(),
-      'noRegisters': 0
     });
 
     event.id = eventData.id;
@@ -125,9 +128,26 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateEvent(String updatingEvenId, Event newEvent) async {
+  Future<void> updateEvent(
+      String updatingEvenId, Event newEvent, File? image) async {
     for (Event event in _list) {
       if (event.id == updatingEvenId) {
+        final String imageId = const Uuid().v4();
+
+        final List<String> imageUrls = [];
+        if (image != null) {
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('event_images')
+              .child('$imageId.jpg');
+
+          await ref.putFile(image);
+
+          final url = await ref.getDownloadURL();
+
+          imageUrls.add(url);
+        }
+
         event = Event(
           title: newEvent.title,
           location: newEvent.location,

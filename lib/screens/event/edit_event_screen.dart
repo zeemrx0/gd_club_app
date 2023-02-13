@@ -51,7 +51,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
         if (_newEvent.id != null) {
           // New event's id exist -> Edit mode
           Provider.of<Events>(context, listen: false)
-              .updateEvent(_newEvent.id!, _newEvent);
+              .updateEvent(_newEvent.id!, _newEvent, _eventImage);
         } else {
           // Otherwise -> Create mode
           Provider.of<Events>(context, listen: false)
@@ -175,23 +175,28 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   child: Column(
                     children: [
                       // Images
-                      GlassCard(
-                        borderRadius: BorderRadius.circular(
-                          10,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            _pickImage();
-                          },
-                          behavior: HitTestBehavior.translucent,
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child: _eventImage != null
-                                ? Image.file(
+                      GestureDetector(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        child: AspectRatio(
+                          aspectRatio: 1 / 1,
+                          child: _eventImage != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  child: Image.file(
                                     _eventImage!,
                                     fit: BoxFit.cover,
-                                  )
-                                : Center(
+                                  ),
+                                )
+                              : GlassCard(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  child: Center(
                                     child: Text(
                                       'Thêm hình ảnh',
                                       style: TextStyle(
@@ -200,7 +205,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                       ),
                                     ),
                                   ),
-                          ),
+                                ),
                         ),
                       ),
 
