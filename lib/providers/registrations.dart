@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/registration.dart';
+import 'package:gd_club_app/models/registration.dart';
 
 class Registrations with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -36,5 +36,31 @@ class Registrations with ChangeNotifier {
           (registration) => registration.registrantId == registrantId,
         )
         .toList();
+  }
+
+  Future<void> addRegistration(
+      {required String eventId, required String registrantId}) async {
+    await FirebaseFirestore.instance.collection('registrations').add(
+      {
+        'eventId': eventId,
+        'registrantId': registrantId,
+      },
+    );
+  }
+
+  Future<void> removeRegistration(
+      {required String eventId, required String registrantId}) async {
+    final registrations = await FirebaseFirestore.instance
+        .collection('registrations')
+        .where(
+          'registrantId',
+          isEqualTo: registrantId,
+        )
+        .where('eventId', isEqualTo: eventId)
+        .get();
+
+    for (final registration in registrations.docs) {
+      registration.reference.delete();
+    }
   }
 }

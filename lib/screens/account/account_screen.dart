@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
+import 'package:gd_club_app/widgets/accounts/user_organization_list.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
@@ -31,60 +32,53 @@ class AccountScreen extends StatelessWidget {
         child: Column(
           children: [
             const GlassAppBar(),
-            Padding(
-              padding: const EdgeInsets.all(12),
+            Container(
+              margin: const EdgeInsets.all(12),
               child: GlassCard(
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 32,
-                                  backgroundImage: account!.avatarUrl != null
-                                      ? NetworkImage(account.avatarUrl!)
-                                      : null,
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Text(
-                                  account.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                              ],
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 32,
+                            backgroundImage: account!.avatarUrl != null
+                                ? NetworkImage(account.avatarUrl!)
+                                : null,
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            account.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(EditAccountScreen.routeName);
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(EditAccountScreen.routeName);
+                        },
+                        icon: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),
             ),
+            if (account.systemRole == 'User') UserOrganizationList(account),
           ],
         ),
       ),

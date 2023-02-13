@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:uuid/uuid.dart';
@@ -14,8 +14,9 @@ class Events with ChangeNotifier {
 
   List<Event> _list = [];
   Registrations? _registrationsProvider;
+  Organizations? _organizationsProvider;
 
-  Events(this._registrationsProvider);
+  Events(this._registrationsProvider, this._organizationsProvider);
 
   List<Event> get allEvents {
     return [..._list];
@@ -37,14 +38,32 @@ class Events with ChangeNotifier {
     }).toList();
   }
 
+  List<Event> get managedEvents {
+    return [..._list];
+  }
+
   // ignore: use_setters_to_change_properties
-  void update(Registrations registrationsProvider) {
+  void update(
+    Registrations registrationsProvider,
+    Organizations organizationsProvider,
+  ) {
     _registrationsProvider = registrationsProvider;
+    _organizationsProvider = organizationsProvider;
 
     notifyListeners();
   }
 
+  Event getEventById(String id) {
+    return _list.firstWhere((event) => event.id == id);
+  }
+
   Future<void> fetchEvents() async {
+    if (_registrationsProvider == null ||
+        _organizationsProvider == null ||
+        _organizationsProvider!.list.isEmpty) {
+      return;
+    }
+
     final User user = FirebaseAuth.instance.currentUser!;
 
     final eventsData =
@@ -53,9 +72,11 @@ class Events with ChangeNotifier {
     final List<Event> eventList = [];
 
     for (final eventData in eventsData.docs) {
-      final registrations = _registrationsProvider!.getAllRegistrations();
-
       final event = eventData.data();
+
+      final registrations = _registrationsProvider!.getAllRegistrations();
+      final organization = _organizationsProvider!
+          .findOrganizationById(event['organizationId'] as String);
 
       eventList.insert(
         0,
@@ -70,9 +91,8 @@ class Events with ChangeNotifier {
               .map((e) => e.toString())
               .toList(),
           organizationId: event['organizationId'] as String,
-          organizationName: (await Organizations()
-                  .getOrganization(event['organizationId'] as String))
-              .name,
+          organizationName:
+              _organizationsProvider != null ? organization.name : '',
           registrations: registrations,
           isRegistered: registrations.indexWhere(
                 (registration) => registration.registrantId == user.uid,
@@ -112,7 +132,6 @@ class Events with ChangeNotifier {
       'description': event.description,
       'organizationId': event.organizationId,
       '_createdAt': Timestamp.now(),
-      'noRegisters': 0
     });
 
     event.id = eventData.id;
@@ -121,9 +140,26 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateEvent(String updatingEvenId, Event newEvent) async {
+  Future<void> updateEvent(
+      String updatingEvenId, Event newEvent, File? image) async {
     for (Event event in _list) {
       if (event.id == updatingEvenId) {
+        final String imageId = const Uuid().v4();
+
+        final List<String> imageUrls = [];
+        if (image != null) {
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('event_images')
+              .child('$imageId.jpg');
+
+          await ref.putFile(image);
+
+          final url = await ref.getDownloadURL();
+
+          imageUrls.add(url);
+        }
+
         event = Event(
           title: newEvent.title,
           location: newEvent.location,
@@ -167,10 +203,24 @@ class Events with ChangeNotifier {
     return _list[_list.indexWhere((event) => event.id == id)];
   }
 
-  void toggleEventRegisteredStatus(String id) {
+  Future<void> toggleEventRegisteredStatus(String id) async {
     final event = _list.firstWhere((event) => event.id == id);
 
-    event.toggleRegistered();
+    final User user = FirebaseAuth.instance.currentUser!;
+
+    if (!event.isRegistered) {
+      // If you have not registered the event
+      // then add a registration
+
+      _registrationsProvider!
+          .addRegistration(eventId: event.id!, registrantId: user.uid);
+    } else {
+      // If you have already registered the event
+      // then delete the registration
+
+      _registrationsProvider!
+          .removeRegistration(eventId: event.id!, registrantId: user.uid);
+    }
 
     notifyListeners();
   }

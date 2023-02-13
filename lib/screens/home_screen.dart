@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_card.dart';
@@ -8,6 +9,7 @@ import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -18,8 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      Provider.of<Registrations>(context, listen: false).fetchRegistrations();
-      Provider.of<Events>(context, listen: false).fetchEvents();
       _isInit = false;
     }
 
@@ -28,6 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<Registrations>(context, listen: false).fetchRegistrations();
+    Provider.of<Organizations>(context, listen: false).fetchOrganizations();
+    Provider.of<Events>(context, listen: false).fetchEvents();
+
     final allEvents = Provider.of<Events>(context).allEvents;
 
     final trendingEvents =
@@ -96,11 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 4,
                             ),
-                            child: ChangeNotifierProvider.value(
-                              value: event,
-                              child: const EventItem(
-                                isEdit: false,
-                              ),
+                            child: EventItem(
+                              isEdit: false,
+                              event: event,
                             ),
                           ),
                         ),
@@ -143,13 +145,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: const EdgeInsets.symmetric(
                                 vertical: 4,
                               ),
-                              child: ChangeNotifierProvider.value(
-                                value: event,
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                    right: 8,
-                                  ),
-                                  child: const EventCard(),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  right: 8,
+                                ),
+                                child: EventCard(
+                                  event: event,
                                 ),
                               ),
                             ),
@@ -189,11 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 4,
                             ),
-                            child: ChangeNotifierProvider.value(
-                              value: event,
-                              child: const EventItem(
-                                isEdit: false,
-                              ),
+                            child: EventItem(
+                              isEdit: false,
+                              event: event,
                             ),
                           ),
                         ),
