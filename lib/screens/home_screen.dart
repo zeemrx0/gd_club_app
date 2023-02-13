@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_card.dart';
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Provider.of<Registrations>(context, listen: false).fetchRegistrations();
+    Provider.of<Organizations>(context, listen: false).fetchOrganizations();
     Provider.of<Events>(context, listen: false).fetchEvents();
 
     final allEvents = Provider.of<Events>(context).allEvents;

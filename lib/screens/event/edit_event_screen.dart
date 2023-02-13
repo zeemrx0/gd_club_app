@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';

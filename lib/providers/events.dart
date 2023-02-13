@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:uuid/uuid.dart';
@@ -14,8 +14,9 @@ class Events with ChangeNotifier {
 
   List<Event> _list = [];
   Registrations? _registrationsProvider;
+  Organizations? _organizationsProvider;
 
-  Events(this._registrationsProvider);
+  Events(this._registrationsProvider, this._organizationsProvider);
 
   List<Event> get allEvents {
     return [..._list];
@@ -42,8 +43,12 @@ class Events with ChangeNotifier {
   }
 
   // ignore: use_setters_to_change_properties
-  void update(Registrations registrationsProvider) {
+  void update(
+    Registrations registrationsProvider,
+    Organizations organizationsProvider,
+  ) {
     _registrationsProvider = registrationsProvider;
+    _organizationsProvider = organizationsProvider;
 
     notifyListeners();
   }
@@ -53,6 +58,12 @@ class Events with ChangeNotifier {
   }
 
   Future<void> fetchEvents() async {
+    if (_registrationsProvider == null ||
+        _organizationsProvider == null ||
+        _organizationsProvider!.list.isEmpty) {
+      return;
+    }
+
     final User user = FirebaseAuth.instance.currentUser!;
 
     final eventsData =
@@ -61,9 +72,11 @@ class Events with ChangeNotifier {
     final List<Event> eventList = [];
 
     for (final eventData in eventsData.docs) {
-      final registrations = _registrationsProvider!.getAllRegistrations();
-
       final event = eventData.data();
+
+      final registrations = _registrationsProvider!.getAllRegistrations();
+      final organization = _organizationsProvider!
+          .findOrganizationById(event['organizationId'] as String);
 
       eventList.insert(
         0,
@@ -78,9 +91,8 @@ class Events with ChangeNotifier {
               .map((e) => e.toString())
               .toList(),
           organizationId: event['organizationId'] as String,
-          organizationName: (await Organizations()
-                  .getOrganization(event['organizationId'] as String))
-              .name,
+          organizationName:
+              _organizationsProvider != null ? organization.name : '',
           registrations: registrations,
           isRegistered: registrations.indexWhere(
                 (registration) => registration.registrantId == user.uid,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';

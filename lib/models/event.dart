@@ -1,5 +1,5 @@
-import 'package:gd_club_app/providers/registration.dart';
-import 'package:gd_club_app/providers/role.dart';
+import 'package:gd_club_app/models/registration.dart';
+import 'package:gd_club_app/models/role.dart';
 
 class Event {
   String? id;

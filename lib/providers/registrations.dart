@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/registration.dart';
+import 'package:gd_club_app/models/registration.dart';
 
 class Registrations with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -48,7 +48,7 @@ class Registrations with ChangeNotifier {
     );
   }
 
-  void removeRegistration(
+  Future<void> removeRegistration(
       {required String eventId, required String registrantId}) async {
     final registrations = await FirebaseFirestore.instance
         .collection('registrations')

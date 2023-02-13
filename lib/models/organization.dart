@@ -1,11 +1,13 @@
-import 'package:gd_club_app/providers/role.dart';
+import 'package:gd_club_app/models/role.dart';
 
 class Organization implements Role {
+  final String id;
   final String name;
-  final String avatarUrl;
+  final String? avatarUrl;
   final List<Role> organizationRoles;
 
   Organization({
+    required this.id,
     required this.name,
     required this.avatarUrl,
     this.organizationRoles = const [],

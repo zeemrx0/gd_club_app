@@ -1,17 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gd_club_app/providers/organization.dart';
+import 'package:flutter/foundation.dart';
+import 'package:gd_club_app/models/organization.dart';
 
-class Organizations {
+class Organizations with ChangeNotifier {
   final db = FirebaseFirestore.instance;
 
-  Future<Organization> getOrganization(String id) async {
-    final organizationData = await db.collection('organizations').doc(id).get();
+  List<Organization> _list = const [];
 
-    final organization = organizationData.data() as Map<String, dynamic>;
+  List<Organization> get list {
+    return [..._list];
+  }
 
-    return Organization(
-      name: organization['name'] as String,
-      avatarUrl: organization['avatarUrl'] as String,
-    );
+  Organization findOrganizationById(String id) {
+    return _list.firstWhere((organization) => organization.id == id);
+  }
+
+  Future<void> fetchOrganizations() async {
+    final organizationsData = await db.collection('organizations').get();
+
+    final List<Organization> organizationList = [];
+
+    for (final organization in organizationsData.docs) {
+      final organizationData = organization.data();
+
+      organizationList.add(
+        Organization(
+            id: organization.id,
+            name: organizationData['name'] as String,
+            avatarUrl: organizationData['avatarUrl'] as String),
+      );
+    }
+
+    _list = [...organizationList];
+
+    notifyListeners();
   }
 }

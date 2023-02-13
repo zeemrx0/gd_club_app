@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/providers/event.dart';
+import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
