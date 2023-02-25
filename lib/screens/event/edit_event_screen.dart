@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:gd_club_app/models/event.dart';
+import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
@@ -28,8 +29,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     title: '',
     location: '',
     dateTime: DateTime.now(),
-    organizationId: '',
-    organizationName: '',
+    organizer: null,
     registrations: [],
   );
 
@@ -121,8 +121,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   Widget build(BuildContext context) {
     final authData = Provider.of<Auth>(context, listen: false);
 
-    _newEvent.organizationId = authData.account!.id;
-    _newEvent.organizationName = authData.account!.name;
+    _newEvent.organizer = (authData.account) as User;
 
     return Scaffold(
       body: Container(

@@ -67,13 +67,6 @@ class EventItem extends StatelessWidget {
                   const SizedBox(
                     height: 2,
                   ),
-                  Text(
-                    event.organizationName,
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                      fontSize: 12,
-                    ),
-                  ),
                   const SizedBox(
                     height: 4,
                   ),

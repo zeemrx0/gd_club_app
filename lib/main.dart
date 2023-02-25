@@ -4,7 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/organizations.dart';
+import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/providers/registrations.dart';
+import 'package:gd_club_app/providers/users.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
@@ -35,20 +37,28 @@ class MyApp extends StatelessWidget {
           create: (context) => Organizations(),
         ),
         ChangeNotifierProvider(
+          create: (context) => Users(),
+        ),
+        ChangeNotifierProxyProvider2<Users, Organizations, Organizers>(
+          create: (context) => Organizers(null, null),
+          update: (context, usersProvider, organizationsProvider, previous) =>
+              Organizers(usersProvider, organizationsProvider),
+        ),
+        ChangeNotifierProvider(
           create: (context) => Registrations(),
         ),
-        ChangeNotifierProxyProvider2<Registrations, Organizations, Events>(
+        ChangeNotifierProxyProvider2<Registrations, Organizers, Events>(
           create: (context) => Events(null, null),
           update: (
             context,
             registrationsProvider,
-            organizationsProvider,
+            organizersProvider,
             previousEvents,
           ) =>
               previousEvents != null
                   ? (previousEvents
-                    ..update(registrationsProvider, organizationsProvider))
-                  : Events(registrationsProvider, organizationsProvider),
+                    ..update(registrationsProvider, organizersProvider))
+                  : Events(registrationsProvider, organizersProvider),
         ),
       ],
       child: MaterialApp(
@@ -60,6 +70,7 @@ class MyApp extends StatelessWidget {
         ],
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          fontFamily: 'Nunito',
         ),
         home: FutureBuilder(
           future: _appFuture,

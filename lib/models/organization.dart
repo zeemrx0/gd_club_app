@@ -1,6 +1,7 @@
+import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
 
-class Organization implements Role {
+class Organization implements Organizer {
   final String id;
   final String name;
   final String? avatarUrl;

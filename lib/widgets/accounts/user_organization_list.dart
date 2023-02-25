@@ -19,11 +19,13 @@ class _UserOrganizationListState extends State<UserOrganizationList> {
   Widget build(BuildContext context) {
     final List<Organization> organizationList = [];
 
-    (widget.account as User).participations.forEach(
-          (key, value) async => organizationList.add(
-            Provider.of<Organizations>(context).findOrganizationById(key),
-          ),
-        );
+    (widget.account as User).participations.forEach((key, value) async {
+      final Organization? organization =
+          Provider.of<Organizations>(context).findOrganizationById(key);
+      if (organization != null) {
+        organizationList.add(organization);
+      }
+    });
 
     return Container(
       margin: const EdgeInsets.all(12),

@@ -5,7 +5,9 @@ import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_card.dart';
 import 'package:gd_club_app/widgets/events/event_item.dart';
+import 'package:gd_club_app/widgets/events/recommended_events_list.dart';
 import 'package:gd_club_app/widgets/glass_app_bar.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,160 +52,271 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: const AppDrawer(),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/bg.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          children: [
-            const GlassAppBar(
-              title: Text(
-                'Sắc màu Gia Định',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
+      backgroundColor: const Color(0xFFFEFEFE),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 16,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Ionicons.search,
+                        color: Colors.grey,
+                        size: 18,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        'Sinh hoạt CLB KHKT, ...',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    child: Text(
-                      'Đã đăng ký',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    child: Column(
-                      children: [
-                        ...registeredEvents.map(
-                          (event) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 4,
-                            ),
-                            child: EventItem(
-                              isEdit: false,
-                              event: event,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          width: 76,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.green[50],
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.06),
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: Image.asset('images/abacus.png'),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                const Text(
+                                  'Học thuật',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-
-                  // Trending events
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    child: Text(
-                      'Nổi bật',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 248,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          ...trendingEvents.map(
-                            (event) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4,
+                      GestureDetector(
+                        child: Container(
+                          width: 76,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.yellow[50],
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.06),
+                                blurRadius: 16,
                               ),
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                  right: 8,
-                                ),
-                                child: EventCard(
-                                  event: event,
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    child: Text(
-                      'Có thể bạn sẽ thích',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                    ),
-                    child: Column(
-                      children: [
-                        ...allEvents.map(
-                          (event) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 4,
-                            ),
-                            child: EventItem(
-                              isEdit: false,
-                              event: event,
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: Image.asset('images/modern-art.png'),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                const Text(
+                                  'Nghệ thuật',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          width: 76,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.pink[50],
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.06),
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child:
+                                      Image.asset('images/language-skill.png'),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                const Text(
+                                  'Học thuật',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          width: 76,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.06),
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: Image.asset('images/more.png'),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                const Text(
+                                  'Học thuật',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+
+                const SizedBox(
+                  height: 20,
+                ),
+
+                // Recommended events
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                  ),
+                  child: Text(
+                    'Gợi ý cho bạn',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontFamily: 'Montserrat'),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                  ),
+                  child: RecommendedEventsList(trendingEvents),
+                ),
+
+                const SizedBox(
+                  height: 16,
+                ),
+
+                // Trending events
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                  ),
+                  child: Text(
+                    'Sự kiện nổi bật',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontFamily: 'Montserrat'),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                  ),
+                  child: RecommendedEventsList(trendingEvents),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

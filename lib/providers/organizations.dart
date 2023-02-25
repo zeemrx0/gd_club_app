@@ -11,8 +11,11 @@ class Organizations with ChangeNotifier {
     return [..._list];
   }
 
-  Organization findOrganizationById(String id) {
-    return _list.firstWhere((organization) => organization.id == id);
+  Organization? findOrganizationById(String organizationId) {
+    final index =
+        _list.indexWhere((organization) => organization.id == organizationId);
+
+    return index >= 0 ? _list[index] : null;
   }
 
   Future<void> fetchOrganizations() async {

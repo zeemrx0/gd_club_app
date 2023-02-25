@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
+import 'package:gd_club_app/models/organizer.dart';
+import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
-import 'package:gd_club_app/widgets/glass_card.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:provider/provider.dart';
 
 class EventCard extends StatelessWidget {
   final Event event;
 
-  const EventCard({super.key, required this.event});
+  const EventCard({required this.event});
 
   @override
   Widget build(BuildContext context) {
+    final Organizer organizer = Provider.of<Organizers>(context)
+        .findOrganizerById(event.organizer!.id)!;
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
@@ -18,86 +23,123 @@ class EventCard extends StatelessWidget {
           arguments: event.id,
         );
       },
-      child: GlassCard(
-        child: Container(
-          width: 156,
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: (event.imageUrls.isNotEmpty)
-                      ? Image.network(
-                          event.imageUrls[0],
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          'images/event_illustration.jpeg',
-                          fit: BoxFit.cover,
+      child: Container(
+        width: 200,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.06),
+              blurRadius: 16,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: AspectRatio(
+                aspectRatio: 200 / 120,
+                child: (event.imageUrls.isNotEmpty)
+                    ? Image.network(
+                        event.imageUrls[0],
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'images/event_illustration.jpeg',
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: Image.network(
+                          organizer.avatarUrl ??
+                              'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
                         ),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      event.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      const SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        organizer.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    event.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        const TextStyle(fontSize: 14, fontFamily: 'Montserrat'),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    DateFormat.jm().add_yMd().format(event.dateTime),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 10,
                     ),
-                    const SizedBox(
-                      height: 2,
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all<double>(0),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.purple[300]!),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      minimumSize: MaterialStateProperty.all<Size>(
+                        Size.zero,
+                      ),
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                      ),
                     ),
-                    Text(
-                      event.organizationName,
+                    child: const Text(
+                      'Đăng kí ngay',
                       style: TextStyle(
-                        color: Colors.grey[300],
-                        fontSize: 12,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      DateFormat.jm().add_yMd().format(event.dateTime),
-                      style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      event.location,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

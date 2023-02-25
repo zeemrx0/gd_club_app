@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
-import 'package:gd_club_app/providers/organizations.dart';
+import 'package:gd_club_app/models/organizer.dart';
+import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,9 +15,9 @@ class Events with ChangeNotifier {
 
   List<Event> _list = [];
   Registrations? _registrationsProvider;
-  Organizations? _organizationsProvider;
+  Organizers? _organizersProvider;
 
-  Events(this._registrationsProvider, this._organizationsProvider);
+  Events(this._registrationsProvider, this._organizersProvider);
 
   List<Event> get allEvents {
     return [..._list];
@@ -45,10 +46,10 @@ class Events with ChangeNotifier {
   // ignore: use_setters_to_change_properties
   void update(
     Registrations registrationsProvider,
-    Organizations organizationsProvider,
+    Organizers organizersProvider,
   ) {
     _registrationsProvider = registrationsProvider;
-    _organizationsProvider = organizationsProvider;
+    _organizersProvider = organizersProvider;
 
     notifyListeners();
   }
@@ -58,9 +59,7 @@ class Events with ChangeNotifier {
   }
 
   Future<void> fetchEvents() async {
-    if (_registrationsProvider == null ||
-        _organizationsProvider == null ||
-        _organizationsProvider!.list.isEmpty) {
+    if (_registrationsProvider == null || _organizersProvider == null) {
       return;
     }
 
@@ -75,8 +74,8 @@ class Events with ChangeNotifier {
       final event = eventData.data();
 
       final registrations = _registrationsProvider!.getAllRegistrations();
-      final organization = _organizationsProvider!
-          .findOrganizationById(event['organizationId'] as String);
+      final Organizer organizer = _organizersProvider!
+          .findOrganizerById(event['organizerId'] as String)!;
 
       eventList.insert(
         0,
@@ -90,9 +89,7 @@ class Events with ChangeNotifier {
           imageUrls: (event['imageUrls'] as List<dynamic>)
               .map((e) => e.toString())
               .toList(),
-          organizationId: event['organizationId'] as String,
-          organizationName:
-              _organizationsProvider != null ? organization.name : '',
+          organizer: organizer,
           registrations: registrations,
           isRegistered: registrations.indexWhere(
                 (registration) => registration.registrantId == user.uid,
@@ -130,7 +127,7 @@ class Events with ChangeNotifier {
       'dateTime': event.dateTime,
       'imageUrls': imageUrls,
       'description': event.description,
-      'organizationId': event.organizationId,
+      'organizerId': event.organizer!.id,
       '_createdAt': Timestamp.now(),
     });
 
@@ -166,8 +163,7 @@ class Events with ChangeNotifier {
           dateTime: newEvent.dateTime,
           imageUrls: newEvent.imageUrls,
           description: newEvent.description,
-          organizationId: newEvent.organizationId,
-          organizationName: newEvent.organizationName,
+          organizer: newEvent.organizer,
           registrations: [],
         );
 
@@ -183,7 +179,7 @@ class Events with ChangeNotifier {
       'dateTime': newEvent.dateTime,
       'imageUrls': newEvent.imageUrls,
       'description': newEvent.description,
-      'organizationId': newEvent.organizationId,
+      'organizationId': newEvent.organizer!.id,
       '_createdAt': Timestamp.now(),
     });
 
