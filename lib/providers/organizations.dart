@@ -28,9 +28,10 @@ class Organizations with ChangeNotifier {
 
       organizationList.add(
         Organization(
-            id: organization.id,
-            name: organizationData['name'] as String,
-            avatarUrl: organizationData['avatarUrl'] as String),
+          organization.id,
+          organizationData['name'] as String,
+          organizationData['avatarUrl'] as String,
+        ),
       );
     }
 

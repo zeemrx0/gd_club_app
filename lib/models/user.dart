@@ -1,5 +1,4 @@
 import 'package:gd_club_app/models/account.dart';
-import 'package:gd_club_app/models/organization.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
 

@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Sắc màu Gia Định',
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
         supportedLocales: const [
@@ -91,8 +92,6 @@ class MyApp extends StatelessWidget {
           },
         ),
         routes: {
-          HomeScreen.routeName: (context) =>
-              AuthStreamBuilder(child: HomeScreen()),
           ManageEventsScreen.routeName: (context) =>
               AuthStreamBuilder(child: ManageEventsScreen()),
           EventRegistrationInformationScreen.routeName: (context) =>

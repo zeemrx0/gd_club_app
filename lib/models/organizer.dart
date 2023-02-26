@@ -1,19 +1,7 @@
-class Organizer {
-  final String _id;
-  final String _name;
-  final String? _avatarUrl;
+abstract class Organizer {
+  String get id;
 
-  Organizer(this._id, this._name, this._avatarUrl);
+  String get name;
 
-  String get id {
-    return _id;
-  }
-
-  String get name {
-    return _name;
-  }
-
-  String? get avatarUrl {
-    return _avatarUrl;
-  }
+  String? get avatarUrl;
 }

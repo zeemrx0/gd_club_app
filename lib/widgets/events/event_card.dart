@@ -64,13 +64,16 @@ class EventCard extends StatelessWidget {
                       SizedBox(
                         width: 16,
                         height: 16,
-                        child: Image.network(
-                          organizer.avatarUrl ??
-                              'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Image.network(
+                            organizer.avatarUrl ??
+                                'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
+                          ),
                         ),
                       ),
                       const SizedBox(
-                        width: 2,
+                        width: 4,
                       ),
                       Text(
                         organizer.name,
@@ -108,34 +111,68 @@ class EventCard extends StatelessWidget {
                   const SizedBox(
                     height: 6,
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all<double>(0),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.purple[300]!),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                  if (!event.isRegistered)
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(0),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.purple[300]!),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: MaterialStateProperty.all<Size>(
+                          Size.zero,
+                        ),
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 6),
                         ),
                       ),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      minimumSize: MaterialStateProperty.all<Size>(
-                        Size.zero,
-                      ),
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-                      ),
-                    ),
-                    child: const Text(
-                      'Đăng kí ngay',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
+                      child: const Text(
+                        'Đăng kí ngay',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  )
+                  if (event.isRegistered)
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(0),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.purple[200]!),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        minimumSize: MaterialStateProperty.all<Size>(
+                          Size.zero,
+                        ),
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 6),
+                        ),
+                      ),
+                      child: const Text(
+                        'Đã đăng kí',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
                 ],
               ),
             )

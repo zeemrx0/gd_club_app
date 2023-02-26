@@ -8,7 +8,7 @@ class Users with ChangeNotifier {
   List<User> _list = [];
 
   Future<void> fetchUsers() async {
-    List<User> userList = [];
+    final List<User> userList = [];
 
     final users = await db.collection('events').orderBy('_createdAt').get();
 
@@ -24,6 +24,8 @@ class Users with ChangeNotifier {
         ),
       );
     }
+
+    _list = [...userList];
 
     notifyListeners();
   }
