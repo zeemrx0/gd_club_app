@@ -1,3 +1,4 @@
+import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/registration.dart';
 import 'package:gd_club_app/models/role.dart';
 
@@ -8,8 +9,7 @@ class Event {
   DateTime dateTime;
   String? description;
   List<String> imageUrls;
-  String organizationId;
-  String organizationName;
+  Organizer? organizer;
   List<Registration> registrations;
 
   List<Role> allowedRoles;
@@ -28,8 +28,7 @@ class Event {
     required this.dateTime,
     this.description,
     this.imageUrls = const [],
-    required this.organizationId,
-    required this.organizationName,
+    required this.organizer,
     required this.registrations,
     this.allowedRoles = const [],
     this.isRegistered = false,
