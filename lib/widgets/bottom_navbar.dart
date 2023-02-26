@@ -1,6 +1,8 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
+import 'package:gd_club_app/screens/home_screen.dart';
+import 'package:gd_club_app/screens/team/teams_screen.dart';
 import 'package:ionicons/ionicons.dart';
 
 class BottomNavbar extends StatelessWidget {
@@ -33,7 +35,7 @@ class BottomNavbar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             },
             child: SizedBox(
               width: 60,
@@ -41,7 +43,8 @@ class BottomNavbar extends StatelessWidget {
                 children: [
                   Icon(
                     Ionicons.home,
-                    color: currentRoute == '/'
+                    color: (currentRoute == '/' ||
+                            currentRoute == HomeScreen.routeName)
                         ? Colors.purple[300]
                         : Colors.grey[400],
                     size: 20,
@@ -91,13 +94,16 @@ class BottomNavbar extends StatelessWidget {
             ),
           ),
           GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(TeamsScreen.routeName);
+            },
             child: SizedBox(
               width: 60,
               child: Column(
                 children: [
                   Icon(
                     FluentSystemIcons.ic_fluent_organization_filled,
-                    color: currentRoute == '/organizations'
+                    color: currentRoute == TeamsScreen.routeName
                         ? Colors.purple[300]
                         : Colors.grey[400],
                     size: 20,
@@ -106,9 +112,9 @@ class BottomNavbar extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    'Tổ chức',
+                    'Đội nhóm',
                     style: TextStyle(
-                      color: currentRoute == '/organizations'
+                      color: currentRoute == TeamsScreen.routeName
                           ? Colors.purple[500]
                           : Colors.grey,
                       fontSize: 10,

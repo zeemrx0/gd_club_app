@@ -15,6 +15,8 @@ import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/screens/home_screen.dart';
+import 'package:gd_club_app/screens/team/team_detail_screen.dart';
+import 'package:gd_club_app/screens/team/teams_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
 import 'package:provider/provider.dart';
 
@@ -92,6 +94,9 @@ class MyApp extends StatelessWidget {
           },
         ),
         routes: {
+          HomeScreen.routeName: (context) => AuthStreamBuilder(
+                child: HomeScreen(),
+              ),
           ManageEventsScreen.routeName: (context) =>
               AuthStreamBuilder(child: ManageEventsScreen()),
           EventRegistrationInformationScreen.routeName: (context) =>
@@ -105,6 +110,12 @@ class MyApp extends StatelessWidget {
           AccountScreen.routeName: (context) =>
               AuthStreamBuilder(child: AccountScreen()),
           EditAccountScreen.routeName: (context) => const EditAccountScreen(),
+          TeamsScreen.routeName: (context) => const AuthStreamBuilder(
+                child: TeamsScreen(),
+              ),
+          TeamDetailScreen.routeName: (context) => const AuthStreamBuilder(
+                child: TeamDetailScreen(),
+              ),
         },
       ),
     );

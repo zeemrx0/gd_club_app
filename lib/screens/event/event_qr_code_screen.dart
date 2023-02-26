@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
-import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class EventQRCodeScreen extends StatelessWidget {
@@ -26,15 +25,6 @@ class EventQRCodeScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const GlassAppBar(
-              title: Text(
-                'Check in',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),

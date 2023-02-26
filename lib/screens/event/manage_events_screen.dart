@@ -4,7 +4,6 @@ import 'package:gd_club_app/screens/event/edit_event_screen.dart';
 import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/events/event_item.dart';
 
-import 'package:gd_club_app/widgets/glass_app_bar.dart';
 import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:provider/provider.dart';
 
@@ -31,31 +30,6 @@ class ManageEventsScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            GlassAppBar(
-              title: const Text(
-                'Quản lý sự kiện',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(EditEventScreen.routeName);
-                  },
-                  child: const GlassCard(
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
             Expanded(
               child: Padding(
                   padding: const EdgeInsets.symmetric(

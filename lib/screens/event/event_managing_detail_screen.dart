@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
-import 'package:gd_club_app/widgets/glass_app_bar.dart';
+
 import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +30,6 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
         ),
         child: Column(
           children: [
-            const GlassAppBar(),
             Container(
               margin: const EdgeInsets.symmetric(
                 horizontal: 12,

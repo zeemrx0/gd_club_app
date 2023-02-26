@@ -9,7 +9,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  // static const routeName = '/home';
+  static const routeName = '/home';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -44,12 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      drawer: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.transparent,
-        ),
-        child: const AppDrawer(),
-      ),
       backgroundColor: const Color(0xFFFEFEFE),
       body: Stack(
         alignment: Alignment.topCenter,
@@ -314,12 +308,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: RecommendedEventsList(trendingEvents),
                     ),
+                    const SizedBox(
+                      height: 88,
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-          Positioned(
+          const Positioned(
             bottom: 12,
             child: BottomNavbar(),
           ),

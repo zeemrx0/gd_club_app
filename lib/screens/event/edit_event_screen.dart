@@ -6,7 +6,7 @@ import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/widgets/glass_app_bar.dart';
+
 import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -133,39 +133,39 @@ class _EditEventScreenState extends State<EditEventScreen> {
         ),
         child: Column(
           children: [
-            GlassAppBar(
-              actions: [
-                if (_newEvent.id != null)
-                  GestureDetector(
-                    onTap: () {
-                      deleteEvent();
-                    },
-                    child: const GlassCard(
-                      child: Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Icon(
-                          Icons.delete_forever,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                GestureDetector(
-                  onTap: () {
-                    _submitForm();
-                  },
-                  child: const GlassCard(
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // GlassAppBar(
+            //   actions: [
+            //     if (_newEvent.id != null)
+            //       GestureDetector(
+            //         onTap: () {
+            //           deleteEvent();
+            //         },
+            //         child: const GlassCard(
+            //           child: Padding(
+            //             padding: EdgeInsets.all(4),
+            //             child: Icon(
+            //               Icons.delete_forever,
+            //               color: Colors.white,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     GestureDetector(
+            //       onTap: () {
+            //         _submitForm();
+            //       },
+            //       child: const GlassCard(
+            //         child: Padding(
+            //           padding: EdgeInsets.all(4),
+            //           child: Icon(
+            //             Icons.check,
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             Expanded(
               child: ListView(children: [
                 Padding(

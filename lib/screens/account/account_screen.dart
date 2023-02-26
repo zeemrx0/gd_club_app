@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
-import 'package:gd_club_app/widgets/accounts/user_organization_list.dart';
+
 import 'package:gd_club_app/widgets/app_drawer.dart';
-import 'package:gd_club_app/widgets/glass_app_bar.dart';
+import 'package:gd_club_app/widgets/bottom_navbar.dart';
+import 'package:gd_club_app/widgets/custom_app_bar.dart';
+
 import 'package:gd_club_app/widgets/glass_card.dart';
 import 'package:provider/provider.dart';
 
@@ -15,72 +17,73 @@ class AccountScreen extends StatelessWidget {
     final account = Provider.of<Auth>(context, listen: false).account;
 
     return Scaffold(
-      drawer: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.transparent,
-        ),
-        child: const AppDrawer(),
-      ),
-      body: Container(
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/bg.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          children: [
-            const GlassAppBar(),
-            Container(
-              margin: const EdgeInsets.all(12),
-              child: GlassCard(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 32,
-                            backgroundImage: account!.avatarUrl != null
-                                ? NetworkImage(account.avatarUrl!)
-                                : null,
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            account.name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(EditAccountScreen.routeName);
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
+      backgroundColor: const Color(0xFFFEFEFE),
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Column(
+            children: [
+              const SizedBox(
+                height: 28,
+              ),
+              Container(
+                margin: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.06),
+                      blurRadius: 16,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.grey[400],
+                          radius: 32,
+                          backgroundImage: account!.avatarUrl != null
+                              ? NetworkImage(account.avatarUrl!)
+                              : null,
                         ),
-                      )
-                    ],
-                  ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Text(
+                          account.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(EditAccountScreen.routeName);
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
-            if (account.systemRole == 'User') UserOrganizationList(account),
-          ],
-        ),
+            ],
+          ),
+          const Positioned(
+            bottom: 12,
+            child: BottomNavbar(),
+          ),
+        ],
       ),
     );
   }

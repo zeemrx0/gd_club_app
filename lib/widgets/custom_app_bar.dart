@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/widgets/glass_card.dart';
+import 'package:ionicons/ionicons.dart';
 
-class GlassAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   final List<Widget> actions;
   final Widget title;
 
-  const GlassAppBar({
+  const CustomAppBar({
     this.title = const Text(''),
     this.actions = const [],
   });
 
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,46 +27,41 @@ class GlassAppBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (!Navigator.of(context).canPop())
-                GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: GlassCard(
-                    borderRadius: BorderRadius.circular(8),
-                    child: const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
               if (Navigator.of(context).canPop())
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
+                    setState(() {});
                   },
-                  child: GlassCard(
-                    borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.06),
+                          blurRadius: 16,
+                        ),
+                      ],
+                    ),
                     child: const Padding(
                       padding: EdgeInsets.all(4),
                       child: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
+                        Ionicons.arrow_back,
+                        size: 16,
                       ),
                     ),
                   ),
                 ),
-              title,
+              widget.title,
               Container(
                 constraints: const BoxConstraints(
                   minWidth: 44,
                 ),
                 child: Row(
                   children: [
-                    ...actions.map(
+                    ...widget.actions.map(
                       (action) => Row(
                         children: [
                           const SizedBox(

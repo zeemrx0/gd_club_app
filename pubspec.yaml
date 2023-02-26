@@ -48,7 +48,6 @@ dependencies:
   ionicons: ^0.2.2
   fluentui_icons: ^1.0.0
   sliding_up_panel: ^2.0.0+1
-  flutter_sliding_up_panel: ^2.0.1
 
   firebase_core: ^2.4.1
   cloud_firestore: ^4.3.1
