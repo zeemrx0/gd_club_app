@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/organizer.dart';
-import 'package:gd_club_app/providers/organizations.dart';
+import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
 
 class Organizers with ChangeNotifier {
   Users? _usersProvider;
-  Organizations? _organizationsProvider;
+  Teams? _teamsProvider;
 
   Organizers(
     this._usersProvider,
-    this._organizationsProvider,
+    this._teamsProvider,
   );
 
   void update(
     Users usersProvider,
-    Organizations organizationsProvider,
+    Teams teamsProvider,
   ) {
     _usersProvider = usersProvider;
-    _organizationsProvider = organizationsProvider;
+    _teamsProvider = teamsProvider;
 
     notifyListeners();
   }
 
   Organizer? findOrganizerById(String organizerId) {
-    if (_usersProvider == null || _organizationsProvider == null) {
+    if (_usersProvider == null || _teamsProvider == null) {
       return null;
     }
 
     return _usersProvider!.findUserById(organizerId) ??
-        _organizationsProvider!.findOrganizationById(organizerId);
+        _teamsProvider!.findTeamById(organizerId);
   }
 }

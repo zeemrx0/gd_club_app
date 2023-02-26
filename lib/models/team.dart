@@ -1,17 +1,17 @@
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
 
-class Organization implements Organizer {
+class Team implements Organizer {
   final String _id;
   final String _name;
   final String? _avatarUrl;
-  final List<Role> organizationRoles;
+  final List<Role> teamRoles;
 
-  Organization(
+  Team(
     this._id,
     this._name,
     this._avatarUrl, {
-    this.organizationRoles = const [],
+    this.teamRoles = const [],
   });
 
   String get title {

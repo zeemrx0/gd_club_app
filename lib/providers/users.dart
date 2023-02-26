@@ -17,10 +17,10 @@ class Users with ChangeNotifier {
 
       userList.add(
         User(
-          id: user['id'] as String,
-          email: user['email'] as String,
-          name: user['name'] as String,
-          systemRole: user['systemRole'] as String,
+          id: userData['id'] as String,
+          email: userData['email'] as String,
+          name: userData['name'] as String,
+          systemRole: userData['systemRole'] as String,
         ),
       );
     }

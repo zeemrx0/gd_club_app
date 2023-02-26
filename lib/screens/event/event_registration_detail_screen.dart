@@ -3,11 +3,10 @@ import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/organizers.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class EventRegistrationInformationScreen extends StatefulWidget {
   static const routeName = '/event-information';

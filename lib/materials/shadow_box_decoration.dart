@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gradient_borders/gradient_borders.dart';
 
-class ShadowBoxDecoration extends BoxDecoration {
-  @override
+class ShadowBoxDecoration {
   final BorderRadiusGeometry? borderRadius;
-  @override
   final Color? color;
 
   BoxDecoration get value {

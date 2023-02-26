@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
-
-import 'package:gd_club_app/widgets/shadow_container.dart';
 import 'package:provider/provider.dart';
 
 class EventManagingDetailScreen extends StatefulWidget {
@@ -23,9 +21,9 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
+      appBar: const CustomAppBar(),
       body: Column(
         children: [
-          CustomAppBar(),
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 16,

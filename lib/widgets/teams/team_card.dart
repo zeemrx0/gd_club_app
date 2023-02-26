@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/models/organization.dart';
+import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/screens/team/team_detail_screen.dart';
 
 class TeamCard extends StatelessWidget {
-  Organization team;
-  String role;
-  TeamCard({required this.team, required this.role});
+  final Team team;
+  final String role;
+  const TeamCard({required this.team, required this.role});
 
   @override
   Widget build(BuildContext context) {

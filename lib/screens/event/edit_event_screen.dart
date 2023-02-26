@@ -125,65 +125,65 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
-      body: Column(
-        children: [
-          CustomAppBar(
-            actions: [
-              if (_newEvent.id != null)
-                GestureDetector(
-                  onTap: () {
-                    deleteEvent();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.red[400],
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.06),
-                          blurRadius: 16,
-                        ),
-                      ],
+      appBar: CustomAppBar(
+        actions: [
+          if (_newEvent.id != null)
+            GestureDetector(
+              onTap: () {
+                deleteEvent();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.red[400],
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.06),
+                      blurRadius: 16,
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Ionicons.trash_bin,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
-              GestureDetector(
-                onTap: () {
-                  _submitForm();
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.purple[400],
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.06),
-                        blurRadius: 16,
-                      ),
-                    ],
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Icon(
-                      Ionicons.checkmark,
-                      size: 16,
-                      color: Colors.white,
-                    ),
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Icon(
+                    Ionicons.trash_bin,
+                    size: 16,
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ],
+            ),
+          GestureDetector(
+            onTap: () {
+              _submitForm();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.purple[400],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.06),
+                    blurRadius: 16,
+                  ),
+                ],
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(4),
+                child: Icon(
+                  Ionicons.checkmark,
+                  size: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
+        ],
+      ),
+      body: Column(
+        children: [
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,

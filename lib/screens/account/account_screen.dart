@@ -74,10 +74,7 @@ class AccountScreen extends StatelessWidget {
               ),
             ],
           ),
-          const Positioned(
-            bottom: 12,
-            child: BottomNavbar(),
-          ),
+          const BottomNavbar(),
         ],
       ),
     );

@@ -12,27 +12,27 @@ class Participations {
           'memberId',
           isEqualTo: userId,
         )
-        .orderBy('organizationId')
+        .orderBy('teamId')
         .get();
 
     final Map<String, List<Role>> participationMap = {};
 
     for (final participation in participations.docs) {
-      final organizationId = participation.data()['organizationId'] as String;
+      final teamId = participation.data()['teamId'] as String;
       final role = await db
-          .collection('organizations')
-          .doc(organizationId)
+          .collection('teams')
+          .doc(teamId)
           .collection('roles')
           .doc(participation.data()['roleId'] as String)
           .get();
 
-      if (participationMap.containsKey(organizationId)) {
-        participationMap[organizationId]!.add(
+      if (participationMap.containsKey(teamId)) {
+        participationMap[teamId]!.add(
           Role(role.data()!['title'] as String,
               role.data()!['isManager'] as bool),
         );
       } else {
-        participationMap[organizationId] = [
+        participationMap[teamId] = [
           Role(role.data()!['title'] as String,
               role.data()!['isManager'] as bool),
         ];

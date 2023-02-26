@@ -1,7 +1,7 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/models/organization.dart';
-import 'package:gd_club_app/providers/organizations.dart';
+import 'package:gd_club_app/models/team.dart';
+import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:ionicons/ionicons.dart';
@@ -15,22 +15,21 @@ class TeamDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String teamId = ModalRoute.of(context)!.settings.arguments as String;
 
-    final Organization team =
-        Provider.of<Organizations>(context).findOrganizationById(teamId)!;
+    final Team team = Provider.of<Teams>(context).findTeamById(teamId)!;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
+      appBar: const CustomAppBar(
+        title: Text(
+          'Quản lý sự kiện',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+      ),
       body: ListView(
         children: [
-          const CustomAppBar(
-            title: Text(
-              'Quản lý sự kiện',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ),
           Container(
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.symmetric(horizontal: 16),

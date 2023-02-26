@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
+import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
 import 'package:gd_club_app/widgets/events/recommended_events_list.dart';
 import 'package:ionicons/ionicons.dart';
@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Provider.of<Registrations>(context, listen: false).fetchRegistrations();
-    Provider.of<Organizations>(context, listen: false).fetchOrganizations();
+    Provider.of<Teams>(context, listen: false).fetchTeams();
     Provider.of<Events>(context, listen: false).fetchEvents();
 
     final allEvents = Provider.of<Events>(context).allEvents;
@@ -315,10 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          const Positioned(
-            bottom: 12,
-            child: BottomNavbar(),
-          ),
+          const BottomNavbar(),
         ],
       ),
     );

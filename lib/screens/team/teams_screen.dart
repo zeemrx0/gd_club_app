@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:gd_club_app/models/account.dart';
-import 'package:gd_club_app/models/registration.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
+import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:gd_club_app/widgets/teams/team_list.dart';
 import 'package:provider/provider.dart';
 
@@ -25,18 +22,31 @@ class _TeamsScreenState extends State<TeamsScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
+      appBar: const CustomAppBar(
+        title: Text(
+          'Đội nhóm',
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: 'Montserrat',
+          ),
+        ),
+      ),
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          ListView(
+          Column(
             children: [
-              TeamList(currentAccount),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    TeamList(currentAccount),
+                  ],
+                ),
+              ),
             ],
           ),
-          const Positioned(
-            bottom: 12,
-            child: BottomNavbar(),
-          ),
+          const BottomNavbar(),
         ],
       ),
     );

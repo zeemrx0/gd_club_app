@@ -179,7 +179,7 @@ class Events with ChangeNotifier {
       'dateTime': newEvent.dateTime,
       'imageUrls': newEvent.imageUrls,
       'description': newEvent.description,
-      'organizationId': newEvent.organizer!.id,
+      'teamId': newEvent.organizer!.id,
       '_createdAt': Timestamp.now(),
     });
 

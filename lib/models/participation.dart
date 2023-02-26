@@ -2,12 +2,12 @@ import 'package:gd_club_app/models/role.dart';
 
 class Participation {
   String memberId;
-  String organizationId;
+  String teamId;
   Role role;
 
   Participation({
     required this.memberId,
-    required this.organizationId,
+    required this.teamId,
     required this.role,
   });
 }

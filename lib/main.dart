@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/providers/registrations.dart';
+import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
@@ -28,6 +28,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> _appFuture = Firebase.initializeApp();
 
+  final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -36,15 +38,15 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Organizations(),
+          create: (context) => Teams(),
         ),
         ChangeNotifierProvider(
           create: (context) => Users(),
         ),
-        ChangeNotifierProxyProvider2<Users, Organizations, Organizers>(
+        ChangeNotifierProxyProvider2<Users, Teams, Organizers>(
           create: (context) => Organizers(null, null),
-          update: (context, usersProvider, organizationsProvider, previous) =>
-              Organizers(usersProvider, organizationsProvider),
+          update: (context, usersProvider, teamsProvider, previous) =>
+              Organizers(usersProvider, teamsProvider),
         ),
         ChangeNotifierProvider(
           create: (context) => Registrations(),
@@ -64,6 +66,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        navigatorObservers: [routeObserver],
         debugShowCheckedModeBanner: false,
         title: 'Sắc màu Gia Định',
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],

@@ -3,8 +3,6 @@ import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
-import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
-import 'package:gd_club_app/widgets/shadow_container.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
