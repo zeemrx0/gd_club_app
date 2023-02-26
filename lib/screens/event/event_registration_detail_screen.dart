@@ -46,6 +46,7 @@ class _EventRegistrationInformationScreenState
   Widget build(BuildContext context) {
     final String eventId = ModalRoute.of(context)!.settings.arguments as String;
     final Event event = Provider.of<Events>(context).findEventById(eventId);
+
     final Organizer organizer = Provider.of<Organizers>(context)
         .findOrganizerById(event.organizer!.id)!;
 

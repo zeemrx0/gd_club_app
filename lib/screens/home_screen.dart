@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/organizations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
-import 'package:gd_club_app/widgets/app_drawer.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
 import 'package:gd_club_app/widgets/events/recommended_events_list.dart';
 import 'package:ionicons/ionicons.dart';

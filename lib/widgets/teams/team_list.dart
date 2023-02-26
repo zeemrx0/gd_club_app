@@ -3,7 +3,7 @@ import 'package:gd_club_app/models/account.dart';
 import 'package:gd_club_app/models/organization.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/organizations.dart';
-import 'package:gd_club_app/widgets/glass_card.dart';
+
 import 'package:gd_club_app/widgets/teams/team_card.dart';
 import 'package:provider/provider.dart';
 

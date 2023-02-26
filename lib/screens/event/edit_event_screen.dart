@@ -6,10 +6,10 @@ import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
-
-import 'package:gd_club_app/widgets/glass_card.dart';
+import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
 class EditEventScreen extends StatefulWidget {
@@ -124,50 +124,70 @@ class _EditEventScreenState extends State<EditEventScreen> {
     _newEvent.organizer = (authData.account) as User;
 
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/bg.jpg'),
-            fit: BoxFit.cover,
+      backgroundColor: const Color(0xFFFEFEFE),
+      body: Column(
+        children: [
+          CustomAppBar(
+            actions: [
+              if (_newEvent.id != null)
+                GestureDetector(
+                  onTap: () {
+                    deleteEvent();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.red[400],
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.06),
+                          blurRadius: 16,
+                        ),
+                      ],
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(
+                        Ionicons.trash_bin,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              GestureDetector(
+                onTap: () {
+                  _submitForm();
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.purple[400],
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.06),
+                        blurRadius: 16,
+                      ),
+                    ],
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Icon(
+                      Ionicons.checkmark,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-        child: Column(
-          children: [
-            // GlassAppBar(
-            //   actions: [
-            //     if (_newEvent.id != null)
-            //       GestureDetector(
-            //         onTap: () {
-            //           deleteEvent();
-            //         },
-            //         child: const GlassCard(
-            //           child: Padding(
-            //             padding: EdgeInsets.all(4),
-            //             child: Icon(
-            //               Icons.delete_forever,
-            //               color: Colors.white,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     GestureDetector(
-            //       onTap: () {
-            //         _submitForm();
-            //       },
-            //       child: const GlassCard(
-            //         child: Padding(
-            //           padding: EdgeInsets.all(4),
-            //           child: Icon(
-            //             Icons.check,
-            //             color: Colors.white,
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            Expanded(
-              child: ListView(children: [
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -191,15 +211,21 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                     fit: BoxFit.cover,
                                   ),
                                 )
-                              : GlassCard(
-                                  borderRadius: BorderRadius.circular(
-                                    10,
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.06),
+                                        blurRadius: 16,
+                                      ),
+                                    ],
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
-                                      'Thêm hình ảnh',
+                                      '+ Thêm hình ảnh',
                                       style: TextStyle(
-                                        color: Colors.grey[400],
                                         fontSize: 16,
                                       ),
                                     ),
@@ -212,33 +238,39 @@ class _EditEventScreenState extends State<EditEventScreen> {
                         height: 16,
                       ),
 
-                      GlassCard(
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.06),
+                              blurRadius: 16,
+                            ),
+                          ],
+                        ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(12),
                           child: Form(
                             key: _formKey,
                             child: Column(
                               children: [
                                 TextFormField(
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     isDense: true,
                                     hintText: 'Tên sự kiện',
                                     border: InputBorder.none,
-                                    contentPadding: const EdgeInsets.only(
+                                    contentPadding: EdgeInsets.only(
                                       bottom: 4,
                                     ),
-                                    errorStyle: const TextStyle(height: 0),
-                                    errorBorder: const UnderlineInputBorder(
+                                    errorStyle: TextStyle(height: 0),
+                                    errorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red),
                                     ),
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey[300],
-                                    ),
+                                    hintStyle: TextStyle(),
                                   ),
                                   style: const TextStyle(
-                                    color: Colors.white,
                                     fontSize: 20,
-                                    fontWeight: FontWeight.bold,
                                   ),
                                   initialValue: _newEvent.title,
                                   validator: (value) {
@@ -258,23 +290,21 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                   height: 8,
                                 ),
                                 TextFormField(
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     isDense: true,
                                     hintText: 'Địa điểm',
                                     border: InputBorder.none,
-                                    contentPadding: const EdgeInsets.only(
+                                    contentPadding: EdgeInsets.only(
                                       bottom: 4,
                                     ),
-                                    errorStyle: const TextStyle(height: 0),
-                                    errorBorder: const UnderlineInputBorder(
+                                    errorStyle: TextStyle(height: 0),
+                                    errorBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red),
                                     ),
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey[300],
-                                    ),
+                                    hintStyle: TextStyle(),
                                   ),
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    fontSize: 14,
                                   ),
                                   initialValue: _newEvent.location,
                                   validator: (value) {
@@ -319,7 +349,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                             children: [
                                               const Icon(
                                                 Icons.date_range,
-                                                color: Colors.white,
                                               ),
                                               const SizedBox(
                                                 width: 8,
@@ -327,7 +356,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                               Text(
                                                 DateFormat.yMd().format(_date),
                                                 style: const TextStyle(
-                                                  color: Colors.white,
+                                                  fontSize: 14,
                                                 ),
                                               ),
                                             ],
@@ -361,7 +390,6 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                             children: [
                                               const Icon(
                                                 Icons.access_time,
-                                                color: Colors.white,
                                               ),
                                               const SizedBox(
                                                 width: 8,
@@ -370,7 +398,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                               Text(
                                                 DateFormat.Hm().format(_time),
                                                 style: const TextStyle(
-                                                  color: Colors.white,
+                                                  fontSize: 14,
                                                 ),
                                               ),
                                             ],
@@ -398,12 +426,10 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                         vertical: 8,
                                         horizontal: 12,
                                       ),
-                                      hintStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                      hintStyle: TextStyle(),
                                     ),
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      fontSize: 14,
                                     ),
                                     minLines: 1,
                                     maxLines: 100,
@@ -423,10 +449,10 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     ],
                   ),
                 ),
-              ]),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

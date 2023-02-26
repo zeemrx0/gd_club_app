@@ -2,6 +2,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/organization.dart';
 import 'package:gd_club_app/providers/organizations.dart';
+import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -97,7 +98,12 @@ class TeamDetailScreen extends StatelessWidget {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      ManageEventsScreen.routeName,
+                      arguments: team.id,
+                    );
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(

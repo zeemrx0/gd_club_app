@@ -39,8 +39,8 @@ class Events with ChangeNotifier {
     }).toList();
   }
 
-  List<Event> get managedEvents {
-    return [..._list];
+  List<Event> findEventsByOrganizerId(String organizerId) {
+    return _list.where((event) => event.organizer!.id == organizerId).toList();
   }
 
   // ignore: use_setters_to_change_properties
