@@ -28,8 +28,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> _appFuture = Firebase.initializeApp();
 
-  final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -66,7 +64,6 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        navigatorObservers: [routeObserver],
         debugShowCheckedModeBanner: false,
         title: 'Sắc màu Gia Định',
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
