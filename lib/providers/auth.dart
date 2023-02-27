@@ -7,7 +7,6 @@ import 'package:gd_club_app/models/account.dart';
 // ignore: library_prefixes
 import 'package:gd_club_app/models/user.dart' as AuthUser;
 import 'package:gd_club_app/providers/accounts.dart';
-import 'package:gd_club_app/providers/participations.dart';
 
 class Auth with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -30,8 +29,6 @@ class Auth with ChangeNotifier {
         email: authenticatingAccount.email,
         name: authenticatingAccount.name,
         systemRole: authenticatingAccount.systemRole,
-        participations: await Participations()
-            .getParticipationsOfAUser(userId: authenticatingAccount.id),
       );
     }
   }

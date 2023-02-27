@@ -1,14 +1,11 @@
 class Role {
-  final String _title;
-  final bool _isManager;
+  String? id;
+  String title;
+  bool isManager;
 
-  Role(this._title, this._isManager);
-
-  String get title {
-    return _title;
-  }
-
-  bool get isManager {
-    return _isManager;
-  }
+  Role({
+    required this.id,
+    required this.title,
+    required this.isManager,
+  });
 }
