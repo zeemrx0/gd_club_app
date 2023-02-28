@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/account.dart';
+import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/organizer.dart';
-import 'package:gd_club_app/models/participation.dart';
 import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
-import 'package:gd_club_app/providers/participations.dart';
+import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:provider/provider.dart';
 
@@ -23,17 +23,18 @@ class User extends Account implements Organizer {
     team =
         await Provider.of<Teams>(context, listen: false).addTeam(team, image);
 
-    Role role = await Provider.of<Teams>(context, listen: false).addRoleToTeam(
+    final Role role =
+        await Provider.of<Teams>(context, listen: false).addRoleToTeam(
       team.id,
       Role(
         id: null,
-        title: 'Thành viên',
-        isManager: false,
+        title: 'Người sáng lập',
+        isManager: true,
       ),
     );
 
-    await Provider.of<Participations>(context, listen: false).addParticipation(
-      Participation(memberId: id, teamId: team.id, role: role),
+    await Provider.of<Memberships>(context, listen: false).addMembership(
+      Membership(memberId: id, teamId: team.id, role: role),
     );
   }
 }

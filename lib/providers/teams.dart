@@ -3,12 +3,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
-import 'package:gd_club_app/providers/participations.dart';
+import 'package:gd_club_app/providers/memberships.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -16,12 +15,12 @@ class Teams with ChangeNotifier {
   final db = FirebaseFirestore.instance;
 
   List<Team> _list = const [];
-  Participations? _participationsProvider;
+  Memberships? _membershipsProvider;
 
-  Teams(this._participationsProvider, this._list);
+  Teams(this._membershipsProvider, this._list);
 
-  void update(Participations participationsProvider) {
-    _participationsProvider = participationsProvider;
+  void update(Memberships membershipsProvider) {
+    _membershipsProvider = membershipsProvider;
   }
 
   List<Team> get list {

@@ -1,14 +1,8 @@
-import 'dart:io';
-import 'dart:math';
-
+import 'dart:io' show File;
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:gd_club_app/models/account.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:gd_club_app/widgets/shadow_container.dart';
 import 'package:image_picker/image_picker.dart';

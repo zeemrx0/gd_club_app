@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/organizers.dart';
-import 'package:gd_club_app/providers/participations.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
@@ -43,12 +43,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Users(),
         ),
-        ChangeNotifierProxyProvider<Teams, Participations>(
-          create: (context) => Participations(null, []),
-          update: (context, teamsProvider, participationsProvider) =>
-              (participationsProvider != null)
-                  ? (participationsProvider..update(teamsProvider))
-                  : Participations(null, []),
+        ChangeNotifierProxyProvider<Teams, Memberships>(
+          create: (context) => Memberships(null, []),
+          update: (context, teamsProvider, membershipsProvider) =>
+              (membershipsProvider != null)
+                  ? (membershipsProvider..update(teamsProvider))
+                  : Memberships(null, []),
         ),
         ChangeNotifierProxyProvider2<Users, Teams, Organizers>(
           create: (context) => Organizers(null, null),
