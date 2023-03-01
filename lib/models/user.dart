@@ -6,6 +6,7 @@ import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
+import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:provider/provider.dart';
@@ -49,5 +50,11 @@ class User extends Account implements Organizer {
     await Provider.of<Memberships>(context, listen: false).addMembership(
       Membership(memberId: id, teamId: teamId, role: role),
     );
+  }
+
+  Future<void> toggleRegisteredAnEvent(
+      String eventId, BuildContext context) async {
+    await Provider.of<Events>(context, listen: false)
+        .toggleEventRegisteredStatus(eventId);
   }
 }

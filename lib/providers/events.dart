@@ -199,8 +199,8 @@ class Events with ChangeNotifier {
     return _list[_list.indexWhere((event) => event.id == id)];
   }
 
-  Future<void> toggleEventRegisteredStatus(String id) async {
-    final event = _list.firstWhere((event) => event.id == id);
+  Future<void> toggleEventRegisteredStatus(String eventId) async {
+    final event = _list.firstWhere((event) => event.id == eventId);
 
     final User user = FirebaseAuth.instance.currentUser!;
 
