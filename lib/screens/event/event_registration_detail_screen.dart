@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
+import 'package:gd_club_app/models/user.dart';
+import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/organizers.dart';
 import 'package:intl/intl.dart';
@@ -18,26 +20,35 @@ class EventRegistrationInformationScreen extends StatefulWidget {
 
 class _EventRegistrationInformationScreenState
     extends State<EventRegistrationInformationScreen> {
-  int renderCount = 0;
   final PanelController panelController = PanelController();
   double panelMinHeight = 0.0;
   double panelMaxHeight = 0.0;
   double panelSnapPoint = 0.55;
 
+  bool isInit = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
-    renderCount++;
-    if (renderCount == 1) {
+    if (isInit) {
       panelMaxHeight = MediaQuery.of(context).size.height - 132;
       panelMinHeight = 132 +
           (MediaQuery.of(context).size.height - 132 - 132) * panelSnapPoint;
-    } else if (renderCount == 2) {
-      setState(() {
-        panelMinHeight = 132;
-
-        panelController.panelPosition = panelSnapPoint;
-      });
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isInit) {
+        setState(() {
+          panelMinHeight = 132;
+          panelController.panelPosition = panelSnapPoint;
+          isInit = false;
+        });
+      }
+    });
     super.didChangeDependencies();
   }
 
@@ -301,9 +312,10 @@ class _EventRegistrationInformationScreenState
                               ),
                               backgroundColor: Colors.purple[400],
                             ),
-                            onPressed: () {
-                              Provider.of<Events>(context, listen: false)
-                                  .toggleEventRegisteredStatus(event.id!);
+                            onPressed: () async {
+                              await (Provider.of<Auth>(context, listen: false)
+                                      .account as User)
+                                  .toggleRegisteredAnEvent(eventId, context);
                             },
                             child: const Text(
                               'Đăng ký ngay',

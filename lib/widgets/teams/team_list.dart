@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/account.dart';
 import 'package:gd_club_app/models/team.dart';
-import 'package:gd_club_app/models/user.dart';
+import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 
 import 'package:gd_club_app/widgets/teams/team_card.dart';
@@ -20,7 +20,10 @@ class _TeamListState extends State<TeamList> {
   Widget build(BuildContext context) {
     final List<Team> teamList = [];
 
-    (widget.account as User).participations.forEach((key, value) async {
+    final memberships = Provider.of<Memberships>(context)
+        .getMembershipsOfAUser(userId: widget.account.id);
+
+    memberships.forEach((key, value) async {
       final Team? team = Provider.of<Teams>(context).findTeamById(key);
       if (team != null) {
         teamList.add(team);
@@ -33,7 +36,12 @@ class _TeamListState extends State<TeamList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...teamList.map(
-            (team) => TeamCard(team: team, role: ''),
+            (team) => Container(
+              margin: const EdgeInsets.only(
+                bottom: 8,
+              ),
+              child: TeamCard(team: team, role: ''),
+            ),
           ),
         ],
       ),

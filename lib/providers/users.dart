@@ -10,7 +10,7 @@ class Users with ChangeNotifier {
   Future<void> fetchUsers() async {
     final List<User> userList = [];
 
-    final users = await db.collection('events').orderBy('_createdAt').get();
+    final users = await db.collection('users').orderBy('_createdAt').get();
 
     for (final user in users.docs) {
       final userData = user.data();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
+import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/providers/teams.dart';
@@ -15,6 +16,7 @@ import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/screens/home_screen.dart';
+import 'package:gd_club_app/screens/team/edit_team_screen.dart';
 import 'package:gd_club_app/screens/team/team_detail_screen.dart';
 import 'package:gd_club_app/screens/team/teams_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
@@ -36,10 +38,17 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Teams(),
+          create: (context) => Teams(null, []),
         ),
         ChangeNotifierProvider(
           create: (context) => Users(),
+        ),
+        ChangeNotifierProxyProvider<Teams, Memberships>(
+          create: (context) => Memberships(null, []),
+          update: (context, teamsProvider, membershipsProvider) =>
+              (membershipsProvider != null)
+                  ? (membershipsProvider..update(teamsProvider))
+                  : Memberships(null, []),
         ),
         ChangeNotifierProxyProvider2<Users, Teams, Organizers>(
           create: (context) => Organizers(null, null),
@@ -115,6 +124,9 @@ class MyApp extends StatelessWidget {
               ),
           TeamDetailScreen.routeName: (context) => const AuthStreamBuilder(
                 child: TeamDetailScreen(),
+              ),
+          EditTeamScreen.routeName: (context) => const AuthStreamBuilder(
+                child: EditTeamScreen(),
               ),
         },
       ),

@@ -2,29 +2,27 @@ import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
 
 class Team implements Organizer {
-  final String _id;
-  final String _name;
-  final String? _avatarUrl;
-  final List<Role> teamRoles;
+  String _id;
+  String _name;
+  String? _avatarUrl;
+  String? description;
+  List<Role> roles;
 
   Team(
     this._id,
     this._name,
     this._avatarUrl, {
-    this.teamRoles = const [],
+    this.description,
+    this.roles = const [],
   });
-
-  String get title {
-    return name;
-  }
-
-  bool get isManager {
-    return false;
-  }
 
   @override
   String get id {
     return _id;
+  }
+
+  set id(String id) {
+    _id = id;
   }
 
   @override
@@ -32,8 +30,16 @@ class Team implements Organizer {
     return _name;
   }
 
+  set name(String name) {
+    _name = name;
+  }
+
   @override
   String? get avatarUrl {
     return _avatarUrl;
+  }
+
+  set avatarUrl(String? avatarUrl) {
+    _avatarUrl = avatarUrl;
   }
 }
