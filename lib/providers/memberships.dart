@@ -60,7 +60,6 @@ class Memberships with ChangeNotifier {
     }
 
     _list = [...membershipList];
-    print(_list.length);
 
     notifyListeners();
   }

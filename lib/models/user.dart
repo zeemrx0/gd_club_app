@@ -37,4 +37,17 @@ class User extends Account implements Organizer {
       Membership(memberId: id, teamId: team.id, role: role),
     );
   }
+
+  Future<void> joinATeam(String teamId, BuildContext context) async {
+    final List<Role> roleList = await Provider.of<Teams>(context, listen: false)
+        .findTeamById(teamId)!
+        .roles;
+
+    final Role role =
+        roleList[roleList.indexWhere((role) => role.title == 'Thành viên')];
+
+    await Provider.of<Memberships>(context, listen: false).addMembership(
+      Membership(memberId: id, teamId: teamId, role: role),
+    );
+  }
 }

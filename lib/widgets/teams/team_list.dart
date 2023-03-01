@@ -36,7 +36,12 @@ class _TeamListState extends State<TeamList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ...teamList.map(
-            (team) => TeamCard(team: team, role: ''),
+            (team) => Container(
+              margin: const EdgeInsets.only(
+                bottom: 8,
+              ),
+              child: TeamCard(team: team, role: ''),
+            ),
           ),
         ],
       ),
