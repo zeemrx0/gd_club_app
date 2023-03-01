@@ -47,8 +47,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
       if (isValid) {
         _formKey.currentState!.save();
 
-        final User user =
-            Provider.of<Auth>(context, listen: false).account as User;
+        final User user = Provider.of<Auth>(context, listen: false).currentUser;
 
         await user.createATeam(_newTeam, _teamImage, context);
 

@@ -26,9 +26,6 @@ class Events with ChangeNotifier {
   List<Event> get registeredEvents {
     final User user = FirebaseAuth.instance.currentUser!;
 
-    final registrations =
-        _registrationsProvider!.getAllRegistrationsOfAUser(user.uid);
-
     return allEvents.where((event) {
       return _registrationsProvider!
           .hasUserRegisterAnEvent(user.uid, event.id!);

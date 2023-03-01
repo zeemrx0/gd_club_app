@@ -54,8 +54,6 @@ class Registrations with ChangeNotifier {
         ) >=
         0;
 
-    print(result);
-
     return result;
   }
 

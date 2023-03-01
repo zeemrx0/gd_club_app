@@ -53,6 +53,26 @@ class Memberships with ChangeNotifier {
     return result;
   }
 
+  Map<String, List<Role>> getMemberListOfATeam(String teamId) {
+    final Map<String, List<Role>> memberMap = {};
+
+    for (final membership in _list) {
+      if (membership.teamId == teamId) {
+        if (memberMap.containsKey(membership.teamId)) {
+          memberMap[membership.memberId]!.add(
+            membership.role,
+          );
+        } else {
+          memberMap[membership.memberId] = [
+            membership.role,
+          ];
+        }
+      }
+    }
+
+    return memberMap;
+  }
+
   Future<void> fetchMemberships() async {
     final membershipsData = await db.collection('memberships').get();
 

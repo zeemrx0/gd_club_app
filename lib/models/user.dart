@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/models/account.dart';
 import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
@@ -11,13 +9,22 @@ import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:provider/provider.dart';
 
-class User extends Account implements Organizer {
+class User implements Organizer {
+  @override
+  String id;
+  String email;
+  @override
+  String name;
+  @override
+  String? avatarUrl;
+  String systemRole;
+
   User({
-    required super.id,
-    required super.email,
-    required super.name,
-    super.avatarUrl,
-    required super.systemRole,
+    required this.id,
+    required this.email,
+    required this.name,
+    this.avatarUrl,
+    required this.systemRole,
   });
 
   Future<void> createATeam(Team team, File? image, BuildContext context) async {

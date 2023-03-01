@@ -1,12 +1,9 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/models/account.dart';
 // ignore: library_prefixes
-import 'package:gd_club_app/models/user.dart' as AuthUser;
-import 'package:gd_club_app/providers/accounts.dart';
+import 'package:gd_club_app/models/user.dart' as AppUser;
 
 class Auth with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -15,22 +12,21 @@ class Auth with ChangeNotifier {
   // DateTime? _expiryTime;
   // Timer? _authTimer;
 
-  Account? account;
+  late AppUser.User currentUser;
 
   Future<void> fetchAccountData() async {
-    final authenticatingAccount = await Accounts().getAccount(
-      FirebaseAuth.instance.currentUser!.uid,
-      FirebaseAuth.instance.currentUser!.email!,
-    );
+    final fetchedUser = await db
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
 
-    if (authenticatingAccount.systemRole == 'User') {
-      account = AuthUser.User(
-        id: authenticatingAccount.id,
-        email: authenticatingAccount.email,
-        name: authenticatingAccount.name,
-        systemRole: authenticatingAccount.systemRole,
-      );
-    }
+    currentUser = AppUser.User(
+      id: fetchedUser.id,
+      email: fetchedUser.data()!['email'] as String,
+      name: fetchedUser.data()!['name'] as String,
+      avatarUrl: fetchedUser.data()!['avatarUrl'] as String,
+      systemRole: fetchedUser.data()!['systemRole'] as String,
+    );
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {

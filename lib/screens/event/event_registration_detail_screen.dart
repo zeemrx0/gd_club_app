@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
-import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/organizers.dart';
@@ -313,8 +312,8 @@ class _EventRegistrationInformationScreenState
                               backgroundColor: Colors.purple[400],
                             ),
                             onPressed: () async {
-                              await (Provider.of<Auth>(context, listen: false)
-                                      .account as User)
+                              await Provider.of<Auth>(context, listen: false)
+                                  .currentUser
                                   .toggleRegisteredAnEvent(eventId, context);
                             },
                             child: const Text(

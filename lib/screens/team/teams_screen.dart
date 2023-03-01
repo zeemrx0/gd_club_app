@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/models/account.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/screens/team/edit_team_screen.dart';
@@ -21,7 +20,7 @@ class TeamsScreen extends StatefulWidget {
 class _TeamsScreenState extends State<TeamsScreen> {
   @override
   Widget build(BuildContext context) {
-    final Account currentAccount = Provider.of<Auth>(context).account!;
+    final User currentAccount = Provider.of<Auth>(context).currentUser;
     final TextEditingController teamCodeController = TextEditingController();
 
     return Scaffold(
@@ -40,7 +39,6 @@ class _TeamsScreenState extends State<TeamsScreen> {
               showDialog(
                 context: context,
                 builder: (context) => Dialog(
-                  // backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -125,8 +123,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await (Provider.of<Auth>(context, listen: false)
-                                    .account as User)
+                            await Provider.of<Auth>(context, listen: false)
+                                .currentUser
                                 .joinATeam(teamCodeController.text, context);
                             teamCodeController.clear();
                             Navigator.of(context).pop();

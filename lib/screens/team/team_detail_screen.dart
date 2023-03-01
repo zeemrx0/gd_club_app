@@ -5,6 +5,7 @@ import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
+import 'package:gd_club_app/screens/team/manage_team_members_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class TeamDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String teamId = ModalRoute.of(context)!.settings.arguments as String;
-    final String userId = Provider.of<Auth>(context).account!.id;
+    final String userId = Provider.of<Auth>(context).currentUser.id;
 
     final Team team = Provider.of<Teams>(context).findTeamById(teamId)!;
 
@@ -176,7 +177,12 @@ class TeamDetailScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        ManageTeamMembersScreen.routeName,
+                        arguments: team.id,
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(

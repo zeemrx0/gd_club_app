@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:gd_club_app/models/event.dart';
-import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
@@ -121,7 +120,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
   Widget build(BuildContext context) {
     final authData = Provider.of<Auth>(context, listen: false);
 
-    _newEvent.organizer = (authData.account) as User;
+    _newEvent.organizer = authData.currentUser;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),

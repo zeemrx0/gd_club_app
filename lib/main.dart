@@ -17,6 +17,7 @@ import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart'
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/screens/home_screen.dart';
 import 'package:gd_club_app/screens/team/edit_team_screen.dart';
+import 'package:gd_club_app/screens/team/manage_team_members_screen.dart';
 import 'package:gd_club_app/screens/team/team_detail_screen.dart';
 import 'package:gd_club_app/screens/team/teams_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
-          create: (context) => Teams(null, []),
+          create: (context) => Teams(),
         ),
         ChangeNotifierProvider(
           create: (context) => Users(),
@@ -127,6 +128,10 @@ class MyApp extends StatelessWidget {
               ),
           EditTeamScreen.routeName: (context) => const AuthStreamBuilder(
                 child: EditTeamScreen(),
+              ),
+          ManageTeamMembersScreen.routeName: (context) =>
+              const AuthStreamBuilder(
+                child: ManageTeamMembersScreen(),
               ),
         },
       ),

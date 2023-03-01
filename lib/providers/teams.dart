@@ -15,13 +15,8 @@ class Teams with ChangeNotifier {
   final db = FirebaseFirestore.instance;
 
   List<Team> _list = const [];
-  Memberships? _membershipsProvider;
 
-  Teams(this._membershipsProvider, this._list);
-
-  void update(Memberships membershipsProvider) {
-    _membershipsProvider = membershipsProvider;
-  }
+  Teams();
 
   List<Team> get list {
     return [..._list];
