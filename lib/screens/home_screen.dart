@@ -36,14 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final allEvents = Provider.of<Events>(context).allEvents;
 
-    final trendingEvents =
-        allEvents.length >= 6 ? allEvents.sublist(0, 5) : allEvents;
+    // final trendingEvents =
+    //     allEvents.length >= 6 ? allEvents.sublist(0, 5) : allEvents;
 
-    var registeredEvents = Provider.of<Events>(context).registeredEvents;
+    // var registeredEvents = Provider.of<Events>(context).registeredEvents;
 
-    if (registeredEvents.length >= 2) {
-      registeredEvents = registeredEvents.sublist(0, 1);
-    }
+    // if (registeredEvents.length >= 2) {
+    //   registeredEvents = registeredEvents.sublist(0, 1);
+    // }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -281,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
-                      child: RecommendedEventsList(trendingEvents),
+                      child: RecommendedEventsList(allEvents),
                     ),
 
                     const SizedBox(
@@ -308,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
-                      child: RecommendedEventsList(trendingEvents),
+                      child: RecommendedEventsList(allEvents),
                     ),
                     const SizedBox(
                       height: 88,

@@ -38,6 +38,27 @@ class Registrations with ChangeNotifier {
         .toList();
   }
 
+  List<Registration> getAllRegistrationsOfAnEvent(String eventId) {
+    return _list
+        .where(
+          (registration) => registration.eventId == eventId,
+        )
+        .toList();
+  }
+
+  bool hasUserRegisterAnEvent(String userId, String eventId) {
+    final bool result = _list.indexWhere(
+          (registration) =>
+              registration.registrantId == userId &&
+              registration.eventId == eventId,
+        ) >=
+        0;
+
+    print(result);
+
+    return result;
+  }
+
   Future<void> addRegistration({
     required String eventId,
     required String registrantId,

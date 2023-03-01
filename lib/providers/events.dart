@@ -30,12 +30,8 @@ class Events with ChangeNotifier {
         _registrationsProvider!.getAllRegistrationsOfAUser(user.uid);
 
     return allEvents.where((event) {
-      final bool isEventRegisterd = registrations.indexWhere(
-            (registration) => registration.eventId == event.id,
-          ) >=
-          0;
-
-      return isEventRegisterd;
+      return _registrationsProvider!
+          .hasUserRegisterAnEvent(user.uid, event.id!);
     }).toList();
   }
 
@@ -73,7 +69,7 @@ class Events with ChangeNotifier {
     for (final eventData in eventsData.docs) {
       final event = eventData.data();
 
-      final registrations = _registrationsProvider!.getAllRegistrations();
+      // final registrations = _registrationsProvider!.getAllRegistrations();
       final Organizer organizer = _organizersProvider!
           .findOrganizerById(event['organizerId'] as String)!;
 
@@ -90,11 +86,10 @@ class Events with ChangeNotifier {
               .map((e) => e.toString())
               .toList(),
           organizer: organizer,
-          registrations: registrations,
-          isRegistered: registrations.indexWhere(
-                (registration) => registration.registrantId == user.uid,
-              ) >=
-              0,
+          registrations: _registrationsProvider!
+              .getAllRegistrationsOfAnEvent(eventData.id),
+          isRegistered: _registrationsProvider!
+              .hasUserRegisterAnEvent(user.uid, eventData.id),
         ),
       );
     }
