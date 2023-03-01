@@ -11,7 +11,6 @@ class TeamMemberItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context).findUserById(memberId);
-    print(user?.id);
 
     return GestureDetector(
       onTap: () {

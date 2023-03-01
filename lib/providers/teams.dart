@@ -7,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
-import 'package:gd_club_app/providers/memberships.dart';
 
 import 'package:uuid/uuid.dart';
 
