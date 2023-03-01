@@ -54,8 +54,8 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  Event getEventById(String id) {
-    return _list.firstWhere((event) => event.id == id);
+  Event findEventById(String id) {
+    return _list[_list.indexWhere((event) => event.id == id)];
   }
 
   Future<void> fetchEvents() async {
@@ -195,27 +195,27 @@ class Events with ChangeNotifier {
     notifyListeners();
   }
 
-  Event findEventById(String id) {
-    return _list[_list.indexWhere((event) => event.id == id)];
-  }
-
   Future<void> toggleEventRegisteredStatus(String eventId) async {
-    final event = _list.firstWhere((event) => event.id == eventId);
+    final int eventIndex = _list.indexWhere((event) => event.id == eventId);
 
     final User user = FirebaseAuth.instance.currentUser!;
 
-    if (!event.isRegistered) {
+    if (!_list[eventIndex].isRegistered) {
       // If you have not registered the event
       // then add a registration
 
-      _registrationsProvider!
-          .addRegistration(eventId: event.id!, registrantId: user.uid);
+      await _registrationsProvider!.addRegistration(
+          eventId: _list[eventIndex].id!, registrantId: user.uid);
+
+      _list[eventIndex].isRegistered = true;
     } else {
       // If you have already registered the event
       // then delete the registration
 
-      _registrationsProvider!
-          .removeRegistration(eventId: event.id!, registrantId: user.uid);
+      await _registrationsProvider!.removeRegistration(
+          eventId: _list[eventIndex].id!, registrantId: user.uid);
+
+      _list[eventIndex].isRegistered = false;
     }
 
     notifyListeners();

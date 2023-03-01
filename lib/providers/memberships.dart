@@ -10,7 +10,7 @@ class Memberships with ChangeNotifier {
   final db = FirebaseFirestore.instance;
 
   List<Membership> _list = [];
-  Teams? _teamsProvider;
+  late Teams? _teamsProvider;
 
   Memberships(this._teamsProvider, this._list);
 
@@ -24,17 +24,33 @@ class Memberships with ChangeNotifier {
     final Map<String, List<Role>> membershipMap = {};
 
     for (final membership in _list) {
-      if (membershipMap.containsKey(membership.teamId)) {
-        membershipMap[membership.teamId]!.add(
-          membership.role,
-        );
-      } else {
-        membershipMap[membership.teamId] = [
-          membership.role,
-        ];
+      if (membership.memberId == userId) {
+        if (membershipMap.containsKey(membership.teamId)) {
+          membershipMap[membership.teamId]!.add(
+            membership.role,
+          );
+        } else {
+          membershipMap[membership.teamId] = [
+            membership.role,
+          ];
+        }
       }
     }
     return membershipMap;
+  }
+
+  bool isUserManagerOfATeam(String userId, String teamId) {
+    bool result = false;
+
+    for (final membership in _list) {
+      if (membership.memberId == userId &&
+          membership.teamId == teamId &&
+          membership.role.isManager) {
+        result = true;
+      }
+    }
+
+    return result;
   }
 
   Future<void> fetchMemberships() async {

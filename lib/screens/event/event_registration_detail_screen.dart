@@ -264,26 +264,26 @@ class _EventRegistrationInformationScreenState
                         const SizedBox(
                           height: 16,
                         ),
-                        if (event.isRegistered)
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              backgroundColor: Colors.purple[400],
-                            ),
-                            onPressed: () {
-                              // Navigator.of(context)
-                              //     .pushNamed(EventQRCodeScreen.routeName);
-                            },
-                            child: const Text(
-                              'Check in',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                        // if (event.isRegistered)
+                        //   ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(8),
+                        //       ),
+                        //       backgroundColor: Colors.purple[400],
+                        //     ),
+                        //     onPressed: () {
+                        //       // Navigator.of(context)
+                        //       //     .pushNamed(EventQRCodeScreen.routeName);
+                        //     },
+                        //     child: const Text(
+                        //       'Check in',
+                        //       style: TextStyle(
+                        //         fontSize: 14,
+                        //         fontWeight: FontWeight.w600,
+                        //       ),
+                        //     ),
+                        //   ),
                         if (event.isRegistered)
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(

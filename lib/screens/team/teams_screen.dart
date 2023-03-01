@@ -73,7 +73,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             child: const Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(
-                                "Tạo đội nhóm của bạn",
+                                'Tạo đội nhóm của bạn',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -85,7 +85,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Text(
+                        const Text(
                           'Hoặc',
                           style: TextStyle(
                             color: Colors.grey,
@@ -149,7 +149,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             child: const Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(
-                                "Tham gia",
+                                'Tham gia',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,

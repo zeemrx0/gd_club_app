@@ -1,6 +1,8 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/team.dart';
+import 'package:gd_club_app/providers/auth.dart';
+import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/screens/event/manage_events_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
@@ -14,8 +16,12 @@ class TeamDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String teamId = ModalRoute.of(context)!.settings.arguments as String;
+    final String userId = Provider.of<Auth>(context).account!.id;
 
     final Team team = Provider.of<Teams>(context).findTeamById(teamId)!;
+
+    final bool isUserManager = Provider.of<Memberships>(context, listen: false)
+        .isUserManagerOfATeam(userId, teamId);
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -56,7 +62,10 @@ class TeamDetailScreen extends StatelessWidget {
                               fit: BoxFit.cover,
                             )
                           : Container(
-                              color: Colors.black,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[400],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                     ),
                   ),
@@ -82,145 +91,148 @@ class TeamDetailScreen extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.06),
-                  blurRadius: 16,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      ManageEventsScreen.routeName,
-                      arguments: team.id,
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.grey[200]!,
+
+          // Show managing dashboard if user is a manager
+          if (isUserManager)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.06),
+                    blurRadius: 16,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        ManageEventsScreen.routeName,
+                        arguments: team.id,
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey[200]!,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Ionicons.calendar,
-                          color: Colors.amber,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Quản lí sự kiện',
-                          style: TextStyle(
-                            fontSize: 14,
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Ionicons.calendar,
+                            color: Colors.amber,
+                            size: 20,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.grey[200]!,
-                        ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Quản lí sự kiện',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Row(
-                      children: const [
-                        Icon(
-                          FluentSystemIcons.ic_fluent_organization_filled,
-                          color: Colors.green,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Quản lí chức vụ',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.grey[200]!,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey[200]!,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Ionicons.people,
-                          color: Colors.blue,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Quản lí thành viên',
-                          style: TextStyle(
-                            fontSize: 14,
+                      child: Row(
+                        children: const [
+                          Icon(
+                            FluentSystemIcons.ic_fluent_organization_filled,
+                            color: Colors.green,
+                            size: 20,
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Quản lí chức vụ',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Ionicons.settings,
-                          color: Colors.grey,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Chỉnh sửa',
-                          style: TextStyle(
-                            fontSize: 14,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey[200]!,
                           ),
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Ionicons.people,
+                            color: Colors.blue,
+                            size: 20,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Quản lí thành viên',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                )
-              ],
-            ),
-          )
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        children: const [
+                          Icon(
+                            Ionicons.settings,
+                            color: Colors.grey,
+                            size: 20,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Chỉnh sửa',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
         ],
       ),
     );

@@ -38,18 +38,28 @@ class Registrations with ChangeNotifier {
         .toList();
   }
 
-  Future<void> addRegistration(
-      {required String eventId, required String registrantId}) async {
+  Future<void> addRegistration({
+    required String eventId,
+    required String registrantId,
+  }) async {
     await FirebaseFirestore.instance.collection('registrations').add(
       {
         'eventId': eventId,
         'registrantId': registrantId,
       },
     );
+
+    _list.add(
+      Registration(eventId: eventId, registrantId: registrantId),
+    );
+
+    notifyListeners();
   }
 
-  Future<void> removeRegistration(
-      {required String eventId, required String registrantId}) async {
+  Future<void> removeRegistration({
+    required String eventId,
+    required String registrantId,
+  }) async {
     final registrations = await FirebaseFirestore.instance
         .collection('registrations')
         .where(
@@ -60,7 +70,15 @@ class Registrations with ChangeNotifier {
         .get();
 
     for (final registration in registrations.docs) {
-      registration.reference.delete();
+      await registration.reference.delete();
     }
+
+    _list.removeWhere(
+      (registration) =>
+          registration.eventId == eventId &&
+          registration.registrantId == registrantId,
+    );
+
+    notifyListeners();
   }
 }

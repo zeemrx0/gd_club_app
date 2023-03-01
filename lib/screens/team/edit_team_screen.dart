@@ -22,7 +22,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
   final _imagePicker = ImagePicker();
   File? _teamImage;
 
-  Team _newTeam = Team('', '', '');
+  final Team _newTeam = Team('', '', '');
 
   final _formKey = GlobalKey<FormState>();
 
@@ -46,8 +46,6 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
 
       if (isValid) {
         _formKey.currentState!.save();
-
-        print(_newTeam.name);
 
         final User user =
             Provider.of<Auth>(context, listen: false).account as User;
