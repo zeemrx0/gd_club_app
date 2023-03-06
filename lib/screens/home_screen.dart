@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/memberships.dart';
-import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
@@ -27,8 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
       await Provider.of<Users>(context, listen: false).fetchUsers();
       await Provider.of<Auth>(context, listen: false).fetchAccountData();
 
-      await Provider.of<Registrations>(context, listen: false)
-          .fetchRegistrations();
       await Provider.of<Teams>(context, listen: false).fetchTeams();
       await Provider.of<Events>(context, listen: false).fetchEvents();
 

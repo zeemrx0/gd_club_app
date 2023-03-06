@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/organizer.dart';
+import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:gd_club_app/widgets/events/event_item.dart';
@@ -14,14 +14,11 @@ class ManageEventsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String organizerId =
-        ModalRoute.of(context)!.settings.arguments as String;
-
     final Organizer organizer =
-        Provider.of<Organizers>(context).findOrganizerById(organizerId)!;
+        ModalRoute.of(context)!.settings.arguments as Team;
 
     final managedEvents =
-        Provider.of<Events>(context).findEventsByOrganizerId(organizerId);
+        Provider.of<Events>(context).findEventsByOrganizerId(organizer.id);
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -38,7 +35,12 @@ class ManageEventsScreen extends StatelessWidget {
             actions: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed(EditEventScreen.routeName);
+                  Navigator.of(context).pushNamed(
+                    EditEventScreen.routeName,
+                    arguments: {
+                      'organizer': organizer,
+                    },
+                  );
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8),

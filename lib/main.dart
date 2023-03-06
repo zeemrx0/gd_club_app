@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/memberships.dart';
-import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
@@ -44,33 +43,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Users(),
         ),
-        ChangeNotifierProxyProvider<Teams, Memberships>(
-          create: (context) => Memberships(null, []),
-          update: (context, teamsProvider, membershipsProvider) =>
-              (membershipsProvider != null)
-                  ? (membershipsProvider..update(teamsProvider))
-                  : Memberships(null, []),
-        ),
-        ChangeNotifierProxyProvider2<Users, Teams, Organizers>(
-          create: (context) => Organizers(null, null),
-          update: (context, usersProvider, teamsProvider, previous) =>
-              Organizers(usersProvider, teamsProvider),
+        ChangeNotifierProvider<Memberships>(
+          create: (context) => Memberships(),
         ),
         ChangeNotifierProvider(
           create: (context) => Registrations(),
         ),
-        ChangeNotifierProxyProvider2<Registrations, Organizers, Events>(
-          create: (context) => Events(null, null),
-          update: (
-            context,
-            registrationsProvider,
-            organizersProvider,
-            previousEvents,
-          ) =>
-              previousEvents != null
-                  ? (previousEvents
-                    ..update(registrationsProvider, organizersProvider))
-                  : Events(registrationsProvider, organizersProvider),
+        ChangeNotifierProvider<Events>(
+          create: (context) => Events(),
         ),
       ],
       child: MaterialApp(

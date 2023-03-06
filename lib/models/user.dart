@@ -28,49 +28,25 @@ class User implements Organizer {
   });
 
   Future<void> createATeam(Team team, File? image, BuildContext context) async {
-    team =
-        await Provider.of<Teams>(context, listen: false).addTeam(team, image);
-
-    final Role ownerRole =
-        await Provider.of<Teams>(context, listen: false).addRoleToTeam(
-      team.id,
-      Role(
-        id: null,
-        title: 'Người sở hữu',
-        isManager: true,
-      ),
-    );
-
-    final Role memberRole =
-        await Provider.of<Teams>(context, listen: false).addRoleToTeam(
-      team.id,
-      Role(
-        id: null,
-        title: 'Thành viên',
-        isManager: false,
-      ),
-    );
-
-    await Provider.of<Memberships>(context, listen: false).addMembership(
-      Membership(memberId: id, teamId: team.id, role: ownerRole),
-    );
+    team = await Provider.of<Teams>(context, listen: false)
+        .createTeam(team, image, id);
   }
 
   Future<void> joinATeam(String teamId, BuildContext context) async {
     final List<Role> roleList =
         Provider.of<Teams>(context, listen: false).findTeamById(teamId)!.roles;
 
-    final Role role =
+    final Role memberRole =
         roleList[roleList.indexWhere((role) => role.title == 'Thành viên')];
 
     await Provider.of<Memberships>(context, listen: false).addMembership(
-      Membership(memberId: id, teamId: teamId, role: role),
+      Membership(memberId: id, teamId: teamId, role: memberRole),
     );
   }
 
   Future<void> toggleRegisteredAnEvent(
       String eventId, BuildContext context) async {
     await Provider.of<Events>(context, listen: false)
-        .toggleEventRegisteredStatus(eventId);
+        .toggleRegisteredAnEvent(eventId, context);
   }
 }

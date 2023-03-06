@@ -113,7 +113,7 @@ class TeamDetailScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         ManageEventsScreen.routeName,
-                        arguments: team.id,
+                        arguments: team,
                       );
                     },
                     child: Container(

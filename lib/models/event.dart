@@ -14,10 +14,6 @@ class Event {
 
   List<Role> allowedRoles;
 
-  int get numberOfRegistrations {
-    return registrations.length;
-  }
-
   bool isRegistered;
   bool isCheckedIn;
 

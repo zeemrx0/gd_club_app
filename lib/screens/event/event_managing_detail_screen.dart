@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/screens/event/edit_event_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
@@ -15,9 +16,10 @@ class EventManagingDetailScreen extends StatefulWidget {
 class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final eventId = ModalRoute.of(context)!.settings.arguments as String;
+    final String eventId = ModalRoute.of(context)!.settings.arguments as String;
 
-    final event = Provider.of<Events>(context).findEventById(eventId);
+    final Event? event =
+        Provider.of<Events>(context, listen: false).findEventById(eventId);
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -62,7 +64,7 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
                                   width: 8,
                                 ),
                                 Text(
-                                  '${event.numberOfRegistrations}',
+                                  '${event!.registrations.length}',
                                   style: const TextStyle(),
                                 ),
                               ],
@@ -105,8 +107,11 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
                               child: InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                      EditEventScreen.routeName,
-                                      arguments: event);
+                                    EditEventScreen.routeName,
+                                    arguments: {
+                                      'event': event,
+                                    },
+                                  );
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.all(8),
