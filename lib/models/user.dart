@@ -49,4 +49,16 @@ class User implements Organizer {
     await Provider.of<Events>(context, listen: false)
         .toggleRegisteredAnEvent(eventId, context);
   }
+
+  Future<void> leaveATeam(String teamId, BuildContext context) async {
+    await Provider.of<Memberships>(context, listen: false).removeMembership(
+      memberId: id,
+      teamId: teamId,
+    );
+  }
+
+  Future<void> deleteATeam(BuildContext context,
+      {required String teamId}) async {
+    await Provider.of<Teams>(context, listen: false).deleteTeam(teamId: teamId);
+  }
 }

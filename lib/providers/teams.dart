@@ -38,4 +38,12 @@ class Teams with ChangeNotifier {
 
     return team;
   }
+
+  Future<void> deleteTeam({required String teamId}) async {
+    TeamsConnector.deleteTeam(teamId: teamId);
+
+    _list.removeWhere((team) => team.id == teamId);
+
+    notifyListeners();
+  }
 }

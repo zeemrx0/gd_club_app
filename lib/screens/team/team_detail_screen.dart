@@ -1,11 +1,12 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/screens/event/managing_event_list_screen.dart';
 import 'package:gd_club_app/screens/team/managing_member_list_screen.dart';
+import 'package:gd_club_app/screens/team/team_setting_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +17,28 @@ class TeamDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String teamId = ModalRoute.of(context)!.settings.arguments as String;
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final String teamId = arguments['teamId'] as String;
     final String userId = Provider.of<Auth>(context).currentUser.id;
 
     final Team team = Provider.of<Teams>(context).findTeamById(teamId)!;
 
-    final bool isUserManager = Provider.of<Memberships>(context, listen: false)
-        .isUserManagerOfATeam(userId, teamId);
+    final List<Role> roles = arguments['roles'] as List<Role>;
+
+    bool isUserManager = false;
+    bool isUserOwner = false;
+
+    for (final role in roles) {
+      if (role.isManager) {
+        isUserManager = true;
+      }
+
+      if (role.isOwner) {
+        isUserOwner = true;
+      }
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -213,7 +229,15 @@ class TeamDetailScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        TeamSettingScreen.routeName,
+                        arguments: {
+                          'isUserOwner': isUserOwner,
+                          'team': team,
+                        },
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       child: Row(
@@ -235,7 +259,7 @@ class TeamDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             )

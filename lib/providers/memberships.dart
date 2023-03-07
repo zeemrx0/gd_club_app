@@ -78,4 +78,15 @@ class Memberships with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> removeMembership({
+    required String memberId,
+    required String teamId,
+  }) async {
+    MembershipsConnector.removeMembership(memberId: memberId, teamId: teamId);
+
+    _list.removeWhere((m) => m.memberId == memberId && m.teamId == teamId);
+
+    notifyListeners();
+  }
 }

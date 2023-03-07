@@ -46,4 +46,22 @@ class MembershipsConnector {
 
     return membership;
   }
+
+  static Future<void> removeMembership({
+    required String memberId,
+    required String teamId,
+  }) async {
+    final memberships = await FirebaseFirestore.instance
+        .collection('memberships')
+        .where(
+          'memberId',
+          isEqualTo: memberId,
+        )
+        .where('teamId', isEqualTo: teamId)
+        .get();
+
+    for (final membership in memberships.docs) {
+      await membership.reference.delete();
+    }
+  }
 }

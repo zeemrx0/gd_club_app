@@ -40,7 +40,7 @@ class _TeamListState extends State<TeamList> {
               margin: const EdgeInsets.only(
                 bottom: 8,
               ),
-              child: TeamCard(team: team, role: ''),
+              child: TeamCard(team: team, roles: memberships[team.id]!),
             ),
           ),
         ],

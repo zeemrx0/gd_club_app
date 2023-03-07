@@ -5,12 +5,14 @@ class Role {
   String teamId;
   String title;
   bool isManager;
+  bool isOwner;
 
   Role({
     required this.id,
     required this.teamId,
     required this.title,
     required this.isManager,
+    required this.isOwner,
   });
 
   Future<Role> addRoleToTeam(Role role) async {
