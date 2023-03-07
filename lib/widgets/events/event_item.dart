@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
-import 'package:gd_club_app/models/organizer.dart';
-import 'package:gd_club_app/providers/organizers.dart';
 import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class EventItem extends StatelessWidget {
   final Event event;
@@ -13,9 +10,6 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Organizer organizer = Provider.of<Organizers>(context)
-        .findOrganizerById(event.organizer!.id)!;
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
@@ -69,7 +63,7 @@ class EventItem extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.cover,
                         child: Image.network(
-                          organizer.avatarUrl ??
+                          event.organizer?.avatarUrl ??
                               'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
                         ),
                       ),
@@ -78,7 +72,7 @@ class EventItem extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      organizer.name,
+                      event.organizer?.name ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(

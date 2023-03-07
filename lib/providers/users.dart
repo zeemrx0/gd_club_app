@@ -10,15 +10,16 @@ class Users with ChangeNotifier {
   Future<void> fetchUsers() async {
     final List<User> userList = [];
 
-    final users = await db.collection('users').orderBy('_createdAt').get();
+    final users = await db.collection('users').get();
 
     for (final user in users.docs) {
       final userData = user.data();
 
       userList.add(
         User(
-          id: userData['id'] as String,
+          id: user.id,
           email: userData['email'] as String,
+          avatarUrl: userData['avatarUrl'] as String,
           name: userData['name'] as String,
           systemRole: userData['systemRole'] as String,
         ),

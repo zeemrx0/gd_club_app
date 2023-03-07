@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:gd_club_app/models/event.dart';
-import 'package:gd_club_app/models/user.dart';
-import 'package:gd_club_app/providers/auth.dart';
+import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,14 +11,14 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-class EditEventScreen extends StatefulWidget {
+class EventEditingScreen extends StatefulWidget {
   static const routeName = '/edit-event';
 
   @override
-  State<EditEventScreen> createState() => _EditEventScreenState();
+  State<EventEditingScreen> createState() => _EventEditingScreenState();
 }
 
-class _EditEventScreenState extends State<EditEventScreen> {
+class _EventEditingScreenState extends State<EventEditingScreen> {
   DateTime _date = DateTime.now();
   DateTime _time = DateTime.now();
 
@@ -82,6 +81,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   .deleteEvent(_newEvent.id!);
               Navigator.of(ctx).pop();
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             child: const Text('Xác nhận'),
           )
@@ -109,19 +109,22 @@ class _EditEventScreenState extends State<EditEventScreen> {
 
   @override
   void didChangeDependencies() {
-    if (ModalRoute.of(context)!.settings.arguments != null) {
-      _newEvent = ModalRoute.of(context)!.settings.arguments as Event;
-      _date = _newEvent.dateTime;
-      _time = _newEvent.dateTime;
-    }
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final authData = Provider.of<Auth>(context, listen: false);
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    _newEvent.organizer = (authData.account) as User;
+    if (arguments.containsKey('event')) {
+      _newEvent = arguments['event'] as Event;
+      _date = _newEvent.dateTime;
+      _time = _newEvent.dateTime;
+    } else if (arguments.containsKey('organizer')) {
+      final Organizer organizer = arguments['organizer'] as Organizer;
+      _newEvent.organizer = organizer;
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),

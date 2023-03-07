@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
-import 'package:gd_club_app/models/organizer.dart';
-import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/providers/organizers.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -55,10 +52,7 @@ class _EventRegistrationInformationScreenState
   @override
   Widget build(BuildContext context) {
     final String eventId = ModalRoute.of(context)!.settings.arguments as String;
-    final Event event = Provider.of<Events>(context).findEventById(eventId);
-
-    final Organizer organizer = Provider.of<Organizers>(context)
-        .findOrganizerById(event.organizer!.id)!;
+    final Event event = Provider.of<Events>(context).findEventById(eventId)!;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -128,7 +122,7 @@ class _EventRegistrationInformationScreenState
                               child: FittedBox(
                                 fit: BoxFit.cover,
                                 child: Image.network(
-                                  organizer.avatarUrl ??
+                                  event.organizer?.avatarUrl ??
                                       'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
                                 ),
                               ),
@@ -137,7 +131,7 @@ class _EventRegistrationInformationScreenState
                               width: 4,
                             ),
                             Text(
-                              organizer.name,
+                              event.organizer?.name ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -264,26 +258,26 @@ class _EventRegistrationInformationScreenState
                         const SizedBox(
                           height: 16,
                         ),
-                        if (event.isRegistered)
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              backgroundColor: Colors.purple[400],
-                            ),
-                            onPressed: () {
-                              // Navigator.of(context)
-                              //     .pushNamed(EventQRCodeScreen.routeName);
-                            },
-                            child: const Text(
-                              'Check in',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                        // if (event.isRegistered)
+                        //   ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(8),
+                        //       ),
+                        //       backgroundColor: Colors.purple[400],
+                        //     ),
+                        //     onPressed: () {
+                        //       // Navigator.of(context)
+                        //       //     .pushNamed(EventQRCodeScreen.routeName);
+                        //     },
+                        //     child: const Text(
+                        //       'Check in',
+                        //       style: TextStyle(
+                        //         fontSize: 14,
+                        //         fontWeight: FontWeight.w600,
+                        //       ),
+                        //     ),
+                        //   ),
                         if (event.isRegistered)
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -293,8 +287,9 @@ class _EventRegistrationInformationScreenState
                               backgroundColor: Colors.grey[400],
                             ),
                             onPressed: () {
-                              Provider.of<Events>(context, listen: false)
-                                  .toggleEventRegisteredStatus(event.id!);
+                              Provider.of<Auth>(context, listen: false)
+                                  .currentUser
+                                  .toggleRegisteredAnEvent(eventId, context);
                             },
                             child: const Text(
                               'Hủy đăng kí',
@@ -313,8 +308,8 @@ class _EventRegistrationInformationScreenState
                               backgroundColor: Colors.purple[400],
                             ),
                             onPressed: () async {
-                              await (Provider.of<Auth>(context, listen: false)
-                                      .account as User)
+                              await Provider.of<Auth>(context, listen: false)
+                                  .currentUser
                                   .toggleRegisteredAnEvent(eventId, context);
                             },
                             child: const Text(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/events.dart';
 import 'package:gd_club_app/providers/memberships.dart';
-import 'package:gd_club_app/providers/registrations.dart';
 import 'package:gd_club_app/providers/teams.dart';
+import 'package:gd_club_app/providers/users.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
 import 'package:gd_club_app/widgets/events/recommended_events_list.dart';
 import 'package:ionicons/ionicons.dart';
@@ -22,11 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_isInit) {
       _isInit = false;
 
-      await Provider.of<Registrations>(context, listen: false)
-          .fetchRegistrations();
+      await Provider.of<Users>(context, listen: false).fetchUsers();
+      await Provider.of<Auth>(context, listen: false).fetchAccountData();
+
       await Provider.of<Teams>(context, listen: false).fetchTeams();
-      await Provider.of<Memberships>(context, listen: false).fetchMemberships();
       await Provider.of<Events>(context, listen: false).fetchEvents();
+
+      await Provider.of<Memberships>(context, listen: false).fetchMemberships();
     }
 
     super.didChangeDependencies();
@@ -36,14 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final allEvents = Provider.of<Events>(context).allEvents;
 
-    final trendingEvents =
-        allEvents.length >= 6 ? allEvents.sublist(0, 5) : allEvents;
+    // final trendingEvents =
+    //     allEvents.length >= 6 ? allEvents.sublist(0, 5) : allEvents;
 
-    var registeredEvents = Provider.of<Events>(context).registeredEvents;
+    // var registeredEvents = Provider.of<Events>(context).registeredEvents;
 
-    if (registeredEvents.length >= 2) {
-      registeredEvents = registeredEvents.sublist(0, 1);
-    }
+    // if (registeredEvents.length >= 2) {
+    //   registeredEvents = registeredEvents.sublist(0, 1);
+    // }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -281,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
-                      child: RecommendedEventsList(trendingEvents),
+                      child: RecommendedEventsList(allEvents),
                     ),
 
                     const SizedBox(
@@ -308,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
-                      child: RecommendedEventsList(trendingEvents),
+                      child: RecommendedEventsList(allEvents),
                     ),
                     const SizedBox(
                       height: 88,

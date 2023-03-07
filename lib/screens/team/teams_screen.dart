@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/models/account.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/screens/team/edit_team_screen.dart';
+import 'package:gd_club_app/screens/team/team_editing_screen.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:gd_club_app/widgets/teams/team_list.dart';
@@ -21,7 +20,7 @@ class TeamsScreen extends StatefulWidget {
 class _TeamsScreenState extends State<TeamsScreen> {
   @override
   Widget build(BuildContext context) {
-    final Account currentAccount = Provider.of<Auth>(context).account!;
+    final User currentAccount = Provider.of<Auth>(context).currentUser;
     final TextEditingController teamCodeController = TextEditingController();
 
     return Scaffold(
@@ -40,7 +39,6 @@ class _TeamsScreenState extends State<TeamsScreen> {
               showDialog(
                 context: context,
                 builder: (context) => Dialog(
-                  // backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -52,8 +50,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed(EditTeamScreen.routeName);
+                            Navigator.of(context).pushReplacementNamed(
+                                TeamEditingScreen.routeName);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -73,7 +71,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             child: const Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(
-                                "Tạo đội nhóm của bạn",
+                                'Tạo đội nhóm của bạn',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -85,7 +83,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Text(
+                        const Text(
                           'Hoặc',
                           style: TextStyle(
                             color: Colors.grey,
@@ -125,8 +123,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await (Provider.of<Auth>(context, listen: false)
-                                    .account as User)
+                            await Provider.of<Auth>(context, listen: false)
+                                .currentUser
                                 .joinATeam(teamCodeController.text, context);
                             teamCodeController.clear();
                             Navigator.of(context).pop();
@@ -149,7 +147,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                             child: const Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(
-                                "Tham gia",
+                                'Tham gia',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,

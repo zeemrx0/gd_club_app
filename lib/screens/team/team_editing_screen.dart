@@ -9,20 +9,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-class EditTeamScreen extends StatefulWidget {
+class TeamEditingScreen extends StatefulWidget {
   static const routeName = '/edit-team';
 
-  const EditTeamScreen({super.key});
+  const TeamEditingScreen({super.key});
 
   @override
-  State<EditTeamScreen> createState() => _EditTeamScreenState();
+  State<TeamEditingScreen> createState() => _TeamEditingScreenState();
 }
 
-class _EditTeamScreenState extends State<EditTeamScreen> {
+class _TeamEditingScreenState extends State<TeamEditingScreen> {
   final _imagePicker = ImagePicker();
   File? _teamImage;
 
-  Team _newTeam = Team('', '', '');
+  final Team _newTeam = Team('', '', '');
 
   final _formKey = GlobalKey<FormState>();
 
@@ -47,10 +47,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
       if (isValid) {
         _formKey.currentState!.save();
 
-        print(_newTeam.name);
-
-        final User user =
-            Provider.of<Auth>(context, listen: false).account as User;
+        final User user = Provider.of<Auth>(context, listen: false).currentUser;
 
         await user.createATeam(_newTeam, _teamImage, context);
 
