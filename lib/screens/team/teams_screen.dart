@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/screens/team/edit_team_screen.dart';
+import 'package:gd_club_app/screens/team/team_editing_screen.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:gd_club_app/widgets/teams/team_list.dart';
@@ -50,8 +50,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed(EditTeamScreen.routeName);
+                            Navigator.of(context).pushReplacementNamed(
+                                TeamEditingScreen.routeName);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

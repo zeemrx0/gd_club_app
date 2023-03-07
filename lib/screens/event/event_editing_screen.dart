@@ -11,14 +11,14 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-class EditEventScreen extends StatefulWidget {
+class EventEditingScreen extends StatefulWidget {
   static const routeName = '/edit-event';
 
   @override
-  State<EditEventScreen> createState() => _EditEventScreenState();
+  State<EventEditingScreen> createState() => _EventEditingScreenState();
 }
 
-class _EditEventScreenState extends State<EditEventScreen> {
+class _EventEditingScreenState extends State<EventEditingScreen> {
   DateTime _date = DateTime.now();
   DateTime _time = DateTime.now();
 

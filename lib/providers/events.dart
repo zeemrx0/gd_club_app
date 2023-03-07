@@ -24,7 +24,7 @@ class Events with ChangeNotifier {
   }
 
   Event? findEventById(String id) {
-    int index = _list.indexWhere((event) => event.id == id);
+    final int index = _list.indexWhere((event) => event.id == id);
     return index < 0 ? null : _list[index];
   }
 

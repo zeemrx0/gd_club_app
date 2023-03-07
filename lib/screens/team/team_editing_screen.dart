@@ -9,16 +9,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-class EditTeamScreen extends StatefulWidget {
+class TeamEditingScreen extends StatefulWidget {
   static const routeName = '/edit-team';
 
-  const EditTeamScreen({super.key});
+  const TeamEditingScreen({super.key});
 
   @override
-  State<EditTeamScreen> createState() => _EditTeamScreenState();
+  State<TeamEditingScreen> createState() => _TeamEditingScreenState();
 }
 
-class _EditTeamScreenState extends State<EditTeamScreen> {
+class _TeamEditingScreenState extends State<TeamEditingScreen> {
   final _imagePicker = ImagePicker();
   File? _teamImage;
 

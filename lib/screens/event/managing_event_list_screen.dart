@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/screens/event/edit_event_screen.dart';
+import 'package:gd_club_app/screens/event/event_editing_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:gd_club_app/widgets/events/event_item.dart';
 import 'package:ionicons/ionicons.dart';
 
 import 'package:provider/provider.dart';
 
-class ManageEventsScreen extends StatelessWidget {
+class ManagingEventListScreen extends StatelessWidget {
   static const routeName = '/manage-events';
 
   @override
@@ -36,7 +36,7 @@ class ManageEventsScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
-                    EditEventScreen.routeName,
+                    EventEditingScreen.routeName,
                     arguments: {
                       'organizer': organizer,
                     },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/providers/events.dart';
-import 'package:gd_club_app/screens/event/edit_event_screen.dart';
+import 'package:gd_club_app/screens/event/event_editing_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -107,7 +107,7 @@ class _EventManagingDetailScreenState extends State<EventManagingDetailScreen> {
                               child: InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                    EditEventScreen.routeName,
+                                    EventEditingScreen.routeName,
                                     arguments: {
                                       'event': event,
                                     },

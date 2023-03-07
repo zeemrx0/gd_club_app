@@ -4,8 +4,8 @@ import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:gd_club_app/providers/memberships.dart';
 import 'package:gd_club_app/providers/teams.dart';
-import 'package:gd_club_app/screens/event/manage_events_screen.dart';
-import 'package:gd_club_app/screens/team/manage_team_members_screen.dart';
+import 'package:gd_club_app/screens/event/managing_event_list_screen.dart';
+import 'package:gd_club_app/screens/team/managing_member_list_screen.dart';
 import 'package:gd_club_app/widgets/custom_app_bar.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +112,7 @@ class TeamDetailScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(
-                        ManageEventsScreen.routeName,
+                        ManagingEventListScreen.routeName,
                         arguments: team,
                       );
                     },
@@ -179,7 +179,7 @@ class TeamDetailScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(
-                        ManageTeamMembersScreen.routeName,
+                        ManagingMemberListScreen.routeName,
                         arguments: team.id,
                       );
                     },

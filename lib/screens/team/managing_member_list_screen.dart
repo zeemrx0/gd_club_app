@@ -8,17 +8,17 @@ import 'package:gd_club_app/widgets/teams/team_member_item.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-class ManageTeamMembersScreen extends StatefulWidget {
+class ManagingMemberListScreen extends StatefulWidget {
   static const routeName = '/manage-members';
 
-  const ManageTeamMembersScreen({super.key});
+  const ManagingMemberListScreen({super.key});
 
   @override
-  State<ManageTeamMembersScreen> createState() =>
-      _ManageTeamMembersScreenState();
+  State<ManagingMemberListScreen> createState() =>
+      _ManagingMemberListScreenState();
 }
 
-class _ManageTeamMembersScreenState extends State<ManageTeamMembersScreen> {
+class _ManagingMemberListScreenState extends State<ManagingMemberListScreen> {
   @override
   Widget build(BuildContext context) {
     final teamId = ModalRoute.of(context)!.settings.arguments as String;
@@ -46,7 +46,7 @@ class _ManageTeamMembersScreenState extends State<ManageTeamMembersScreen> {
             actions: [
               GestureDetector(
                 onTap: () {
-                  // Navigator.of(context).pushNamed(EditEventScreen.routeName);
+                  // Navigator.of(context).pushNamed(EventEditingScreen.routeName);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8),

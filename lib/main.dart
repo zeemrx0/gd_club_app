@@ -9,15 +9,15 @@ import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
-import 'package:gd_club_app/screens/event/edit_event_screen.dart';
+import 'package:gd_club_app/screens/event/event_editing_screen.dart';
 import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
 import 'package:gd_club_app/screens/event/event_registration_detail_screen.dart';
-import 'package:gd_club_app/screens/event/manage_events_screen.dart';
+import 'package:gd_club_app/screens/event/managing_event_list_screen.dart';
 import 'package:gd_club_app/screens/home_screen.dart';
-import 'package:gd_club_app/screens/team/edit_team_screen.dart';
-import 'package:gd_club_app/screens/team/manage_team_members_screen.dart';
+import 'package:gd_club_app/screens/team/managing_member_list_screen.dart';
 import 'package:gd_club_app/screens/team/team_detail_screen.dart';
+import 'package:gd_club_app/screens/team/team_editing_screen.dart';
 import 'package:gd_club_app/screens/team/teams_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
 import 'package:provider/provider.dart';
@@ -87,14 +87,14 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => AuthStreamBuilder(
                 child: HomeScreen(),
               ),
-          ManageEventsScreen.routeName: (context) =>
-              AuthStreamBuilder(child: ManageEventsScreen()),
+          ManagingEventListScreen.routeName: (context) =>
+              AuthStreamBuilder(child: ManagingEventListScreen()),
           EventRegistrationInformationScreen.routeName: (context) =>
               AuthStreamBuilder(child: EventRegistrationInformationScreen()),
           EventManagingDetailScreen.routeName: (context) =>
               AuthStreamBuilder(child: EventManagingDetailScreen()),
-          EditEventScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EditEventScreen()),
+          EventEditingScreen.routeName: (context) =>
+              AuthStreamBuilder(child: EventEditingScreen()),
           EventQRCodeScreen.routeName: (context) =>
               const AuthStreamBuilder(child: EventQRCodeScreen()),
           AccountScreen.routeName: (context) =>
@@ -106,12 +106,12 @@ class MyApp extends StatelessWidget {
           TeamDetailScreen.routeName: (context) => const AuthStreamBuilder(
                 child: TeamDetailScreen(),
               ),
-          EditTeamScreen.routeName: (context) => const AuthStreamBuilder(
-                child: EditTeamScreen(),
+          TeamEditingScreen.routeName: (context) => const AuthStreamBuilder(
+                child: TeamEditingScreen(),
               ),
-          ManageTeamMembersScreen.routeName: (context) =>
+          ManagingMemberListScreen.routeName: (context) =>
               const AuthStreamBuilder(
-                child: ManageTeamMembersScreen(),
+                child: ManagingMemberListScreen(),
               ),
         },
       ),
