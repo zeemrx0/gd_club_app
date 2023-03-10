@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +10,6 @@ import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:uuid/uuid.dart';
 
-// ignore: avoid_classes_with_only_static_members
 class TeamsConnector {
   static final db = FirebaseFirestore.instance;
 
@@ -34,6 +35,7 @@ class TeamsConnector {
             teamId: team.id,
             title: roleData['title'] as String,
             isManager: roleData['isManager'] as bool,
+            isOwner: roleData['isOwner'] as bool,
           ),
         );
       }
@@ -86,6 +88,7 @@ class TeamsConnector {
         teamId: team.id,
         title: 'Người sở hữu',
         isManager: true,
+        isOwner: true,
       ),
     );
 
@@ -96,6 +99,7 @@ class TeamsConnector {
         teamId: team.id,
         title: 'Thành viên',
         isManager: false,
+        isOwner: false,
       ),
     );
 
@@ -128,6 +132,7 @@ class TeamsConnector {
             teamId: teamId,
             title: roleData['title'] as String,
             isManager: roleData['isManager'] as bool,
+            isOwner: roleData['isOwner'] as bool,
           )
         : null;
   }
@@ -137,11 +142,27 @@ class TeamsConnector {
         await db.collection('teams').doc(teamId).collection('roles').add({
       'title': role.title,
       'isManager': role.isManager,
+      'isOwner': role.isManager,
       '_createdAt': Timestamp.now(),
     });
 
     role.id = roleData.id;
 
     return role;
+  }
+
+  static Future<void> deleteTeam({required String teamId}) async {
+    // Delete all membership to deleting team
+    final memberships = await FirebaseFirestore.instance
+        .collection('memberships')
+        .where('teamId', isEqualTo: teamId)
+        .get();
+
+    for (final membership in memberships.docs) {
+      await membership.reference.delete();
+    }
+
+    // Delete team
+    await db.collection('teams').doc(teamId).delete();
   }
 }

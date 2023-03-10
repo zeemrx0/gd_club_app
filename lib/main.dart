@@ -18,6 +18,7 @@ import 'package:gd_club_app/screens/home_screen.dart';
 import 'package:gd_club_app/screens/team/managing_member_list_screen.dart';
 import 'package:gd_club_app/screens/team/team_detail_screen.dart';
 import 'package:gd_club_app/screens/team/team_editing_screen.dart';
+import 'package:gd_club_app/screens/team/team_setting_screen.dart';
 import 'package:gd_club_app/screens/team/teams_screen.dart';
 import 'package:gd_club_app/widgets/auth/auth_stream_builder.dart';
 import 'package:provider/provider.dart';
@@ -112,6 +113,9 @@ class MyApp extends StatelessWidget {
           ManagingMemberListScreen.routeName: (context) =>
               const AuthStreamBuilder(
                 child: ManagingMemberListScreen(),
+              ),
+          TeamSettingScreen.routeName: (context) => const AuthStreamBuilder(
+                child: TeamSettingScreen(),
               ),
         },
       ),

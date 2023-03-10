@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/screens/team/team_detail_screen.dart';
 
 class TeamCard extends StatelessWidget {
   final Team team;
-  final String role;
-  const TeamCard({required this.team, required this.role});
+  final List<Role> roles;
+  const TeamCard({required this.team, required this.roles});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,10 @@ class TeamCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           TeamDetailScreen.routeName,
-          arguments: team.id,
+          arguments: {
+            'teamId': team.id,
+            'roles': roles,
+          },
         );
       },
       child: Container(
