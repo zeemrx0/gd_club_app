@@ -117,31 +117,4 @@ class EventsConnector {
   static Future<void> deleteEvent({required String eventId}) async {
     await db.collection('events').doc(eventId).delete();
   }
-
-  static Future<void> registerAnEvent({
-    required String userId,
-    required String eventId,
-  }) async {
-    // final int eventIndex = _list.indexWhere((event) => event.id == eventId);
-
-    // final User user = FirebaseAuth.instance.currentUser!;
-
-    // if (!_list[eventIndex].isRegistered) {
-    //   // If you have not registered the event
-    //   // then add a registration
-
-    //   await _registrationsProvider!.addRegistration(
-    //       eventId: _list[eventIndex].id!, registrantId: user.uid);
-
-    //   _list[eventIndex].isRegistered = true;
-    // } else {
-    //   // If you have already registered the event
-    //   // then delete the registration
-
-    //   await _registrationsProvider!.removeRegistration(
-    //       eventId: _list[eventIndex].id!, registrantId: user.uid);
-
-    //   _list[eventIndex].isRegistered = false;
-    // }
-  }
 }
