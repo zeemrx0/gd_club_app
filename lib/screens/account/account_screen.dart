@@ -42,7 +42,7 @@ class AccountScreen extends StatelessWidget {
                         CircleAvatar(
                           backgroundColor: Colors.grey[400],
                           radius: 32,
-                          backgroundImage: currentUser.avatarUrl != null
+                          backgroundImage: currentUser!.avatarUrl != null
                               ? NetworkImage(currentUser.avatarUrl!)
                               : null,
                         ),

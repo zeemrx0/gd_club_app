@@ -20,7 +20,7 @@ class TeamsScreen extends StatefulWidget {
 class _TeamsScreenState extends State<TeamsScreen> {
   @override
   Widget build(BuildContext context) {
-    final User currentAccount = Provider.of<Auth>(context).currentUser;
+    final User currentAccount = Provider.of<Auth>(context).currentUser!;
     final TextEditingController teamCodeController = TextEditingController();
 
     return Scaffold(
@@ -124,7 +124,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         GestureDetector(
                           onTap: () async {
                             await Provider.of<Auth>(context, listen: false)
-                                .currentUser
+                                .currentUser!
                                 .joinATeam(teamCodeController.text, context);
                             teamCodeController.clear();
                             Navigator.of(context).pop();

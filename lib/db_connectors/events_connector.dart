@@ -3,21 +3,22 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gd_club_app/db_connectors/organizers_connector.dart';
 import 'package:gd_club_app/db_connectors/registrations_connector.dart';
 import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/registration.dart';
+import 'package:gd_club_app/models/user.dart';
+import 'package:gd_club_app/providers/auth.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class EventsConnector {
   static final db = FirebaseFirestore.instance;
 
-  static Future<List<Event>> getEvents() async {
-    final User user = FirebaseAuth.instance.currentUser!;
-
+  static Future<List<Event>> getEvents(String userId) async {
     final fetchedEvents =
         await db.collection('events').orderBy('_createdAt').get();
 
@@ -36,7 +37,7 @@ class EventsConnector {
       );
 
       final bool hasUserRegistered = registrations.indexWhere(
-              (registration) => registration.registrantId == user.uid) >=
+              (registration) => registration.registrantId == userId) >=
           0;
 
       events.insert(

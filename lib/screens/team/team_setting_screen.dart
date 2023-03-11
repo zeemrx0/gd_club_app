@@ -80,7 +80,7 @@ class TeamSettingScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   Provider.of<Auth>(context, listen: false)
-                      .currentUser
+                      .currentUser!
                       .leaveATeam(team.id, context);
 
                   Navigator.of(context).pop();
@@ -119,7 +119,7 @@ class TeamSettingScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   Provider.of<Auth>(context, listen: false)
-                      .currentUser
+                      .currentUser!
                       .deleteATeam(context, teamId: team.id);
 
                   Navigator.of(context).pop();

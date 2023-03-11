@@ -288,7 +288,7 @@ class _EventRegistrationInformationScreenState
                             ),
                             onPressed: () {
                               Provider.of<Auth>(context, listen: false)
-                                  .currentUser
+                                  .currentUser!
                                   .toggleRegisteredAnEvent(eventId, context);
                             },
                             child: const Text(
@@ -309,7 +309,7 @@ class _EventRegistrationInformationScreenState
                             ),
                             onPressed: () async {
                               await Provider.of<Auth>(context, listen: false)
-                                  .currentUser
+                                  .currentUser!
                                   .toggleRegisteredAnEvent(eventId, context);
                             },
                             child: const Text(

@@ -21,7 +21,7 @@ class TeamDetailScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     final String teamId = arguments['teamId'] as String;
-    final String userId = Provider.of<Auth>(context).currentUser.id;
+    final String userId = Provider.of<Auth>(context).currentUser!.id;
 
     final Team team = Provider.of<Teams>(context).findTeamById(teamId)!;
 

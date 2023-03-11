@@ -1,9 +1,13 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:async';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/db_connectors/auth_connector.dart';
 // ignore: library_prefixes
 import 'package:gd_club_app/models/user.dart' as AppUser;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -12,34 +16,77 @@ class Auth with ChangeNotifier {
   // DateTime? _expiryTime;
   // Timer? _authTimer;
 
-  late AppUser.User currentUser;
+  AppUser.User? currentUser;
 
-  Future<void> fetchAccountData() async {
-    final fetchedUser = await db
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
+  Future<void> saveUserDataToLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userJsonData = json.encode({
+      'id': currentUser?.id,
+      'email': currentUser?.email,
+      'name': currentUser?.name,
+      'systemRole': currentUser?.systemRole,
+    });
+
+    prefs.setString('user', userJsonData);
+  }
+
+  Future<bool> isAuth() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (!prefs.containsKey('user')) {
+      return false;
+    }
+
+    final userData =
+        json.decode(prefs.getString('user')!) as Map<String, dynamic>;
 
     currentUser = AppUser.User(
-      id: fetchedUser.id,
-      email: fetchedUser.data()!['email'] as String,
-      name: fetchedUser.data()!['name'] as String,
-      avatarUrl: fetchedUser.data()!['avatarUrl'] as String,
-      systemRole: fetchedUser.data()!['systemRole'] as String,
+      id: userData['id'] as String,
+      email: userData['email'] as String,
+      name: userData['name'] as String,
+      systemRole: userData['systemRole'] as String,
     );
+
+    notifyListeners();
+
+    return true;
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    final UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+    final authData =
+        await AuthConnector.login(email: email, password: password);
 
-    fetchAccountData();
+    if (authData != null) {
+      final userData = authData['user'];
+
+      currentUser = AppUser.User(
+        id: userData['id'] as String,
+        email: userData['email'] as String,
+        name: userData['name'] as String,
+        systemRole: userData['role'] as String,
+      );
+
+      await saveUserDataToLocal();
+
+      print(1);
+    }
   }
 
   Future<void> signUpWithEmailAndPassword(String email, String password) async {
-    final UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    final authData = await AuthConnector.signup(
+        email: email, password: password, name: 'User');
 
-    fetchAccountData();
+    if (authData != null) {
+      final userData = authData['user'];
+
+      currentUser = AppUser.User(
+        id: userData['id'] as String,
+        email: userData['email'] as String,
+        name: userData['name'] as String,
+        systemRole: userData['role'] as String,
+      );
+
+      await saveUserDataToLocal();
+    }
   }
 }

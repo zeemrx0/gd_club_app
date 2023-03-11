@@ -11,16 +11,33 @@ class AuthStreamBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          Provider.of<Auth>(context, listen: false).fetchAccountData();
+    // return StreamBuilder(
+    //   stream: FirebaseAuth.instance.authStateChanges(),
+    //   builder: (context, snapshot) {
+    //     // if (snapshot.hasData) {
+    //     //   Provider.of<Auth>(context, listen: false).fetchAccountData();
 
-          return child;
+    //     //   return child;
+    //     // }
+
+    //     return const AuthScreen();
+    //   },
+    // );
+
+    return FutureBuilder(
+      future: Provider.of<Auth>(context, listen: false).isAuth(),
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return const AuthScreen();
         }
 
-        return const AuthScreen();
+        final bool isAuth = snapshot.data!;
+
+        if (isAuth) {
+          return child;
+        } else {
+          return const AuthScreen();
+        }
       },
     );
   }

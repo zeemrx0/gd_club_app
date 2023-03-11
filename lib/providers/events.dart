@@ -32,8 +32,8 @@ class Events with ChangeNotifier {
     return findEventById(eventId)!.isRegistered;
   }
 
-  Future<void> fetchEvents() async {
-    final List<Event> events = await EventsConnector.getEvents();
+  Future<void> fetchEvents(String userId) async {
+    final List<Event> events = await EventsConnector.getEvents(userId);
 
     _list = [...events];
 
@@ -114,7 +114,7 @@ class Events with ChangeNotifier {
   Future<void> toggleRegisteredAnEvent(
       String eventId, BuildContext context) async {
     final String userId =
-        Provider.of<Auth>(context, listen: false).currentUser.id;
+        Provider.of<Auth>(context, listen: false).currentUser!.id;
 
     final bool hasRegistered = hasRegisteredAnEvent(eventId);
 
