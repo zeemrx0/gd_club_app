@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gd_club_app/db_connectors/memberships_connector.dart';
+import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
@@ -14,37 +15,30 @@ class TeamsConnector {
   static final db = FirebaseFirestore.instance;
 
   static Future<List<Team>> getTeams() async {
-    final fetchedTeams = await db.collection('teams').get();
+    final fetchedTeams = await RestClient().get('/teams') as List<dynamic>;
 
     final List<Team> teams = [];
 
-    for (final team in fetchedTeams.docs) {
-      final teamData = team.data();
-
-      final fetchedRoles =
-          await db.collection('teams').doc(team.id).collection('roles').get();
-
+    for (final team in fetchedTeams) {
       final List<Role> roles = [];
 
-      for (final role in fetchedRoles.docs) {
-        final roleData = role.data();
-
+      for (final role in team['roles'] as List<dynamic>) {
         roles.add(
           Role(
-            id: role.id,
-            teamId: team.id,
-            title: roleData['title'] as String,
-            isManager: roleData['isManager'] as bool,
-            isOwner: roleData['isOwner'] as bool,
+            id: role['_id'] as String,
+            teamId: team['_id'] as String,
+            title: role['title'] as String,
+            isManager: role['isManager'] as bool,
+            isOwner: role['isOwner'] as bool,
           ),
         );
       }
 
       teams.add(
         Team(
-          team.id,
-          teamData['name'] as String,
-          teamData['avatarUrl'] as String?,
+          team['_id'] as String,
+          team['name'] as String,
+          team['avatarUrl'] as String?,
           roles: roles,
         ),
       );
@@ -71,39 +65,27 @@ class TeamsConnector {
     }
 
     // Create team
-    final teamData = await db.collection('teams').add({
+    final teamData = await RestClient().post('/teams', body: {
       'name': team.name,
       'description': team.description,
-      'avatarUrl': url,
-      '_createdAt': Timestamp.now(),
+      'avatarUrl':
+          'https://static.wikia.nocookie.net/narutooriginals/images/1/1e/Team_7_poster.jpg/revision/latest/scale-to-width-down/1200?cb=20211031093113',
     });
 
-    team.id = teamData.id;
+    team.id = teamData['_id'] as String;
 
-    // Add owner role and member role to the team
-    final Role ownerRole = await addRoleToTeam(
-      team.id,
-      Role(
-        id: null,
-        teamId: team.id,
-        title: 'Người sở hữu',
-        isManager: true,
-        isOwner: true,
-      ),
+    final rolesData = teamData['roles'] as List<dynamic>;
+
+    final ownerRoleData =
+        rolesData.firstWhere((role) => (role['isOwner'] as bool) == true);
+
+    final ownerRole = Role(
+      id: ownerRoleData['_id'] as String,
+      teamId: team.id,
+      title: ownerRoleData['title'] as String,
+      isManager: ownerRoleData['isManager'] as bool,
+      isOwner: ownerRoleData['isOwner'] as bool,
     );
-
-    final Role memberRole = await addRoleToTeam(
-      team.id,
-      Role(
-        id: null,
-        teamId: team.id,
-        title: 'Thành viên',
-        isManager: false,
-        isOwner: false,
-      ),
-    );
-
-    team.roles = [ownerRole, memberRole];
 
     // Set user as owner
     await MembershipsConnector.addMembership(
@@ -152,17 +134,6 @@ class TeamsConnector {
   }
 
   static Future<void> deleteTeam({required String teamId}) async {
-    // Delete all membership to deleting team
-    final memberships = await FirebaseFirestore.instance
-        .collection('memberships')
-        .where('teamId', isEqualTo: teamId)
-        .get();
-
-    for (final membership in memberships.docs) {
-      await membership.reference.delete();
-    }
-
-    // Delete team
-    await db.collection('teams').doc(teamId).delete();
+    await RestClient().delete('/teams/$teamId');
   }
 }

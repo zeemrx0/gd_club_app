@@ -23,7 +23,8 @@ class TeamDetailScreen extends StatelessWidget {
     final String teamId = arguments['teamId'] as String;
     final String userId = Provider.of<Auth>(context).currentUser!.id;
 
-    final Team team = Provider.of<Teams>(context).findTeamById(teamId)!;
+    final Team team =
+        Provider.of<Teams>(context, listen: false).findTeamById(teamId)!;
 
     final List<Role> roles = arguments['roles'] as List<Role>;
 
