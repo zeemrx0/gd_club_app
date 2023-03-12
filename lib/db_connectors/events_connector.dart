@@ -121,17 +121,55 @@ class EventsConnector {
     required Event newEvent,
     File? image,
   }) async {
-    await db.collection('events').doc(eventId).set({
-      'title': newEvent.title,
-      'location': newEvent.location,
-      'dateTime': newEvent.dateTime,
-      'imageUrls': newEvent.imageUrls,
-      'description': newEvent.description,
-      'teamId': newEvent.organizer!.id,
-      '_createdAt': Timestamp.now(),
-    });
+    final eventData = await RestClient().post(
+      '/events',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'name': newEvent.title,
+          'location': newEvent.location,
+          'dateTime': newEvent.dateTime.toIso8601String(),
+          'imageUrls': newEvent.imageUrls,
+          'description': newEvent.description,
+        },
+      ),
+    );
 
     return newEvent;
+  }
+
+  static Future<void> addRegistration(
+      {required String eventId, required registrantId}) async {
+    final eventData = await RestClient().post(
+      '/events/$eventId/registrations',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'event': eventId,
+          'registrant': registrantId,
+        },
+      ),
+    );
+  }
+
+  static Future<void> deleteRegistration(
+      {required String eventId, required registrantId}) async {
+    final eventData = await RestClient().delete(
+      '/events/$eventId/registrations',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'event': eventId,
+          'registrant': registrantId,
+        },
+      ),
+    );
   }
 
   static Future<void> deleteEvent({required String eventId}) async {

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gd_club_app/db_connectors/registrations_connector.dart';
+import 'package:gd_club_app/db_connectors/events_connector.dart';
 
 class Registrations with ChangeNotifier {
   Future<void> addRegistration({
     required String eventId,
     required String registrantId,
   }) async {
-    RegistrationsConnector.addRegistration(
-      eventId: eventId,
-      registrantId: registrantId,
-    );
+    EventsConnector.addRegistration(
+        eventId: eventId, registrantId: registrantId);
 
     notifyListeners();
   }
@@ -18,10 +16,9 @@ class Registrations with ChangeNotifier {
     required String eventId,
     required String registrantId,
   }) async {
-    RegistrationsConnector.removeRegistration(
-      eventId: eventId,
-      registrantId: registrantId,
-    );
+    EventsConnector.deleteRegistration(
+        eventId: eventId, registrantId: registrantId);
+
     notifyListeners();
   }
 }

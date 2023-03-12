@@ -37,13 +37,16 @@ class RegistrationsConnector {
     required String eventId,
     required String registrantId,
   }) async {
-    RestClient().post(
+    await RestClient().post(
       '/registrations',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-        {},
+        {
+          'event': eventId,
+          'registrant': registrantId,
+        },
       ),
     );
 
@@ -54,17 +57,17 @@ class RegistrationsConnector {
     required String eventId,
     required String registrantId,
   }) async {
-    final registrations = await FirebaseFirestore.instance
-        .collection('registrations')
-        .where(
-          'registrantId',
-          isEqualTo: registrantId,
-        )
-        .where('eventId', isEqualTo: eventId)
-        .get();
-
-    for (final registration in registrations.docs) {
-      await registration.reference.delete();
-    }
+    await RestClient().delete(
+      '/registrations',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'event': eventId,
+          'registrant': registrantId,
+        },
+      ),
+    );
   }
 }
