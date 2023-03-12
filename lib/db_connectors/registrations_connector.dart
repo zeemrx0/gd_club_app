@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/registration.dart';
 
 class RegistrationsConnector {
@@ -34,12 +35,7 @@ class RegistrationsConnector {
     required String eventId,
     required String registrantId,
   }) async {
-    await FirebaseFirestore.instance.collection('registrations').add(
-      {
-        'eventId': eventId,
-        'registrantId': registrantId,
-      },
-    );
+    RestClient().post('/registrations', body: {});
 
     return Registration(eventId: eventId, registrantId: registrantId);
   }

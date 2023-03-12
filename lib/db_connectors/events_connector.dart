@@ -7,9 +7,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gd_club_app/db_connectors/organizers_connector.dart';
 import 'package:gd_club_app/db_connectors/registrations_connector.dart';
+import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/registration.dart';
+import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:provider/provider.dart';
@@ -18,43 +20,54 @@ import 'package:uuid/uuid.dart';
 class EventsConnector {
   static final db = FirebaseFirestore.instance;
 
-  static Future<List<Event>> getEvents(String userId) async {
-    final fetchedEvents =
-        await db.collection('events').orderBy('_createdAt').get();
+  static Future<List<Event>> getEvents() async {
+    final fetchedEvents = await RestClient().get('/events') as List<dynamic>;
 
     final List<Event> events = [];
 
-    for (final event in fetchedEvents.docs) {
-      final eventData = event.data();
+    for (final event in fetchedEvents) {
+      final organizerData = event['organizer'] as dynamic;
+      Organizer organizer;
 
-      final String organizerId = eventData['organizerId'] as String;
-      final Organizer organizer =
-          await OrganizersConnectors.getOrganizerById(organizerId);
+      if (organizerData['roles'] == null) {
+        organizer = User(
+          id: organizerData['_id'] as String,
+          email: organizerData['email'] as String,
+          name: organizerData['name'] as String,
+          systemRole: organizerData['role'] as String,
+        );
+      } else {
+        organizer = Team(
+          organizerData['_id'] as String,
+          organizerData['name'] as String,
+          organizerData['avatarUrl'] as String,
+        );
+      }
 
-      final List<Registration> registrations =
-          await RegistrationsConnector.getRegistrationsOfAnEvent(
-        eventId: event.id,
-      );
-
-      final bool hasUserRegistered = registrations.indexWhere(
-              (registration) => registration.registrantId == userId) >=
-          0;
+      final registrationsData = event['registrations'] as List<dynamic>;
+      final List<Registration> registrations = registrationsData
+          .map(
+            (registration) => Registration(
+              eventId: registration['event'] as String,
+              registrantId: registration['registrant'] as String,
+            ),
+          )
+          .toList();
 
       events.insert(
         0,
         Event(
-          id: event.id,
-          title: eventData['title'] as String,
-          location: eventData['location'] as String,
-          dateTime: DateTime.fromMicrosecondsSinceEpoch(
-              (eventData['dateTime'] as Timestamp).microsecondsSinceEpoch),
-          description: eventData['description'] as String,
-          imageUrls: (eventData['imageUrls'] as List<dynamic>)
+          id: event['_id'] as String,
+          title: event['name'] as String,
+          location: event['location'] as String,
+          dateTime: DateTime.parse(event['dateTime'] as String),
+          description: event['description'] as String,
+          imageUrls: (event['imageUrls'] as List<dynamic>)
               .map((e) => e.toString())
               .toList(),
           organizer: organizer,
           registrations: registrations,
-          isRegistered: hasUserRegistered,
+          isRegistered: false,
         ),
       );
     }
@@ -82,17 +95,14 @@ class EventsConnector {
       imageUrls.add(url);
     }
 
-    final eventData = await db.collection('events').add({
-      'title': event.title,
+    final eventData = await RestClient().post('/events', body: {
+      'name': event.title,
       'location': event.location,
-      'dateTime': event.dateTime,
-      'imageUrls': imageUrls,
+      'dateTime': event.dateTime.toIso8601String(),
+      'imageUrls': imageUrls.toString(),
       'description': event.description,
       'organizerId': event.organizer!.id,
-      '_createdAt': Timestamp.now(),
     });
-
-    event.id = eventData.id;
 
     return event;
   }
@@ -116,6 +126,6 @@ class EventsConnector {
   }
 
   static Future<void> deleteEvent({required String eventId}) async {
-    await db.collection('events').doc(eventId).delete();
+    await RestClient().delete('/events/$eventId');
   }
 }

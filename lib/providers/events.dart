@@ -33,7 +33,15 @@ class Events with ChangeNotifier {
   }
 
   Future<void> fetchEvents(String userId) async {
-    final List<Event> events = await EventsConnector.getEvents(userId);
+    final List<Event> events = await EventsConnector.getEvents();
+
+    events.map((event) {
+      final bool hasUserRegistered = event.registrations.indexWhere(
+              (registration) => registration.registrantId == userId) >=
+          0;
+
+      event.isRegistered = hasUserRegistered;
+    });
 
     _list = [...events];
 

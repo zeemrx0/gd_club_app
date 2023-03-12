@@ -6,7 +6,7 @@ import 'package:gd_club_app/db_connectors/teams_connector.dart';
 import 'package:gd_club_app/models/team.dart';
 
 class Teams with ChangeNotifier {
-  List<Team> _list = const [];
+  List<Team> _list = [];
 
   Teams();
 
