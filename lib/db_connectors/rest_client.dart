@@ -19,9 +19,11 @@ class RestClient {
   // Post:----------------------------------------------------------------------
   Future<dynamic> post(String path,
       {Map<String, String>? headers, body, Encoding? encoding}) {
+    print(body);
+
     return http
         .post(
-          Uri.parse('${Endpoints.baseUrl}${path}'),
+          Uri.parse('${Endpoints.baseUrl}$path'),
           body: body,
           headers: headers,
           encoding: encoding,
@@ -34,7 +36,7 @@ class RestClient {
       {Map<String, String>? headers, body, Encoding? encoding}) {
     return http
         .put(
-          Uri.parse('${Endpoints.baseUrl}${path}'),
+          Uri.parse('${Endpoints.baseUrl}$path'),
           body: body,
           headers: headers,
           encoding: encoding,
@@ -47,7 +49,7 @@ class RestClient {
       {Map<String, String>? headers, body, Encoding? encoding}) {
     return http
         .delete(
-          Uri.parse('${Endpoints.baseUrl}${path}'),
+          Uri.parse('${Endpoints.baseUrl}$path'),
           body: body,
           headers: headers,
           encoding: encoding,

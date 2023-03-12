@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -65,12 +66,19 @@ class TeamsConnector {
     }
 
     // Create team
-    final teamData = await RestClient().post('/teams', body: {
-      'name': team.name,
-      'description': team.description,
-      'avatarUrl':
-          'https://static.wikia.nocookie.net/narutooriginals/images/1/1e/Team_7_poster.jpg/revision/latest/scale-to-width-down/1200?cb=20211031093113',
-    });
+    final teamData = await RestClient().post(
+      '/teams',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'name': team.name,
+          'description': team.description,
+          'avatarUrl': url,
+        },
+      ),
+    );
 
     team.id = teamData['_id'] as String;
 

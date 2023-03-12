@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -95,14 +96,22 @@ class EventsConnector {
       imageUrls.add(url);
     }
 
-    final eventData = await RestClient().post('/events', body: {
-      'name': event.title,
-      'location': event.location,
-      'dateTime': event.dateTime.toIso8601String(),
-      'imageUrls': imageUrls.toString(),
-      'description': event.description,
-      'organizerId': event.organizer!.id,
-    });
+    final eventData = await RestClient().post(
+      '/events',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'name': event.title,
+          'location': event.location,
+          'dateTime': event.dateTime.toIso8601String(),
+          'imageUrls': imageUrls,
+          'description': event.description,
+          'organizerId': event.organizer!.id,
+        },
+      ),
+    );
 
     return event;
   }

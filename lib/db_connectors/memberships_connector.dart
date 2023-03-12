@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/membership.dart';
@@ -40,11 +42,19 @@ class MembershipsConnector {
   }
 
   static Future<Membership> addMembership(Membership membership) async {
-    await RestClient().post('/memberships', body: {
-      'member': membership.memberId,
-      'team': membership.teamId,
-      'role': membership.role.id,
-    });
+    await RestClient().post(
+      '/memberships',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'member': membership.memberId,
+          'team': membership.teamId,
+          'role': membership.role.id,
+        },
+      ),
+    );
 
     return membership;
   }
@@ -53,9 +63,17 @@ class MembershipsConnector {
     required String memberId,
     required String teamId,
   }) async {
-    await RestClient().post('/memberships', body: {
-      'member': memberId,
-      'team': teamId,
-    });
+    await RestClient().post(
+      '/memberships',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'member': memberId,
+          'team': teamId,
+        },
+      ),
+    );
   }
 }
