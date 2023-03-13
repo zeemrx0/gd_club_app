@@ -121,8 +121,8 @@ class EventsConnector {
     required Event newEvent,
     File? image,
   }) async {
-    final eventData = await RestClient().post(
-      '/events',
+    final eventData = await RestClient().put(
+      '/events/$eventId',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
