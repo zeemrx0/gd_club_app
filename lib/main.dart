@@ -9,6 +9,7 @@ import 'package:gd_club_app/providers/teams.dart';
 import 'package:gd_club_app/providers/users.dart';
 import 'package:gd_club_app/screens/account/account_screen.dart';
 import 'package:gd_club_app/screens/account/edit_account_screen.dart';
+import 'package:gd_club_app/screens/auth_screen.dart';
 import 'package:gd_club_app/screens/event/event_editing_screen.dart';
 import 'package:gd_club_app/screens/event/event_managing_detail_screen.dart';
 import 'package:gd_club_app/screens/event/event_qr_code_screen.dart';
@@ -54,70 +55,74 @@ class MyApp extends StatelessWidget {
           create: (context) => Events(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Sắc màu Gia Định',
-        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-        supportedLocales: const [
-          Locale('vn'),
-          Locale('en', 'US'),
-        ],
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Nunito',
-        ),
-        home: FutureBuilder(
-          future: _appFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return AuthStreamBuilder(child: HomeScreen());
-            }
+      child: Consumer<Auth>(
+        builder: (context, auth, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Sắc màu Gia Định',
+          localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+          supportedLocales: const [
+            Locale('vn'),
+            Locale('en', 'US'),
+          ],
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            fontFamily: 'Nunito',
+          ),
+          home: FutureBuilder(
+            future: _appFuture,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return AuthStreamBuilder(
+                  child: auth.currentUser == null ? AuthScreen() : HomeScreen(),
+                );
+              }
 
-            if (snapshot.hasError) {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
               return const Center(
-                child: CircularProgressIndicator(),
+                child: Text('Lỗi rùi :< Thử lại nhaa'),
               );
-            }
-
-            return const Center(
-              child: Text('Lỗi rùi :< Thử lại nhaa'),
-            );
+            },
+          ),
+          routes: {
+            HomeScreen.routeName: (context) => AuthStreamBuilder(
+                  child: HomeScreen(),
+                ),
+            ManagingEventListScreen.routeName: (context) =>
+                AuthStreamBuilder(child: ManagingEventListScreen()),
+            EventRegistrationInformationScreen.routeName: (context) =>
+                AuthStreamBuilder(child: EventRegistrationInformationScreen()),
+            EventManagingDetailScreen.routeName: (context) =>
+                AuthStreamBuilder(child: EventManagingDetailScreen()),
+            EventEditingScreen.routeName: (context) =>
+                AuthStreamBuilder(child: EventEditingScreen()),
+            EventQRCodeScreen.routeName: (context) =>
+                const AuthStreamBuilder(child: EventQRCodeScreen()),
+            AccountScreen.routeName: (context) =>
+                AuthStreamBuilder(child: AccountScreen()),
+            EditAccountScreen.routeName: (context) => const EditAccountScreen(),
+            TeamsScreen.routeName: (context) => const AuthStreamBuilder(
+                  child: TeamsScreen(),
+                ),
+            TeamDetailScreen.routeName: (context) => const AuthStreamBuilder(
+                  child: TeamDetailScreen(),
+                ),
+            TeamEditingScreen.routeName: (context) => const AuthStreamBuilder(
+                  child: TeamEditingScreen(),
+                ),
+            ManagingMemberListScreen.routeName: (context) =>
+                const AuthStreamBuilder(
+                  child: ManagingMemberListScreen(),
+                ),
+            TeamSettingScreen.routeName: (context) => const AuthStreamBuilder(
+                  child: TeamSettingScreen(),
+                ),
           },
         ),
-        routes: {
-          HomeScreen.routeName: (context) => AuthStreamBuilder(
-                child: HomeScreen(),
-              ),
-          ManagingEventListScreen.routeName: (context) =>
-              AuthStreamBuilder(child: ManagingEventListScreen()),
-          EventRegistrationInformationScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventRegistrationInformationScreen()),
-          EventManagingDetailScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventManagingDetailScreen()),
-          EventEditingScreen.routeName: (context) =>
-              AuthStreamBuilder(child: EventEditingScreen()),
-          EventQRCodeScreen.routeName: (context) =>
-              const AuthStreamBuilder(child: EventQRCodeScreen()),
-          AccountScreen.routeName: (context) =>
-              AuthStreamBuilder(child: AccountScreen()),
-          EditAccountScreen.routeName: (context) => const EditAccountScreen(),
-          TeamsScreen.routeName: (context) => const AuthStreamBuilder(
-                child: TeamsScreen(),
-              ),
-          TeamDetailScreen.routeName: (context) => const AuthStreamBuilder(
-                child: TeamDetailScreen(),
-              ),
-          TeamEditingScreen.routeName: (context) => const AuthStreamBuilder(
-                child: TeamEditingScreen(),
-              ),
-          ManagingMemberListScreen.routeName: (context) =>
-              const AuthStreamBuilder(
-                child: ManagingMemberListScreen(),
-              ),
-          TeamSettingScreen.routeName: (context) => const AuthStreamBuilder(
-                child: TeamSettingScreen(),
-              ),
-        },
       ),
     );
   }
