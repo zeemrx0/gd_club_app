@@ -55,14 +55,17 @@ class EventCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: FittedBox(
-                          fit: BoxFit.cover,
-                          child: Image.network(
-                            event.organizer?.avatarUrl ??
-                                'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(2),
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image.network(
+                              event.organizer?.avatarUrl ??
+                                  'https://img.freepik.com/free-vector/people-putting-puzzle-pieces-together_52683-28610.jpg?w=2000&t=st=1677315161~exp=1677315761~hmac=4a5f3a94713bed9e59bb8217504922d76f449947872c47739f0a1b046b553391',
+                            ),
                           ),
                         ),
                       ),

@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
               }
 
               return const Center(
-                child: Text('Lỗi rùi :< Thử lại nhaa'),
+                child: CircularProgressIndicator(),
               );
             },
           ),

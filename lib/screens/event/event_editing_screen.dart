@@ -19,6 +19,8 @@ class EventEditingScreen extends StatefulWidget {
 }
 
 class _EventEditingScreenState extends State<EventEditingScreen> {
+  bool isInit = true;
+
   DateTime _date = DateTime.now();
   DateTime _time = DateTime.now();
 
@@ -117,7 +119,7 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    if (arguments.containsKey('event')) {
+    if (isInit && arguments.containsKey('event')) {
       _newEvent = arguments['event'] as Event;
       _date = _newEvent.dateTime;
       _time = _newEvent.dateTime;
@@ -125,6 +127,8 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
       final Organizer organizer = arguments['organizer'] as Organizer;
       _newEvent.organizer = organizer;
     }
+
+    isInit = false;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
@@ -378,7 +382,6 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
                                             context,
                                             currentTime: _time,
                                             showSecondsColumn: false,
-                                            locale: LocaleType.vi,
                                           );
 
                                           setState(() {

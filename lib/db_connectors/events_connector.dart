@@ -89,6 +89,8 @@ class EventsConnector {
       imageUrls.add(url);
     }
 
+    event.imageUrls = [...imageUrls];
+
     final eventData = await RestClient().post(
       '/events',
       headers: {
@@ -105,6 +107,8 @@ class EventsConnector {
         },
       ),
     );
+
+    event.id = eventData['_id'] as String;
 
     return event;
   }
@@ -123,7 +127,7 @@ class EventsConnector {
         {
           'name': newEvent.name,
           'location': newEvent.location,
-          'dateTime': newEvent.dateTime.toIso8601String(),
+          'dateTime': '${newEvent.dateTime.toIso8601String()}Z',
           'imageUrls': newEvent.imageUrls,
           'description': newEvent.description,
         },
