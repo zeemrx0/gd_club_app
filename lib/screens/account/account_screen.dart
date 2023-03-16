@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/providers/auth.dart';
-import 'package:gd_club_app/screens/account/edit_account_screen.dart';
+import 'package:gd_club_app/screens/account/account_editing_screen.dart';
 import 'package:gd_club_app/widgets/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 
@@ -42,15 +42,15 @@ class AccountScreen extends StatelessWidget {
                         CircleAvatar(
                           backgroundColor: Colors.grey[400],
                           radius: 32,
-                          backgroundImage: currentUser!.avatarUrl != null
-                              ? NetworkImage(currentUser.avatarUrl!)
+                          backgroundImage: currentUser?.avatarUrl != null
+                              ? NetworkImage(currentUser!.avatarUrl!)
                               : null,
                         ),
                         const SizedBox(
                           width: 16,
                         ),
                         Text(
-                          currentUser.name,
+                          currentUser != null ? currentUser.name : '',
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -63,13 +63,32 @@ class AccountScreen extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushNamed(EditAccountScreen.routeName);
+                            .pushNamed(AccountEditingScreen.routeName);
                       },
                       icon: const Icon(
                         Icons.edit,
                       ),
                     )
                   ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Provider.of<Auth>(context, listen: false).logOut();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Colors.red[400],
+                  ),
+                  child: const Text(
+                    'Đăng xuất',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ],
