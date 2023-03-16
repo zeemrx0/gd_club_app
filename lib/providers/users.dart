@@ -1,6 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/db_connectors/rest_client.dart';
+import 'package:gd_club_app/db_connectors/users_connector.dart';
 import 'package:gd_club_app/models/user.dart';
+import 'package:gd_club_app/providers/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class Users with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -10,23 +20,76 @@ class Users with ChangeNotifier {
   Future<void> fetchUsers() async {
     final List<User> userList = [];
 
-    final users = await db.collection('users').get();
+    final fetchedData = await RestClient().get('/users') as dynamic;
+    final fetchedUser = fetchedData['user'] as List<dynamic>;
 
-    for (final user in users.docs) {
-      final userData = user.data();
-
+    for (final user in fetchedUser) {
       userList.add(
         User(
-          id: user.id,
-          email: userData['email'] as String,
-          avatarUrl: userData['avatarUrl'] as String,
-          name: userData['name'] as String,
-          systemRole: userData['systemRole'] as String,
+          id: user['id'] as String,
+          email: user['email'] as String,
+          avatarUrl: user['avatarUrl'] as String?,
+          name: user['name'] as String,
+          systemRole: user['systemRole'] as String,
         ),
       );
     }
 
     _list = [...userList];
+
+    notifyListeners();
+  }
+
+  Future<void> updateUser(
+      String userId, User newUser, File? image, BuildContext context) async {
+    for (User user in _list) {
+      if (user.id == userId) {
+        // final String imageId = const Uuid().v4();
+
+        // final List<String> imageUrls = [];
+        // if (image != null) {
+        //   final ref = FirebaseStorage.instance
+        //       .ref()
+        //       .child('user_images')
+        //       .child('$imageId.jpg');
+
+        //   await ref.putFile(image);
+
+        //   final url = await ref.getDownloadURL();
+
+        //   imageUrls.add(url);
+        // }
+
+        user = User(
+          id: userId,
+          name: newUser.name,
+          email: newUser.email,
+          systemRole: newUser.systemRole,
+        );
+
+        user.id = userId;
+
+        break;
+      }
+    }
+
+    UsersConnector.updateUser(
+      userId: userId,
+      newUser: newUser,
+      image: image,
+    );
+
+    Provider.of<Auth>(context, listen: false).currentUser = newUser;
+
+    final prefs = await SharedPreferences.getInstance();
+    final userJsonData = jsonEncode({
+      'id': newUser.id,
+      'email': newUser.email,
+      'name': newUser.name,
+      'systemRole': newUser.systemRole,
+    });
+
+    prefs.setString('user', userJsonData);
 
     notifyListeners();
   }

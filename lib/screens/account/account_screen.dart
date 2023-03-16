@@ -9,7 +9,7 @@ class AccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = Provider.of<Auth>(context, listen: false).currentUser;
+    final currentUser = Provider.of<Auth>(context).currentUser;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFEFEFE),
