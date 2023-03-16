@@ -2,13 +2,10 @@
 
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/registration.dart';
 
 class RegistrationsConnector {
-  static final db = FirebaseFirestore.instance;
-
   // static Future<List<Registration>> getRegistrationsOfAnEvent({
   //   required String eventId,
   // }) async {

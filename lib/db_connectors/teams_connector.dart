@@ -5,9 +5,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:gd_club_app/db_connectors/memberships_connector.dart';
 import 'package:gd_club_app/db_connectors/rest_client.dart';
-import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/role.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:uuid/uuid.dart';

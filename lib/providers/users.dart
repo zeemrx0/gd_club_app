@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/db_connectors/users_connector.dart';
@@ -10,7 +10,6 @@ import 'package:gd_club_app/models/user.dart';
 import 'package:gd_club_app/providers/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 class Users with ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -21,7 +20,7 @@ class Users with ChangeNotifier {
     final List<User> userList = [];
 
     final fetchedData = await RestClient().get('/users') as dynamic;
-    final fetchedUser = fetchedData['user'] as List<dynamic>;
+    final fetchedUser = fetchedData['results'] as List<dynamic>;
 
     for (final user in fetchedUser) {
       userList.add(
@@ -30,7 +29,7 @@ class Users with ChangeNotifier {
           email: user['email'] as String,
           avatarUrl: user['avatarUrl'] as String?,
           name: user['name'] as String,
-          systemRole: user['systemRole'] as String,
+          systemRole: user['role'] as String,
         ),
       );
     }

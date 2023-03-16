@@ -2,14 +2,11 @@
 
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/role.dart';
 
 class MembershipsConnector {
-  static final db = FirebaseFirestore.instance;
-
   static Future<List<Membership>> getMemberships() async {
     final fetchedMemberships =
         await RestClient().get('/memberships') as List<dynamic>;
