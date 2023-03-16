@@ -4,7 +4,7 @@ import 'package:gd_club_app/models/role.dart';
 
 class Event {
   String? id;
-  String title;
+  String name;
   String location;
   DateTime dateTime;
   String? description;
@@ -19,7 +19,7 @@ class Event {
 
   Event({
     this.id,
-    required this.title,
+    required this.name,
     required this.location,
     required this.dateTime,
     this.description,

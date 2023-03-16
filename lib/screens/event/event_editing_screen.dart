@@ -25,7 +25,7 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
   final _formKey = GlobalKey<FormState>();
 
   Event _newEvent = Event(
-    title: '',
+    name: '',
     location: '',
     dateTime: DateTime.now(),
     organizer: null,
@@ -275,7 +275,7 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
                                   style: const TextStyle(
                                     fontSize: 20,
                                   ),
-                                  initialValue: _newEvent.title,
+                                  initialValue: _newEvent.name,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return '';
@@ -285,7 +285,7 @@ class _EventEditingScreenState extends State<EventEditingScreen> {
                                   },
                                   onSaved: (newValue) {
                                     if (newValue != null) {
-                                      _newEvent.title = newValue;
+                                      _newEvent.name = newValue;
                                     }
                                   },
                                 ),

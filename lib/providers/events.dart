@@ -40,8 +40,6 @@ class Events with ChangeNotifier {
               (registration) => registration.registrantId == userId) >=
           0;
 
-      print(hasUserRegistered);
-
       event.isRegistered = hasUserRegistered;
     }
 
@@ -85,7 +83,7 @@ class Events with ChangeNotifier {
         }
 
         event = Event(
-          title: newEvent.title,
+          name: newEvent.name,
           location: newEvent.location,
           dateTime: newEvent.dateTime,
           imageUrls: newEvent.imageUrls,

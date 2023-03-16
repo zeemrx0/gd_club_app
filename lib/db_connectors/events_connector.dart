@@ -3,24 +3,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:gd_club_app/db_connectors/organizers_connector.dart';
-import 'package:gd_club_app/db_connectors/registrations_connector.dart';
+
 import 'package:gd_club_app/db_connectors/rest_client.dart';
 import 'package:gd_club_app/models/event.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/registration.dart';
 import 'package:gd_club_app/models/team.dart';
 import 'package:gd_club_app/models/user.dart';
-import 'package:gd_club_app/providers/auth.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class EventsConnector {
-  static final db = FirebaseFirestore.instance;
-
   static Future<List<Event>> getEvents() async {
     final fetchedEvents = await RestClient().get('/events') as List<dynamic>;
 
@@ -59,7 +52,7 @@ class EventsConnector {
         0,
         Event(
           id: event['_id'] as String,
-          title: event['name'] as String,
+          name: event['name'] as String,
           location: event['location'] as String,
           dateTime: DateTime.parse(event['dateTime'] as String),
           description: event['description'] as String,
@@ -103,7 +96,7 @@ class EventsConnector {
       },
       body: jsonEncode(
         {
-          'name': event.title,
+          'name': event.name,
           'location': event.location,
           'dateTime': event.dateTime.toIso8601String(),
           'imageUrls': imageUrls,
@@ -128,7 +121,7 @@ class EventsConnector {
       },
       body: jsonEncode(
         {
-          'name': newEvent.title,
+          'name': newEvent.name,
           'location': newEvent.location,
           'dateTime': newEvent.dateTime.toIso8601String(),
           'imageUrls': newEvent.imageUrls,
@@ -140,39 +133,43 @@ class EventsConnector {
     return newEvent;
   }
 
-  static Future<void> addRegistration(
-      {required String eventId, required registrantId}) async {
-    final eventData = await RestClient().post(
-      '/events/$eventId/registrations',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        {
-          'event': eventId,
-          'registrant': registrantId,
-        },
-      ),
-    );
-  }
-
-  static Future<void> deleteRegistration(
-      {required String eventId, required registrantId}) async {
-    final eventData = await RestClient().delete(
-      '/events/$eventId/registrations',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        {
-          'event': eventId,
-          'registrant': registrantId,
-        },
-      ),
-    );
-  }
-
   static Future<void> deleteEvent({required String eventId}) async {
     await RestClient().delete('/events/$eventId');
+  }
+
+  static Future<void> addRegistration({
+    required String eventId,
+    required registrantId,
+  }) async {
+    final registrationData = await RestClient().post(
+      '/registrations',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'event': eventId,
+          'registrant': registrantId,
+        },
+      ),
+    );
+  }
+
+  static Future<void> deleteRegistration({
+    required String eventId,
+    required registrantId,
+  }) async {
+    final registrationData = await RestClient().delete(
+      '/registrations',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        {
+          'event': eventId,
+          'registrant': registrantId,
+        },
+      ),
+    );
   }
 }

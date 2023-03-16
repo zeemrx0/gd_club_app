@@ -9,29 +9,29 @@ import 'package:gd_club_app/models/registration.dart';
 class RegistrationsConnector {
   static final db = FirebaseFirestore.instance;
 
-  static Future<List<Registration>> getRegistrationsOfAnEvent({
-    required String eventId,
-  }) async {
-    final fetchedRegistrations = await db
-        .collection('registrations')
-        .where('eventId', isEqualTo: eventId)
-        .get();
+  // static Future<List<Registration>> getRegistrationsOfAnEvent({
+  //   required String eventId,
+  // }) async {
+  //   final fetchedRegistrations = await db
+  //       .collection('registrations')
+  //       .where('eventId', isEqualTo: eventId)
+  //       .get();
 
-    final List<Registration> registrations = [];
+  //   final List<Registration> registrations = [];
 
-    for (final registration in fetchedRegistrations.docs) {
-      final registrationData = registration.data();
+  //   for (final registration in fetchedRegistrations.docs) {
+  //     final registrationData = registration.data();
 
-      registrations.add(
-        Registration(
-          eventId: registrationData['eventId'] as String,
-          registrantId: registrationData['registrantId'] as String,
-        ),
-      );
-    }
+  //     registrations.add(
+  //       Registration(
+  //         eventId: registrationData['eventId'] as String,
+  //         registrantId: registrationData['registrantId'] as String,
+  //       ),
+  //     );
+  //   }
 
-    return registrations;
-  }
+  //   return registrations;
+  // }
 
   static Future<Registration> addRegistration({
     required String eventId,

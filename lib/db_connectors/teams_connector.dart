@@ -63,6 +63,7 @@ class TeamsConnector {
 
       await ref.putFile(teamAvatarFile);
       url = await ref.getDownloadURL();
+      team.avatarUrl = url;
     }
 
     // Create team
@@ -82,23 +83,31 @@ class TeamsConnector {
 
     team.id = teamData['_id'] as String;
 
-    final rolesData = teamData['roles'] as List<dynamic>;
+    final roleData = teamData['roles'] as dynamic;
 
-    final ownerRoleData =
-        rolesData.firstWhere((role) => (role['isOwner'] as bool) == true);
+    final List<Role> roles = [];
 
-    final ownerRole = Role(
-      id: ownerRoleData['_id'] as String,
-      teamId: team.id,
-      title: ownerRoleData['title'] as String,
-      isManager: ownerRoleData['isManager'] as bool,
-      isOwner: ownerRoleData['isOwner'] as bool,
+    roles.add(
+      Role(
+        id: roleData[0]['_id'] as String,
+        teamId: team.id,
+        title: roleData[0]['title'] as String,
+        isManager: roleData[0]['isManager'] as bool,
+        isOwner: roleData[0]['isOwner'] as bool,
+      ),
     );
 
-    // Set user as owner
-    await MembershipsConnector.addMembership(
-      Membership(memberId: ownerId, teamId: team.id, role: ownerRole),
+    roles.add(
+      Role(
+        id: roleData[1]['_id'] as String,
+        teamId: team.id,
+        title: roleData[1]['title'] as String,
+        isManager: roleData[1]['isManager'] as bool,
+        isOwner: roleData[1]['isOwner'] as bool,
+      ),
     );
+
+    team.roles = [...roles];
 
     return team;
   }

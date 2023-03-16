@@ -145,7 +145,7 @@ class _EventRegistrationInformationScreenState
                           height: 6,
                         ),
                         Text(
-                          event.title,
+                          event.name,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,

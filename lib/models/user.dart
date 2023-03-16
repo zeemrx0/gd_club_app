@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:gd_club_app/db_connectors/memberships_connector.dart';
 import 'package:gd_club_app/models/membership.dart';
 import 'package:gd_club_app/models/organizer.dart';
 import 'package:gd_club_app/models/role.dart';
@@ -30,6 +31,21 @@ class User implements Organizer {
   Future<void> createATeam(Team team, File? image, BuildContext context) async {
     team = await Provider.of<Teams>(context, listen: false)
         .createTeam(team, image, id);
+
+    final rolesData = team.roles;
+
+    final ownerRoleData = rolesData.firstWhere((role) => role.isOwner == true);
+
+    final ownerRole = Role(
+      id: ownerRoleData.id as String,
+      teamId: team.id,
+      title: ownerRoleData.title as String,
+      isManager: ownerRoleData.isManager as bool,
+      isOwner: ownerRoleData.isOwner as bool,
+    );
+
+    await Provider.of<Memberships>(context, listen: false).addMembership(
+        Membership(memberId: id, teamId: team.id, role: ownerRole));
   }
 
   Future<void> joinATeam(String teamId, BuildContext context) async {

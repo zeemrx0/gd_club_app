@@ -86,7 +86,7 @@ class EventItem extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  event.title,
+                  event.name,
                   style: const TextStyle(
                     fontSize: 14,
                     fontFamily: 'Montserrat',

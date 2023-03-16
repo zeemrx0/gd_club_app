@@ -26,7 +26,7 @@ class _TeamListState extends State<TeamList> {
     memberships.forEach((key, value) async {
       final Team? team = Provider.of<Teams>(context).findTeamById(key);
       if (team != null) {
-        teamList.add(team);
+        teamList.insert(0, team);
       }
     });
 
